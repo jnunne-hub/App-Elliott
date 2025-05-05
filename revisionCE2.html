@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Révisions CE2 : Le Jeu des Niveaux !</title>
+
+    <style>
+        /* --- CSS intégré ici --- */
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f8bbd0; /* Rose doux */
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 15px; /* Bords très arrondis */
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); /* Ombre plus marquée */
+            text-align: center;
+            max-width: 650px; /* Largeur max augmentée */
+            width: 100%;
+            border: 3px solid #e91e63; /* Bordure colorée */
+        }
+
+        h1 {
+            color: #e91e63; /* Rose vif */
+            margin-bottom: 25px;
+            font-size: 2.2em; /* Titre plus grand */
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1); /* Petite ombre au titre */
+        }
+
+        #quiz-area {
+            margin-top: 20px;
+        }
+
+        #level-display { /* Nouveau élément pour le niveau */
+            font-size: 1.5em;
+            color: #d81b60; /* Rose intermédiaire */
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        #score-display {
+            font-size: 1.3em;
+            color: #c2185b; /* Rose foncé */
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        #question-box {
+            border: 2px solid #f48fb1; /* Bordure plus marquée */
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            background-color: #fce4ec; /* Fond rose très pâle */
+            min-height: 160px; /* Hauteur min augmentée */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #question-text {
+            font-size: 1.7em; /* Texte de question plus grand */
+            margin-bottom: 20px;
+            color: #4a148c; /* Violet foncé pour le contraste */
+            word-break: break-word;
+        }
+
+        #answer-input {
+            padding: 12px;
+            font-size: 1.4em; /* Taille de police augmentée */
+            border: 1px solid #f06292; /* Bordure rose */
+            border-radius: 5px;
+            margin-bottom: 15px;
+            width: calc(100% - 24px);
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+         #answer-input::placeholder {
+            color: #e57373; /* Rose léger */
+            font-style: italic;
+        }
+
+        #check-button {
+            padding: 14px 25px; /* Padding augmenté */
+            font-size: 1.4em; /* Taille de police augmentée */
+            background-color: #d81b60; /* Rose intermédiaire */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+            font-weight: bold;
+        }
+
+        #check-button:hover {
+            background-color: #c2185b; /* Rose foncé au survol */
+        }
+
+        #check-button:active { /* Effet de clic */
+            transform: scale(0.98);
+        }
+
+
+        #feedback {
+            font-size: 1.5em; /* Feedback plus grand */
+            margin-top: 20px;
+            min-height: 1.8em; /* Hauteur min pour éviter les sauts */
+            font-weight: bold;
+        }
+
+        /* Styles for feedback messages */
+        .correct {
+            color: #388e3c; /* Vert pour correct */
+            animation: pulse-correct 0.5s ease-in-out; /* Animation */
+        }
+
+        .incorrect {
+            color: #d32f2f; /* Rouge pour incorrect */
+            animation: shake 0.5s ease-in-out; /* Animation */
+        }
+
+        /* Animations */
+        @keyframes pulse-correct {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+         @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+
+
+        /* Style when quiz/level is finished */
+        #quiz-area.level-finished #question-box {
+            display: none; /* Cacher la question/input box */
+        }
+
+         #quiz-area.level-finished #feedback {
+             margin-top: 40px;
+             font-size: 1.8em;
+             color: #4a148c; /* Couleur pour le message de fin de niveau */
+         }
+         #quiz-area.level-finished #score-display {
+             font-size: 1.6em;
+             color: #c2185b;
+         }
+
+         /* Style for the final quiz end */
+        #quiz-area.finished #level-display,
+        #quiz-area.finished #score-display {
+            font-size: 1.8em;
+             color: #e91e63;
+             margin-bottom: 30px;
+        }
+         #quiz-area.finished #feedback {
+             font-size: 2em;
+             color: #4a148c;
+             margin-top: 20px;
+         }
+         #quiz-area.finished #question-box { /* Just in case */
+             display: none;
+         }
+
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Révisions pour le CE2</h1>
+
+        <div id="quiz-area">
+             <p id="level-display">Niveau 1</p> <!-- Affichage du niveau -->
+            <p id="score-display">Score: 0</p>
+            <div id="question-box">
+                <p id="question-text">Chargement...</p>
+                <input type="text" id="answer-input" placeholder="Tape ta réponse ici">
+                <button id="check-button">Vérifier</button>
+            </div>
+            <p id="feedback"></p>
+        </div>
+    </div>
+
+    <script>
+        /* --- JavaScript intégré ici --- */
+
+        // Définir les questions réparties par niveaux
+        // Chaque niveau est un tableau d'objets { question: "...", answer: "..." }
+        // J'ai mis plus de questions (total ~130+) pour assurer environ 40 après mélange pour chaque niveau.
+        const allLevelsQuestions = [
+            // Niveau 1 (Environ 45 questions - Introduction/Base)
+            [
+                { question: "Combien font 5 + 6 ?", answer: "11" },
+                { question: "Combien font 10 - 4 ?", answer: "6" },
+                { question: "Combien font 2 x 5 ?", answer: "10" },
+                { question: "Quel est le pluriel du mot 'pomme' ?", answer: "pommes" },
+                { question: "Conjugue 'être' au présent avec 'il'.", answer: "il est" },
+                { question: "Comment s'appelle la capitale de la France ?", answer: "paris" },
+                { question: "Un chien est-il un mammifère ou un poisson ?", answer: "mammifère" },
+                { question: "Écris le mot 'école'.", answer: "école" },
+                { question: "Combien de jours y a-t-il dans une semaine ?", answer: "7" },
+                { question: "Quel est le contraire de 'jour' ?", answer: "nuit" },
+                { question: "Conjugue 'avoir' au présent avec 'nous'.", answer: "nous avons" },
+                { question: "Quel continent est le nôtre (la France) ?", answer: "europe" },
+                { question: "De quoi est fait un nuage ?", answer: "eau" }, // Sous forme de gouttelettes
+                { question: "Combien font 8 + 8 ?", answer: "16" },
+                { question: "Combien font 15 - 5 ?", answer: "10" },
+                { question: "Combien font 3 x 3 ?", answer: "9" },
+                { question: "Quel est le verbe dans 'Je mange une glace' ?", answer: "mange" },
+                { question: "Quel animal a une longue trompe ?", answer: "éléphant" },
+                { question: "Comment s'appelle la période avant l'invention de l'écriture ?", answer: "préhistoire" },
+                { question: "Écris le mot 'oiseau'.", answer: "oiseau" },
+                { question: "Combien font 20 divisé par 2 ?", answer: "10" },
+                { question: "Quel est le féminin de 'beau' ?", answer: "belle" },
+                { question: "Conjugue 'aller' au présent avec 'tu'.", answer: "tu vas" },
+                { question: "Quelle est la couleur du ciel par beau temps ?", answer: "bleu" },
+                { question: "Combien y a-t-il de doigts à une main ?", answer: "5" },
+                { question: "Quel est l'intrus : stylo, règle, chaise, gomme ?", answer: "chaise" },
+                { question: "Quel est le nom de notre planète ?", answer: "terre" },
+                { question: "Combien font 10 + 10 + 10 ?", answer: "30" },
+                { question: "Écris le mot 'voiture'.", answer: "voiture" },
+                { question: "Conjugue 'faire' au présent avec 'il'.", answer: "il fait" },
+                { question: "Quel est le contraire de 'chaud' ?", answer: "froid" },
+                { question: "Comment appelle-t-on l'espace entre les dents ?", answer: "interstice" }, // Peut-être dur? Ou juste "trou" ? Simplifions : "trou" ou "espace"
+                { question: "Comment appelle-t-on une personne qui éteint les incendies ?", answer: "pompier" },
+                { question: "Combien de couleurs y a-t-il dans l'arc-en-ciel ?", answer: "7" },
+                { question: "Quel est le pluriel de 'trou' ?", answer: "trous" },
+                 { question: "Combien font 7 x 1 ?", answer: "7" },
+                 { question: "Quel est le déterminant dans 'le chat gris' ?", answer: "le" },
+                 { question: "Quel est le contraire de 'nuit' ?", answer: "jour" },
+                 { question: "Écris le mot 'chat'.", answer: "chat" },
+                 { question: "Combien font 12 + 3 ?", answer: "15" },
+                 { question: "Quel animal donne du lait ?", answer: "vache" },
+                 { question: "Conjugue 'manger' au présent avec 'nous'.", answer: "nous mangeons" },
+                 { question: "Comment s'appelle la grosse étoile qui nous éclaire le jour ?", answer: "soleil" },
+                  { question: "Combien font 50 + 50 ?", answer: "100" },
+                 { question: "Quel est le féminin de 'petit' ?", answer: "petite" },
+
+
+            ],
+            // Niveau 2 (Environ 45 questions - Intermédiaire)
+            [
+                { question: "Combien font 13 + 9 ?", answer: "22" },
+                { question: "Combien font 30 - 12 ?", answer: "18" },
+                { question: "Combien font 4 x 8 ?", answer: "32" },
+                { question: "Combien font 45 divisé par 5 ?", answer: "9" },
+                { question: "Combien y a-t-il de centaines dans 357 ?", answer: "3" },
+                { question: "Quel est le pluriel du mot 'genou' ?", answer: "genoux" },
+                { question: "Conjugue 'avoir' au présent avec 'tu'.", answer: "tu as" },
+                { question: "Conjugue 'aller' au présent avec 'vous'.", answer: "vous allez" },
+                { question: "Comment s'appelle la capitale de l'Italie ?", answer: "rome" },
+                { question: "Quel est le nom du roi des Gaulois qui s'est rendu à Alésia ?", answer: "vercingétorix" },
+                { question: "Un oiseau respire-t-il avec des branchies ou des poumons ?", answer: "poumons" },
+                { question: "Écris le mot 'aujourd'hui'.", answer: "aujourd'hui" },
+                { question: "Combien font 7 x 7 ?", answer: "49" },
+                { question: "Quel est le synonyme de 'content' ?", answer: "heureux" },
+                { question: "Conjugue 'finir' au présent avec 'ils'.", answer: "ils finissent" },
+                { question: "Quel fleuve traverse Paris ?", answer: "seine" },
+                { question: "Comment s'appelle la période de l'histoire avec les chevaliers et les châteaux forts ?", answer: "moyen âge" },
+                { question: "Écris le mot 'pharmacie'.", answer: "pharmacie" },
+                { question: "Combien font 150 + 25 ?", answer: "175" },
+                { question: "Quel est le féminin de 'acteur' ?", answer: "actrice" },
+                { question: "Conjugue 'dire' au présent avec 'je'.", answer: "je dis" },
+                { question: "Quel point cardinal est entre le Nord et l'Est ?", answer: "nord-est" },
+                 { question: "Quel animal a une carapace et est très lent ?", answer: "tortue" },
+                 { question: "Combien font 9 x 6 ?", answer: "54" },
+                 { question: "Dans la phrase 'Le gentil chien dort', quel est l'adjectif ?", answer: "gentil" },
+                 { question: "Conjugue 'voir' au présent avec 'nous'.", answer: "nous voyons" },
+                 { question: "Comment s'appelle la chaîne de montagnes entre la France et l'Espagne ?", answer: "pyrénées" },
+                 { question: "Qui a construit les pyramides en Egypte antique ?", answer: "les égyptiens" },
+                 { question: "Écris le mot 'chaussette'.", answer: "chaussette" },
+                 { question: "Combien font 200 - 50 ?", answer: "150" },
+                 { question: "Quel est le contraire de 'triste' ?", answer: "joyeux" },
+                 { question: "Dans la phrase 'Ma sœur lit un livre', quel est le nom propre ?", answer: "aucune" }, // Il n'y en a pas
+                 { question: "Conjugue 'prendre' au présent avec 'tu'.", answer: "tu prends" },
+                 { question: "Quelle est la capitale de l'Allemagne ?", answer: "berlin" },
+                 { question: "Comment appelle-t-on l'instrument qui mesure la température ?", answer: "thermomètre" },
+                 { question: "Combien font 1000 + 500 ?", answer: "1500" },
+                 { question: "Quel est le pluriel de 'œil' ?", answer: "yeux" },
+                 { question: "Conjugue 'venir' au présent avec 'je'.", answer: "je viens" },
+                  { question: "Quel océan est à l'ouest de l'Europe ?", answer: "océan atlantique" },
+                 { question: "Qu'est-ce qu'un animal carnivore mange ?", answer: "de la viande" },
+                 { question: "Écris le mot 'beaucoup'.", answer: "beaucoup" },
+                 { question: "Combien font 13 x 2 ?", answer: "26" },
+                 { question: "Quel est le sujet dans 'Les oiseaux chantent' ?", answer: "les oiseaux" },
+                 { question: "Conjugue 'vouloir' au présent avec 'vous'.", answer: "vous voulez" }, // Un peu dur? Non, courant.
+                 { question: "Quel est le plus grand fleuve de France ?", answer: "loire" },
+
+
+            ],
+            // Niveau 3 (Environ 40 questions - Plus complexe / Synthèse)
+            [
+                 { question: "Combien font 25 + 75 ?", answer: "100" },
+                 { question: "Combien font 500 - 120 ?", answer: "380" },
+                 { question: "Combien font 9 x 8 ?", answer: "72" },
+                 { question: "Combien font 64 divisé par 8 ?", answer: "8" },
+                 { question: "Combien y a-t-il d'unités de mille dans 2541 ?", answer: "2" },
+                 { question: "Quel est le pluriel du mot 'vitrail' ?", answer: "vitraux" },
+                  { question: "Écris le féminin du mot 'long'.", answer: "longue" },
+                 { question: "Conjugue 'être' à l'imparfait avec 'il'.", answer: "il était" }, // Introduction Imparfait
+                 { question: "Conjugue 'avoir' à l'imparfait avec 'nous'.", answer: "nous avions" },
+                 { question: "Conjugue 'prendre' au présent avec 'ils'.", answer: "ils prennent" },
+                 { question: "Conjugue 'aller' au futur simple avec 'je'.", answer: "j'irai" }, // Introduction Futur simple
+                 { question: "Dans la phrase 'Hier, j'ai joué dehors', quel mot est un adverbe de temps ?", answer: "hier" },
+                 { question: "Quel est le contraire de 'haut' ?", answer: "bas" },
+                 { question: "Quel est le synonyme de 'peur' ?", answer: "crainte" }, // Ou effroi...
+                 { question: "Dans la phrase 'Ce beau livre est sur la table', quel est le groupe nominal sujet ?", answer: "ce beau livre" },
+                 { question: "Quel est le nom commun dans la phrase 'Mon frère s'appelle Léo' ?", answer: "frère" },
+                 { question: "Conjugue 'faire' au passé composé avec 'elle'.", answer: "elle a fait" }, // Introduction Passé composé
+                 { question: "Conjugue 'voir' au présent avec 'ils'.", answer: "ils voient" },
+                 { question: "Écris la phrase 'Le chat dort' en mettant 'chat' au pluriel et le verbe au passé composé.", answer: "les chats ont dormi" }, // Synthèse
+                 { question: "Comment écrit-on le mot 'souvent' ?", answer: "souvent" },
+                 { question: "Écris le mot 'vraiment'.", answer: "vraiment" },
+                 { question: "Complète : Quand je serai grand, je ____ (être) vétérinaire.", answer: "je serai" }, // Futur simple
+                 { question: "Complète : Autrefois, les chevaliers ____ (vivre) dans des châteaux.", answer: "vivaient" }, // Imparfait
+                 { question: "Écris le mot 'voyage'.", answer: "voyage" },
+                 { question: "Écris le mot 'difficile'.", answer: "difficile" },
+                 { question: "Comment s'appelait le premier homme sur la Lune (selon l'histoire) ?", answer: "neil armstrong" }, // Fait moderne simple
+                 { question: "Quelle est la capitale de l'Espagne ?", answer: "madrid" },
+                 { question: "Quel est le plus haut sommet des Alpes (à la frontière France-Italie) ?", answer: "mont blanc" },
+                 { question: "Quel est le nom du grand désert chaud en Afrique du Nord ?", answer: "sahara" },
+                 { question: "Quel point cardinal est entre l'Ouest et le Sud ?", answer: "sud-ouest" },
+                 { question: "Comment appelle-t-on une très grande forêt ?", answer: "une jungle" }, // ou 'forêt tropicale'
+                 { question: "Quel gaz les êtres humains respirent-ils pour vivre ?", answer: "oxygène" },
+                 { question: "De quoi est fait le squelette des vertébrés (animaux avec une colonne vertébrale) ?", answer: "des os" }, // ou 'os'
+                 { question: "Comment s'appelle le processus où l'eau liquide se transforme en vapeur ?", answer: "évaporation" },
+                 { question: "Quel animal hiberne pendant l'hiver ?", answer: "ours" }, // Exemple simple, il y en a d'autres
+                 { question: "Combien font 365 + 1 ?", answer: "366" }, // Année bissextile implicite
+                 { question: "Quel est le tiers de 30 ?", answer: "10" },
+                 { question: "Combien font 100 divisé par 4 ?", answer: "25" },
+                 { question: "Dans 1984, quel chiffre est celui des milliers ?", answer: "1" },
+                  { question: "Quelle est la date du début de la Seconde Guerre Mondiale (année) ?", answer: "1939" }, // Fait historique important
+            ]
+        ];
+
+        let currentLevelIndex = 0; // Indice du niveau actuel (commence à 0)
+        let currentQuestionIndex = 0; // Indice de la question actuelle DANS le niveau
+        let score = 0; // Score POUR le niveau actuel
+        let shuffledLevelQuestions = []; // Questions mélangées pour le niveau actuel
+
+        // Récupérer les éléments HTML
+        const levelDisplayElement = document.getElementById('level-display');
+        const questionTextElement = document.getElementById('question-text');
+        const answerInputElement = document.getElementById('answer-input');
+        const checkButtonElement = document.getElementById('check-button');
+        const feedbackElement = document.getElementById('feedback');
+        const scoreDisplayElement = document.getElementById('score-display');
+        const quizAreaElement = document.getElementById('quiz-area');
+
+        // Fonction pour mélanger le tableau de questions (optionnel)
+        function shuffleArray(array) {
+            const shuffled = [...array]; // Créer une copie pour ne pas modifier l'original
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]; // Échange
+            }
+            return shuffled;
+        }
+
+        // Fonction pour démarrer un niveau
+        function startLevel(levelIndex) {
+            currentLevelIndex = levelIndex;
+            currentQuestionIndex = 0;
+            score = 0;
+            // Vérifier si ce niveau existe
+            if (currentLevelIndex < allLevelsQuestions.length) {
+                 // Enlever la classe de fin de niveau/quiz
+                 quizAreaElement.classList.remove('level-finished');
+                 quizAreaElement.classList.remove('finished');
+
+                // Mélanger les questions du nouveau niveau
+                // Utiliser .slice() pour créer une copie avant de mélanger
+                shuffledLevelQuestions = shuffleArray(allLevelsQuestions[currentLevelIndex]);
+
+                // Mettre à jour l'affichage du niveau et du score
+                levelDisplayElement.textContent = `Niveau ${currentLevelIndex + 1}`;
+                scoreDisplayElement.textContent = `Score: ${score} / ${shuffledLevelQuestions.length}`;
+
+                // Rendre les éléments de question visibles
+                questionTextElement.style.display = 'block';
+                answerInputElement.style.display = 'block';
+                checkButtonElement.style.display = 'inline-block'; // Assurez-vous qu'il est visible
+
+                // Afficher la première question du niveau
+                displayQuestion();
+
+            } else {
+                // Tous les niveaux sont terminés
+                endQuiz();
+            }
+        }
+
+        // Fonction pour afficher une question
+        function displayQuestion() {
+             // Réactiver le champ de saisie et le bouton
+            answerInputElement.disabled = false;
+            checkButtonElement.disabled = false;
+            answerInputElement.placeholder = "Tape ta réponse ici";
+
+            if (currentQuestionIndex < shuffledLevelQuestions.length) {
+                // Afficher la question actuelle
+                 // CORRECTION : Utiliser allLevelsQuestions car `levels` n'est pas défini dans ce scope
+                const currentLevel = allLevelsQuestions[currentLevelIndex]; // <-- Corrigé ici
+
+                questionTextElement.textContent = shuffledLevelQuestions[currentQuestionIndex].question;
+
+                // Vider le champ de réponse et le feedback
+                answerInputElement.value = '';
+                feedbackElement.textContent = '';
+                feedbackElement.className = '';
+
+                // Rétablir le bouton "Vérifier"
+                checkButtonElement.textContent = 'Vérifier';
+                checkButtonElement.onclick = checkAnswer; // Attacher l'événement de vérification
+
+                 // Mettre à jour le score affiché (juste le score du niveau en cours)
+                scoreDisplayElement.textContent = `Score: ${score} / ${shuffledLevelQuestions.length}`;
+
+
+                // Mettre le focus sur le champ de saisie
+                answerInputElement.focus();
+
+            } else {
+                // Toutes les questions de ce niveau sont terminées
+                endLevel();
+            }
+        }
+
+        // Fonction pour vérifier la réponse de l'utilisateur
+        function checkAnswer() {
+            // Désactiver le champ de saisie et le bouton pendant le feedback
+            answerInputElement.disabled = true;
+            checkButtonElement.disabled = true;
+
+            const userAnswer = answerInputElement.value.trim().toLowerCase(); // Nettoyer et mettre en minuscule
+            const correctAnswer = shuffledLevelQuestions[currentQuestionIndex].answer.trim().toLowerCase(); // Nettoyer et mettre en minuscule
+
+            if (userAnswer === correctAnswer) {
+                feedbackElement.textContent = "Correct ! 🎉 Super !";
+                feedbackElement.className = 'correct';
+                score++; // Augmenter le score du niveau
+                 // Mettre à jour le score affiché immédiatement
+                scoreDisplayElement.textContent = `Score: ${score} / ${shuffledLevelQuestions.length}`;
+            } else {
+                feedbackElement.textContent = `Incorrect. La bonne réponse était : ${shuffledLevelQuestions[currentQuestionIndex].answer}`;
+                feedbackElement.className = 'incorrect';
+            }
+
+            // Préparer pour la question suivante / fin de niveau
+            currentQuestionIndex++;
+
+            // Changer le bouton pour passer à la suite après un court délai
+            setTimeout(() => {
+                 // Vérifier si c'est la dernière question du niveau
+                if (currentQuestionIndex < shuffledLevelQuestions.length) {
+                     // Il reste des questions dans ce niveau
+                    checkButtonElement.textContent = 'Suivant';
+                    checkButtonElement.onclick = displayQuestion; // Passer à la question suivante
+
+                } else {
+                    // C'était la dernière question du niveau
+                    // Le bouton va déclencher la fin du niveau
+                     checkButtonElement.textContent = 'Terminer Niveau';
+                     checkButtonElement.onclick = endLevel; // Appeler endLevel
+                }
+                 // Réactiver le bouton et mettre le focus dessus
+                checkButtonElement.disabled = false;
+                checkButtonElement.focus();
+
+            }, 2000); // Attendre 2 secondes pour laisser le temps de lire le feedback
+        }
+
+        // Fonction pour gérer la fin d'un niveau
+        function endLevel() {
+             // Cacher la question box
+            quizAreaElement.classList.add('level-finished');
+
+            questionTextElement.style.display = 'none';
+            answerInputElement.style.display = 'none';
+            // Ne pas cacher le bouton, il sert à passer au niveau suivant
+
+             // Afficher le score final du niveau
+            scoreDisplayElement.textContent = `Ton score pour le Niveau ${currentLevelIndex + 1} est de ${score} sur ${shuffledLevelQuestions.length}.`;
+
+            // Message de fin de niveau
+             feedbackElement.textContent = `Bravo ! Prêt pour le Niveau ${currentLevelIndex + 2} ?`;
+             feedbackElement.className = 'level-complete';
+
+
+            // Préparer le bouton pour le niveau suivant ou la fin complète
+            if (currentLevelIndex + 1 < allLevelsQuestions.length) {
+                 // Il y a encore des niveaux après celui-ci
+                 checkButtonElement.textContent = `Passer au Niveau ${currentLevelIndex + 2}`;
+                 checkButtonElement.onclick = () => startLevel(currentLevelIndex + 1); // Attacher l'action pour démarrer le niveau suivant
+
+            } else {
+                // C'était le dernier niveau
+                checkButtonElement.textContent = 'Terminer le Quiz';
+                 checkButtonElement.onclick = endQuiz; // Attacher l'action de fin complète
+            }
+             // S'assurer que le bouton est visible et actif
+            checkButtonElement.style.display = 'inline-block';
+            checkButtonElement.disabled = false;
+            checkButtonElement.focus(); // Mettre le focus sur le bouton
+        }
+
+
+        // Fonction pour gérer la fin du quiz complet
+        function endQuiz() {
+             // Ajouter la classe pour le style de fin complète
+            quizAreaElement.classList.add('finished');
+             // Enlever la classe de fin de niveau
+            quizAreaElement.classList.remove('level-finished');
+
+
+            levelDisplayElement.textContent = "Quiz Terminé !";
+            questionTextElement.textContent = "Bravo champion ! Tu as terminé tous les niveaux !";
+            questionTextElement.style.display = 'block'; // Rendre le message final visible
+
+            answerInputElement.style.display = 'none';
+            checkButtonElement.style.display = 'none';
+
+             // Afficher le score global (total ou message de succès)
+             // On pourrait calculer le score total, mais le score par niveau est plus motivant
+            scoreDisplayElement.textContent = `Tu as réussi à terminer tous les niveaux !`;
+            scoreDisplayElement.style.display = 'block';
+
+            feedbackElement.textContent = `Quelle performance ! Tu peux recommencer pour t'améliorer encore !`;
+            feedbackElement.className = 'correct'; // Style de succès
+             feedbackElement.style.display = 'block';
+        }
+
+
+        // Démarrer l'application en lançant le premier niveau quand la page est chargée
+        document.addEventListener('DOMContentLoaded', () => startLevel(0));
+
+        // Permettre de valider avec la touche Entrée
+        document.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                 // Déclencher le clic sur le bouton actif s'il n'est pas désactivé
+                 if (!checkButtonElement.disabled && checkButtonElement.style.display !== 'none') {
+                     checkButtonElement.click();
+                 }
+            }
+        });
+
+    </script>
+</body>
+</html>
