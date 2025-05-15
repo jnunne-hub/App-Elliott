@@ -201,17 +201,17 @@
             let nextDirection = 'right';
             let gameInterval;
             let score = 0;
-            let gameSpeed = 150;
+            let gameSpeed = 200; // Initial speed, will be updated by level
             let gameRunning = false;
-            let currentLevel = 'easy'; // Niveau par défaut
+            let currentLevel = 'easy'; // Default level
             let touchStartX = 0;
             let touchStartY = 0;
 
             const levels = {
-                easy: { speed: 150, obstacles: 0, speedIncrease: 5, pointsPerFood: 10, name: 'Facile' },
-                medium: { speed: 120, obstacles: 5, speedIncrease: 8, pointsPerFood: 15, name: 'Moyen' },
-                hard: { speed: 100, obstacles: 10, speedIncrease: 10, pointsPerFood: 20, name: 'Difficile' },
-                extreme: { speed: 80, obstacles: 20, speedIncrease: 12, pointsPerFood: 30, name: 'Extrême' }
+                easy:    { speed: 200, obstacles: 0,  speedIncrease: 3,  pointsPerFood: 10, name: 'Facile' },
+                medium:  { speed: 150, obstacles: 5,  speedIncrease: 5,  pointsPerFood: 15, name: 'Moyen' },
+                hard:    { speed: 100, obstacles: 10, speedIncrease: 8,  pointsPerFood: 20, name: 'Difficile' },
+                extreme: { speed: 70,  obstacles: 20, speedIncrease: 10, pointsPerFood: 30, name: 'Extrême' }
             };
 
             function initBoard() {
@@ -235,10 +235,10 @@
                 nextDirection = 'right';
                 score = 0;
                 if(scoreElement) scoreElement.textContent = score;
-                if(finalScoreElement) finalScoreElement.textContent = score; // Important pour reset
+                if(finalScoreElement) finalScoreElement.textContent = score;
                 if(gameOverScreen) gameOverScreen.classList.add('hidden');
 
-                gameSpeed = levels[currentLevel].speed;
+                gameSpeed = levels[currentLevel].speed; // Set gameSpeed based on current level
                 generateObstacles();
                 placeFood();
                 drawGame();
@@ -255,12 +255,12 @@
                 const obstacleCount = levels[currentLevel].obstacles;
                 for (let i = 0; i < obstacleCount; i++) {
                     let validPosition = false;
-                    let obsX, obsY; // Renommer pour éviter confusion avec des variables globales potentielles
+                    let obsX, obsY; 
                     while (!validPosition) {
                         obsX = Math.floor(Math.random() * GRID_SIZE);
                         obsY = Math.floor(Math.random() * GRID_SIZE);
                         const isOnSnake = snake.some(segment => segment.x === obsX && segment.y === obsY);
-                        const isTooCloseToHead = Math.abs(snake[0].x - obsX) < 3 && Math.abs(snake[0].y - obsY) < 3;
+                        const isTooCloseToHead = snake.length > 0 && Math.abs(snake[0].x - obsX) < 3 && Math.abs(snake[0].y - obsY) < 3;
                         const isOnExistingObstacle = obstacles.some(obs => obs.x === obsX && obs.y === obsY);
                         if (!isOnSnake && !isTooCloseToHead && !isOnExistingObstacle) {
                             validPosition = true;
@@ -317,7 +317,7 @@
 
                 if (head.x < 0 || head.x >= GRID_SIZE || head.y < 0 || head.y >= GRID_SIZE ||
                     snake.some(segment => segment.x === head.x && segment.y === head.y) ||
-                    obstacles.some(obs => obs.x === head.x && obs.y === head.y)) { // Correction: Vérifie si la tête touche un obstacle
+                    obstacles.some(obs => obs.x === head.x && obs.y === head.y)) {
                     triggerGameOver();
                     return;
                 }
@@ -344,13 +344,12 @@
                 gameRunning = false;
                 if(finalScoreElement) finalScoreElement.textContent = score;
                 if(gameOverScreen) gameOverScreen.classList.remove('hidden');
-                if(startButton) startButton.textContent = 'Rejouer'; // Change le texte pour "Rejouer" après Game Over
+                if(startButton) startButton.textContent = 'Rejouer';
             }
 
              function toggleGame() {
-                if (!gameOverScreen.classList.contains('hidden')) { // Si c'est un écran de Game Over
-                    initGame(); // Réinitialise tout, gameRunning devient false, startButton.textContent = 'Démarrer'
-                    // On va ensuite tomber dans le bloc 'else' ci-dessous pour démarrer le jeu.
+                if (!gameOverScreen.classList.contains('hidden')) { 
+                    initGame(); 
                 }
 
                 if (gameRunning) {
@@ -358,10 +357,16 @@
                     gameRunning = false;
                     if(startButton) startButton.textContent = 'Continuer';
                 } else {
-                     // Si le serpent n'est pas initialisé (longueur 0 ou tête non définie)
                     if (snake.length === 0 || typeof snake[0].x === 'undefined') {
-                        initGame(); // Assurer une initialisation propre si ce n'est pas déjà fait
+                        initGame(); 
                     }
+                    // Ensure gameSpeed is set from the current level before starting interval
+                    gameSpeed = levels[currentLevel].speed; 
+                    // If gameInterval was previously cleared (e.g. by eating food and speeding up), 
+                    // or if it's the first start, or continuing, use the current gameSpeed.
+                    // The speed adjustment logic is in the food eating part.
+                    // So, here we just ensure the interval uses the (potentially updated) gameSpeed.
+                    clearInterval(gameInterval); // Clear any old interval, just in case
                     gameInterval = setInterval(updateGame, gameSpeed);
                     gameRunning = true;
                     if(startButton) startButton.textContent = 'Pause';
@@ -375,12 +380,12 @@
                 levelButtons.forEach(btn => {
                     btn.classList.toggle('active', btn.dataset.level === levelKey);
                 });
-                initGame(false); // Appelle initGame, qui mettra gameRunning à false et le bouton à "Démarrer"
+                initGame(false);
             }
 
             function handleTouchStart(e) {
-                if (!gameRunning && !gameOverScreen.classList.contains('hidden')) return; // Ne pas traiter si jeu pas démarré et pas game over
-                if (tutorial.classList.contains('hidden')) e.preventDefault(); // Empêche le scroll si le tutoriel n'est pas visible
+                if (!gameRunning && !gameOverScreen.classList.contains('hidden')) return; 
+                if (tutorial.classList.contains('hidden')) e.preventDefault(); 
                 touchStartX = e.touches[0].clientX;
                 touchStartY = e.touches[0].clientY;
             }
@@ -394,8 +399,8 @@
                 const diffX = touchStartX - touchEndX;
                 const diffY = touchStartY - touchEndY;
 
-                if (Math.abs(diffX) > 15 || Math.abs(diffY) > 15) { // Ajuster sensibilité si besoin
-                    if (gameRunning) { // Changer de direction seulement si le jeu est en cours
+                if (Math.abs(diffX) > 15 || Math.abs(diffY) > 15) { 
+                    if (gameRunning) { 
                         if (Math.abs(diffX) > Math.abs(diffY)) {
                             if (diffX > 0 && direction !== 'right') nextDirection = 'left';
                             else if (diffX < 0 && direction !== 'left') nextDirection = 'right';
@@ -416,14 +421,13 @@
                      return;
                 }
 
-                // Permettre à 'Espace' de fonctionner pour (Re)Démarrer / Pause / Continuer
                 if (e.key === ' ') {
                     toggleGame();
                     e.preventDefault();
                     return;
                 }
 
-                if (!gameRunning) return; // Pour les autres touches, ne rien faire si le jeu n'est pas en cours
+                if (!gameRunning) return; 
 
                 switch (e.key) {
                     case 'ArrowUp': if (direction !== 'down') nextDirection = 'up'; e.preventDefault(); break;
@@ -440,8 +444,8 @@
 
             if(startButton) startButton.addEventListener('click', toggleGame);
             if(restartButton) restartButton.addEventListener('click', () => {
-                initGame(false); // Réinitialise
-                toggleGame();    // Et démarre
+                initGame(false); 
+                toggleGame();    
             });
 
             levelButtons.forEach(button => {
@@ -468,7 +472,7 @@
             }
 
             initBoard();
-            changeLevel(currentLevel); // Important pour initialiser avec le niveau par défaut et appeler initGame
+            changeLevel(currentLevel); 
 
             if (!localStorage.getItem('snakeTutorialSeen')) {
                 if(tutorial) tutorial.classList.remove('hidden');
