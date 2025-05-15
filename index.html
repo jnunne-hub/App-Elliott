@@ -177,6 +177,10 @@
         .arcade-btn:disabled {
             filter: grayscale(80%);
         }
+        /* Style pour masquer les stats du joueur pendant un jeu en iframe */
+        #player-stats.hidden-during-game {
+            display: none !important;
+        }
     </style>
 </head>
 <body class="text-white">
@@ -382,6 +386,7 @@
         const quitConfirmModalEl = document.getElementById('quit-confirm-modal');
         const totalQuestionsDisplayEl = document.getElementById('total-questions-display');
         const quizRulesTotalQuestionsEl = document.getElementById('quiz-rules-total-questions');
+        const playerStatsEl = document.getElementById('player-stats'); // Ajout pour masquer/afficher
 
 
         const screens = {
@@ -728,7 +733,8 @@
 
             addXP(score * XP_PER_POINT);
 
-            let gameJustUnlocked = null;
+            let gamesUnlockedThisSession = []; 
+
             ARCADE_GAMES.forEach(game => {
                 if (!game.unlocked) {
                     let conditionsMet = false;
@@ -749,8 +755,8 @@
 
                     if (conditionsMet) {
                         game.unlocked = true;
-                        gameJustUnlocked = game;
-                        playSound('unlock');
+                        gamesUnlockedThisSession.push(game); 
+                        playSound('unlock'); 
                     }
                 }
             });
@@ -758,12 +764,16 @@
             savePlayerData();
             transitionToScreen('result-screen');
 
-            if (gameJustUnlocked && resultTitleTextEl) {
+            if (gamesUnlockedThisSession.length > 0 && resultTitleTextEl) {
                 setTimeout(() => {
-                    resultTitleTextEl.innerHTML += `<br><span class="text-2xl text-fuchsia-400 animate-pulse">Jeu ${gameJustUnlocked.name} débloqué !</span>`;
-                    createConfettiBurst(150);
+                    let unlockMessagesHTML = "";
+                    gamesUnlockedThisSession.forEach(game => {
+                        unlockMessagesHTML += `<br><span class="text-2xl text-fuchsia-400 animate-pulse">Jeu ${game.name} débloqué !</span>`;
+                    });
+                    resultTitleTextEl.innerHTML += unlockMessagesHTML;
+                    createConfettiBurst(150 + gamesUnlockedThisSession.length * 50); 
                 }, 600);
-                updateArcadeScreen();
+                updateArcadeScreen(); 
             }
         }
 
@@ -809,13 +819,15 @@
             if (gameIframeModalEl && gameIframeContentEl) {
                 gameIframeContentEl.src = gameFile;
                 gameIframeModalEl.classList.remove('hidden');
-                // playSound('click'); // Optionnel: son à l'ouverture du jeu
+                if (playerStatsEl) playerStatsEl.classList.add('hidden-during-game'); // Masquer les stats
+                // playSound('click'); 
             }
         }
         
         function closeGameModal() {
             if (gameIframeContentEl) gameIframeContentEl.src = 'about:blank';
             if (gameIframeModalEl) gameIframeModalEl.classList.add('hidden');
+            if (playerStatsEl) playerStatsEl.classList.remove('hidden-during-game'); // Réafficher les stats
             playSound('click');
         }
 
