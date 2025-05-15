@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -29,6 +30,7 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             transition: background-color 0.1s;
             position: absolute;
+            box-sizing: border-box; /* Important for consistent sizing with borders */
         }
         .controls button {
             transition: all 0.2s;
@@ -49,8 +51,8 @@
             to { opacity: 1; }
         }
         .next-piece-container {
-            width: 100px;
-            height: 100px;
+            width: 100px; /* Fixe pour l'aperçu */
+            height: 100px;/* Fixe pour l'aperçu */
             background-color: rgba(0, 0, 0, 0.6);
             border: 2px solid #4c1d95;
             border-radius: 6px;
@@ -58,9 +60,10 @@
         }
         .next-cell {
             position: absolute;
-            width: 20px;
-            height: 20px;
+            width: 20px; /* Fixe pour l'aperçu */
+            height: 20px;/* Fixe pour l'aperçu */
             border: 1px solid rgba(255, 255, 255, 0.1);
+            box-sizing: border-box;
         }
         .game-container {
             max-width: 100%;
@@ -69,15 +72,10 @@
             flex-direction: column;
             align-items: center;
         }
+        /* Le CSS @media est bon, il définit la taille visuelle pour les petits écrans.
+           JS va maintenant s'adapter à ces tailles. */
         @media (max-width: 500px) {
-            .cell {
-                width: 20px !important;
-                height: 20px !important;
-            }
-            .tetris-container {
-                width: 200px !important;
-                height: 400px !important;
-            }
+            /* La taille du plateau sera ajustée par JS via calculateCellSizeAndUpdateBoard */
         }
     </style>
 </head>
@@ -133,7 +131,7 @@
             // Configuration
             const ROWS = 20;
             const COLS = 10;
-            const CELL_SIZE = 25;
+            let CELL_SIZE; // Sera calculé dynamiquement
             const COLORS = [
                 '#FF0000', // Rouge
                 '#00FF00', // Vert
@@ -144,7 +142,6 @@
                 '#FFA500'  // Orange
             ];
             
-            // Formes des pièces (Tetrominos)
             const SHAPES = [
                 [[1, 1, 1, 1]],                         // I
                 [[1, 1, 1], [0, 1, 0]],                 // T
@@ -155,7 +152,6 @@
                 [[1, 1, 0], [0, 1, 1]]                  // Z
             ];
             
-            // Variables du jeu
             let board = [];
             let currentPiece = null;
             let nextPiece = null;
@@ -164,9 +160,8 @@
             let gameInterval = null;
             let isPaused = false;
             let isGameOver = false;
-            let speed = 1000; // Vitesse initiale en ms
+            let speed = 1000;
             
-            // Éléments DOM
             const boardElement = document.getElementById('tetris-board');
             const scoreElement = document.getElementById('score');
             const levelElement = document.getElementById('level');
@@ -177,17 +172,51 @@
             const downButton = document.getElementById('down-btn');
             const rotateButton = document.getElementById('rotate-btn');
             const nextPieceElement = document.getElementById('next-piece');
+
+
+            function calculateCellSizeAndUpdateBoardStyles() {
+                // Calculer CELL_SIZE en fonction de la largeur disponible du conteneur parent du plateau
+                // pour s'assurer qu'il s'adapte bien, surtout sur mobile.
+                const gameContainerWidth = document.querySelector('.game-container').offsetWidth;
+                const boardWrapperWidth = boardElement.parentElement.offsetWidth; // Largeur du conteneur du plateau de jeu
+
+                // Viser une taille par défaut, mais réduire si nécessaire
+                const defaultCellSize = 25;
+                const defaultBoardWidth = COLS * defaultCellSize;
+
+                if (boardWrapperWidth < defaultBoardWidth) {
+                    CELL_SIZE = Math.floor(boardWrapperWidth / COLS);
+                } else {
+                    CELL_SIZE = defaultCellSize;
+                }
+                
+                // Limiter la taille sur les très petits écrans pour correspondre au CSS mobile
+                if (window.innerWidth <= 500) {
+                     const mobileBoardWidth = 200; // Comme dans votre CSS @media
+                     CELL_SIZE = Math.floor(mobileBoardWidth / COLS);
+                }
+
+
+                boardElement.style.width = `${COLS * CELL_SIZE}px`;
+                boardElement.style.height = `${ROWS * CELL_SIZE}px`;
+
+                const existingCells = boardElement.querySelectorAll('.cell');
+                if (existingCells.length > 0) {
+                    existingCells.forEach((cell, index) => {
+                        const row = Math.floor(index / COLS);
+                        const col = index % COLS;
+                        cell.style.width = `${CELL_SIZE}px`;
+                        cell.style.height = `${CELL_SIZE}px`;
+                        cell.style.left = `${col * CELL_SIZE}px`;
+                        cell.style.top = `${row * CELL_SIZE}px`;
+                    });
+                }
+            }
             
-            // Initialisation du plateau
             function initBoard() {
-                // Définir la taille du plateau
-                const boardWidth = COLS * CELL_SIZE;
-                const boardHeight = ROWS * CELL_SIZE;
+                calculateCellSizeAndUpdateBoardStyles(); // Calcule et applique CELL_SIZE
                 
-                boardElement.style.width = `${boardWidth}px`;
-                boardElement.style.height = `${boardHeight}px`;
                 boardElement.innerHTML = '';
-                
                 board = Array.from({ length: ROWS }, () => Array(COLS).fill(0));
                 
                 for (let row = 0; row < ROWS; row++) {
@@ -204,7 +233,6 @@
                 }
             }
             
-            // Création d'une nouvelle pièce
             function createPiece() {
                 const shapeIndex = Math.floor(Math.random() * SHAPES.length);
                 const colorIndex = Math.floor(Math.random() * COLORS.length);
@@ -217,36 +245,40 @@
                 };
             }
             
-            // Affichage de la prochaine pièce
             function displayNextPiece() {
                 nextPieceElement.innerHTML = '';
-                
                 if (!nextPiece) return;
                 
                 const shape = nextPiece.shape;
                 const color = nextPiece.color;
+                const nextCellSize = 20; // Taille fixe pour l'aperçu
                 
-                const centerX = 50 - (shape[0].length * 10);
-                const centerY = 50 - (shape.length * 10);
+                const containerWidth = nextPieceElement.offsetWidth;
+                const containerHeight = nextPieceElement.offsetHeight;
+
+                // Calculer la largeur et hauteur totale de la pièce dans l'aperçu
+                const pieceDisplayWidth = shape[0].length * nextCellSize;
+                const pieceDisplayHeight = shape.length * nextCellSize;
+
+                const offsetX = (containerWidth - pieceDisplayWidth) / 2;
+                const offsetY = (containerHeight - pieceDisplayHeight) / 2;
                 
                 for (let row = 0; row < shape.length; row++) {
                     for (let col = 0; col < shape[row].length; col++) {
                         if (shape[row][col]) {
                             const cell = document.createElement('div');
-                            cell.className = 'next-cell';
+                            cell.className = 'next-cell'; // Utilise la classe avec taille fixe
                             cell.style.backgroundColor = color;
-                            cell.style.left = `${centerX + col * 20}px`;
-                            cell.style.top = `${centerY + row * 20}px`;
+                            cell.style.left = `${offsetX + col * nextCellSize}px`;
+                            cell.style.top = `${offsetY + row * nextCellSize}px`;
                             nextPieceElement.appendChild(cell);
                         }
                     }
                 }
             }
             
-            // Dessin du plateau
             function drawBoard() {
                 const cells = boardElement.querySelectorAll('.cell');
-                
                 for (let row = 0; row < ROWS; row++) {
                     for (let col = 0; col < COLS; col++) {
                         const index = row * COLS + col;
@@ -257,10 +289,8 @@
                 }
             }
             
-            // Dessin de la pièce actuelle
             function drawPiece() {
                 if (!currentPiece) return;
-                
                 const cells = boardElement.querySelectorAll('.cell');
                 const { shape, color, row, col } = currentPiece;
                 
@@ -269,7 +299,6 @@
                         if (shape[r][c]) {
                             const cellRow = row + r;
                             const cellCol = col + c;
-                            
                             if (cellRow >= 0 && cellRow < ROWS && cellCol >= 0 && cellCol < COLS) {
                                 const index = cellRow * COLS + cellCol;
                                 if (cells[index]) {
@@ -281,36 +310,30 @@
                 }
             }
             
-            // Vérification de collision
             function isCollision(piece, rowOffset = 0, colOffset = 0) {
                 const { shape, row, col } = piece;
-                
                 for (let r = 0; r < shape.length; r++) {
                     for (let c = 0; c < shape[r].length; c++) {
                         if (shape[r][c]) {
                             const newRow = row + r + rowOffset;
                             const newCol = col + c + colOffset;
-                            
                             if (newRow >= ROWS || newCol < 0 || newCol >= COLS || 
-                                (newRow >= 0 && board[newRow][newCol])) {
+                                (newRow >= 0 && board[newRow] && board[newRow][newCol])) { // Ajout de vérification pour board[newRow]
                                 return true;
                             }
                         }
                     }
                 }
-                
                 return false;
             }
             
-            // Fixation de la pièce au plateau
             function mergePiece() {
                 const { shape, color, row, col } = currentPiece;
-                
                 for (let r = 0; r < shape.length; r++) {
                     for (let c = 0; c < shape[r].length; c++) {
                         if (shape[r][c]) {
                             const newRow = row + r;
-                            if (newRow >= 0) {
+                            if (newRow >= 0 && board[newRow]) { // Ajout de vérification pour board[newRow]
                                 board[newRow][col + c] = color;
                             }
                         }
@@ -318,80 +341,58 @@
                 }
             }
             
-            // Vérification et suppression des lignes complètes
             function checkLines() {
                 let linesCleared = 0;
-                
                 for (let row = ROWS - 1; row >= 0; row--) {
-                    if (board[row].every(cell => cell !== 0)) {
-                        // Ligne complète
+                    if (board[row] && board[row].every(cell => cell !== 0)) { // Ajout de vérification pour board[row]
                         board.splice(row, 1);
                         board.unshift(Array(COLS).fill(0));
                         linesCleared++;
-                        row++; // Vérifier la même ligne à nouveau
+                        row++;
                     }
                 }
-                
                 if (linesCleared > 0) {
-                    // Mise à jour du score
                     const points = [0, 40, 100, 300, 1200][linesCleared] * level;
                     score += points;
                     scoreElement.textContent = score;
-                    
-                    // Mise à jour du niveau
                     const newLevel = Math.floor(score / 1000) + 1;
                     if (newLevel > level) {
                         level = newLevel;
                         levelElement.textContent = level;
                         speed = Math.max(100, 1000 - (level - 1) * 100);
-                        
-                        if (gameInterval) {
+                        if (gameInterval && !isPaused && !isGameOver) {
                             clearInterval(gameInterval);
                             gameInterval = setInterval(moveDown, speed);
                         }
                     }
-                    
-                    // Animation pour les lignes complètes
-                    const cells = boardElement.querySelectorAll('.cell');
-                    cells.forEach(cell => {
-                        cell.style.transition = 'background-color 0.2s';
-                    });
                 }
             }
             
-            // Déplacement de la pièce vers le bas
             function moveDown() {
-                if (isPaused || isGameOver) return;
-                
+                if (isPaused || isGameOver || !currentPiece) return;
                 if (!isCollision(currentPiece, 1, 0)) {
                     currentPiece.row++;
-                    drawBoard();
-                    drawPiece();
                 } else {
-                    // La pièce ne peut plus descendre
                     mergePiece();
                     checkLines();
-                    
-                    // Vérification de fin de partie
-                    if (currentPiece.row <= 0) {
+                    if (currentPiece.row <= 0 && isCollision(currentPiece)) { // Game over si la nouvelle pièce est immédiatement bloquée en haut
                         gameOver();
                         return;
                     }
-                    
-                    // Nouvelle pièce
                     currentPiece = nextPiece;
                     nextPiece = createPiece();
                     displayNextPiece();
-                    
-                    drawBoard();
-                    drawPiece();
+                    if (isCollision(currentPiece)) { // Vérifier si la nouvelle pièce cause un game over
+                        gameOver();
+                        return;
+                    }
                 }
+                drawBoard(); // Toujours redessiner le plateau en premier
+                if (currentPiece && !isGameOver) drawPiece(); // Puis la pièce
             }
             
-            // Déplacement de la pièce vers la gauche
             function moveLeft() {
-                if (isPaused || isGameOver) return;
-                
+                if (isPaused || isGameOver || !currentPiece) return;
                 if (!isCollision(currentPiece, 0, -1)) {
                     currentPiece.col--;
                     drawBoard();
@@ -399,51 +400,55 @@
                 }
             }
             
-            // Déplacement de la pièce vers la droite
             function moveRight() {
-                if (isPaused || isGameOver) return;
-                
+                if (isPaused || isGameOver || !currentPiece) return;
                 if (!isCollision(currentPiece, 0, 1)) {
                     currentPiece.col++;
                     drawBoard();
                     drawPiece();
                 }
             }
-            
-            // Rotation de la pièce
+
             function rotatePiece() {
-                if (isPaused || isGameOver) return;
+                if (isPaused || isGameOver || !currentPiece) return;
+
+                const originalShape = currentPiece.shape;
+                const rotatedShape = originalShape[0].map((_, i) =>
+                    originalShape.map(row => row[i]).reverse()
+                );
                 
-                const rotated = {
-                    ...currentPiece,
-                    shape: currentPiece.shape[0].map((_, i) => 
-                        currentPiece.shape.map(row => row[i]).reverse()
-                    )
-                };
-                
-                if (!isCollision(rotated)) {
-                    currentPiece.shape = rotated.shape;
-                    drawBoard();
-                    drawPiece();
+                const testPiece = { ...currentPiece, shape: rotatedShape };
+                const originalCol = currentPiece.col; // Sauvegarder la colonne originale
+
+                // Tentatives de "wall kick"
+                const kicks = [0, -1, 1, -2, 2]; // Décalages à tester (0 = pas de décalage)
+                                                // Pour la pièce I, des décalages de -2 et 2 peuvent être nécessaires
+
+                for (const kick of kicks) {
+                    testPiece.col = originalCol + kick; // Appliquer le décalage
+                    if (!isCollision(testPiece)) {
+                        currentPiece.shape = rotatedShape;
+                        currentPiece.col = testPiece.col; // Mettre à jour la colonne avec le décalage réussi
+                        drawBoard();
+                        drawPiece();
+                        return; // Rotation et décalage réussis
+                    }
                 }
+                // Si aucun décalage ne fonctionne, la rotation n'est pas possible.
+                // La pièce reste dans son état original.
             }
             
-            // Chute rapide
             function hardDrop() {
-                if (isPaused || isGameOver) return;
-                
+                if (isPaused || isGameOver || !currentPiece) return;
                 while (!isCollision(currentPiece, 1, 0)) {
                     currentPiece.row++;
                 }
-                
-                moveDown();
+                moveDown(); // Ceci va fusionner la pièce et en générer une nouvelle
             }
             
-            // Fin de partie
             function gameOver() {
                 isGameOver = true;
                 clearInterval(gameInterval);
-                
                 const overlay = document.createElement('div');
                 overlay.className = 'game-over-overlay absolute inset-0 flex flex-col items-center justify-center';
                 overlay.innerHTML = `
@@ -453,25 +458,19 @@
                         Rejouer
                     </button>
                 `;
-                
                 boardElement.appendChild(overlay);
-                
                 document.getElementById('restart-btn').addEventListener('click', startGame);
                 pauseButton.disabled = true;
                 startButton.textContent = 'Rejouer';
                 startButton.disabled = false;
             }
             
-            // Pause / Reprise
             function togglePause() {
                 if (isGameOver) return;
-                
                 isPaused = !isPaused;
-                
                 if (isPaused) {
                     clearInterval(gameInterval);
                     pauseButton.textContent = 'Reprendre';
-                    
                     const overlay = document.createElement('div');
                     overlay.id = 'pause-overlay';
                     overlay.className = 'absolute inset-0 flex items-center justify-center bg-black bg-opacity-70';
@@ -480,125 +479,99 @@
                 } else {
                     gameInterval = setInterval(moveDown, speed);
                     pauseButton.textContent = 'Pause';
-                    
                     const overlay = document.getElementById('pause-overlay');
-                    if (overlay) {
-                        overlay.remove();
-                    }
+                    if (overlay) overlay.remove();
                 }
             }
             
-            // Démarrage du jeu
             function startGame() {
-                // Réinitialisation des variables
                 score = 0;
                 level = 1;
                 speed = 1000;
                 isPaused = false;
                 isGameOver = false;
-                
                 scoreElement.textContent = score;
                 levelElement.textContent = level;
                 
-                initBoard();
+                initBoard(); // Recalcule CELL_SIZE et recrée les cellules
                 
-                // Création des pièces
                 currentPiece = createPiece();
                 nextPiece = createPiece();
                 displayNextPiece();
                 
                 drawBoard();
-                drawPiece();
+                if (currentPiece) drawPiece();
                 
-                // Démarrage du timer
-                if (gameInterval) {
-                    clearInterval(gameInterval);
-                }
+                if (gameInterval) clearInterval(gameInterval);
                 gameInterval = setInterval(moveDown, speed);
                 
-                // Mise à jour des boutons
                 startButton.disabled = true;
                 pauseButton.disabled = false;
                 pauseButton.textContent = 'Pause';
                 
-                // Suppression de l'overlay de fin de partie s'il existe
                 const gameOverOverlay = boardElement.querySelector('.game-over-overlay');
-                if (gameOverOverlay) {
-                    gameOverOverlay.remove();
-                }
+                if (gameOverOverlay) gameOverOverlay.remove();
+                const pauseOverlay = document.getElementById('pause-overlay');
+                if (pauseOverlay) pauseOverlay.remove();
             }
             
-            // Gestionnaires d'événements
             startButton.addEventListener('click', startGame);
             pauseButton.addEventListener('click', togglePause);
             leftButton.addEventListener('click', moveLeft);
             rightButton.addEventListener('click', moveRight);
-            downButton.addEventListener('click', moveDown);
+            downButton.addEventListener('click', moveDown); // Un appui sur ↓ fait descendre d'une case
             rotateButton.addEventListener('click', rotatePiece);
             
-            // Contrôles clavier
             document.addEventListener('keydown', (e) => {
-                if (isGameOver) return;
-                
+                if (isGameOver && e.key !== 'Enter') return; // Permet de rejouer avec Entrée si game over
+                if (isGameOver && e.key === 'Enter') {
+                    const restartBtn = document.getElementById('restart-btn');
+                    if (restartBtn) restartBtn.click();
+                    return;
+                }
+
+                if (!currentPiece && e.key !== 'Enter') return; // Si pas de pièce (avant le début)
+
                 switch (e.key) {
-                    case 'ArrowLeft':
-                        moveLeft();
-                        break;
-                    case 'ArrowRight':
-                        moveRight();
-                        break;
-                    case 'ArrowDown':
-                        moveDown();
-                        break;
-                    case 'ArrowUp':
-                        rotatePiece();
-                        break;
-                    case ' ':
-                        hardDrop();
-                        break;
-                    case 'p':
-                    case 'P':
-                        togglePause();
+                    case 'ArrowLeft': moveLeft(); break;
+                    case 'ArrowRight': moveRight(); break;
+                    case 'ArrowDown': moveDown(); break;
+                    case 'ArrowUp': rotatePiece(); break;
+                    case ' ': e.preventDefault(); hardDrop(); break; // Prevent page scroll
+                    case 'p': case 'P': togglePause(); break;
+                    case 'Enter':
+                        if (!gameInterval && !isGameOver) { // Si le jeu n'est pas démarré
+                            startGame();
+                        }
                         break;
                 }
             });
             
-            // Initialisation du plateau
-            initBoard();
+            initBoard(); // Appel initial pour configurer le plateau avec la bonne taille de cellule
+            // L'affichage de "Suivant" se fera quand on démarre une partie
+            // displayNextPiece(); // Peut être appelé ici ou dans startGame
             
-            // Adaptation pour les écrans mobiles
-            function adjustForScreenSize() {
-                const gameContainer = document.querySelector('.game-container');
-                const windowWidth = window.innerWidth;
-                
-                if (windowWidth < 350) {
-                    // Pour les très petits écrans
-                    gameContainer.style.transform = 'scale(0.8)';
-                    gameContainer.style.transformOrigin = 'top center';
-                } else {
-                    gameContainer.style.transform = 'none';
-                }
-            }
+            // Gérer le redimensionnement pour recalculer CELL_SIZE si besoin
+            // Note: Un redimensionnement en pleine partie peut être problématique.
+            // Il est souvent plus simple de demander un redémarrage ou de fixer la taille.
+            // window.addEventListener('resize', () => {
+            //    if (!gameInterval) { // Seulement si le jeu n'est pas en cours
+            //        initBoard();
+            //        if (currentPiece) drawPiece();
+            //        displayNextPiece();
+            //    }
+            // });
+
             const backToQuizButton = document.getElementById('back-to-quiz-btn');
-        if (backToQuizButton) {
-            backToQuizButton.addEventListener('click', () => {
-                // S'assurer que le jeu est bien dans une iframe avant d'envoyer le message
-                if (window.parent && window.parent !== window) {
-                    window.parent.postMessage('closeGameIframe', '*');
-                    // Le '*' est pour targetOrigin. Pour plus de sécurité en production,
-                    // remplacez-le par l'origine de quizzadventure.html
-                    // Par exemple: window.parent.postMessage('closeGameIframe', 'http://localhost:xxxx');
-                    // ou window.parent.postMessage('closeGameIframe', window.location.ancestorOrigins[0]); si applicable
-                } else {
-                    // Optionnel: comportement si le jeu n'est pas dans une iframe (ex: redirection)
-                    // window.location.href = 'quizzadventure.html'; // Moins idéal
-                    console.warn("Ce jeu n'est pas dans une iframe ou ne peut pas communiquer avec le parent.");
-                }
-            });
-        }
-            // Appliquer l'ajustement au chargement et au redimensionnement
-            window.addEventListener('resize', adjustForScreenSize);
-            adjustForScreenSize();
+            if (backToQuizButton) {
+                backToQuizButton.addEventListener('click', () => {
+                    if (window.parent && window.parent !== window) {
+                        window.parent.postMessage('closeGameIframe', '*');
+                    } else {
+                        console.warn("Not in an iframe or cannot communicate with parent.");
+                    }
+                });
+            }
         });
     </script>
 </body>
