@@ -255,18 +255,18 @@
                 const obstacleCount = levels[currentLevel].obstacles;
                 for (let i = 0; i < obstacleCount; i++) {
                     let validPosition = false;
-                    let x, y;
+                    let obsX, obsY; // Renommer pour éviter confusion avec des variables globales potentielles
                     while (!validPosition) {
-                        x = Math.floor(Math.random() * GRID_SIZE);
-                        y = Math.floor(Math.random() * GRID_SIZE);
-                        const isOnSnake = snake.some(segment => segment.x === x && segment.y === y);
-                        const isTooCloseToHead = Math.abs(snake[0].x - x) < 3 && Math.abs(snake[0].y - y) < 3;
-                        const isOnExistingObstacle = obstacles.some(obs => obs.x === x && obs.y === y);
+                        obsX = Math.floor(Math.random() * GRID_SIZE);
+                        obsY = Math.floor(Math.random() * GRID_SIZE);
+                        const isOnSnake = snake.some(segment => segment.x === obsX && segment.y === obsY);
+                        const isTooCloseToHead = Math.abs(snake[0].x - obsX) < 3 && Math.abs(snake[0].y - obsY) < 3;
+                        const isOnExistingObstacle = obstacles.some(obs => obs.x === obsX && obs.y === obsY);
                         if (!isOnSnake && !isTooCloseToHead && !isOnExistingObstacle) {
                             validPosition = true;
                         }
                     }
-                    obstacles.push({x, y});
+                    obstacles.push({x: obsX, y: obsY});
                 }
             }
 
@@ -317,7 +317,7 @@
 
                 if (head.x < 0 || head.x >= GRID_SIZE || head.y < 0 || head.y >= GRID_SIZE ||
                     snake.some(segment => segment.x === head.x && segment.y === head.y) ||
-                    obstacles.some(obs => obs.x === x && obs.y === y && obs.x === head.x && obs.y === head.y)) { // Correction ici pour la collision avec obstacle
+                    obstacles.some(obs => obs.x === head.x && obs.y === head.y)) { // Correction: Vérifie si la tête touche un obstacle
                     triggerGameOver();
                     return;
                 }
