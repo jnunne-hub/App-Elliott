@@ -162,7 +162,6 @@
             font-family: 'Press Start 2P', cursive; font-size: 5vw; color: white;
             text-shadow: 3px 3px 0 #4c1d95;
             opacity: 0; z-index: 1000; pointer-events: none;
-            /* Animation will be applied by JS to re-trigger */
         }
         .level-up-flash.hidden {
             display: none;
@@ -173,11 +172,9 @@
             80% { opacity: 1; transform: scale(1); }
             100% { opacity: 0; transform: scale(1.5); }
         }
-        /* Arcade specific styles */
         .arcade-btn:disabled {
             filter: grayscale(80%);
         }
-        /* Style pour masquer les stats du joueur pendant un jeu en iframe */
         #player-stats.hidden-during-game {
             display: none !important;
         }
@@ -196,13 +193,11 @@
         <div class="confetti-cannon"></div>
         <div id="level-up-overlay" class="level-up-flash hidden">LEVEL UP!</div>
 
-        <!-- Écran d'accueil -->
         <div id="home-screen" class="screen p-8">
             <div class="text-center mb-10">
                 <h1 class="title-game text-5xl md:text-6xl font-bold mb-3 text-yellow-300">Quiz Aventure</h1>
                 <p class="text-2xl text-indigo-200 italic">L'Édition ARCADE !</p>
             </div>
-
             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-8 mb-8">
                 <button class="btn-subject bg-gradient-to-br from-pink-500 to-purple-700 p-6 rounded-2xl text-left shadow-lg hover:from-pink-600 hover:to-purple-800" onclick="selectSubject('orthographe')">
                     <div class="flex items-center">
@@ -224,7 +219,6 @@
                     <div class="flex items-center"><div class="bg-white bg-opacity-20 p-3 rounded-full mr-4 shadow-inner"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg></div><div><h2 class="text-xl font-bold">Histoire</h2><p class="text-sm text-indigo-200">Découvre le passé</p></div></div>
                 </button>
             </div>
-
             <div class="text-center mt-8">
                 <button id="goto-arcade-btn" class="btn-subject bg-gradient-to-br from-purple-600 to-indigo-800 p-4 rounded-xl shadow-lg hover:from-purple-700 hover:to-indigo-900 text-lg w-full md:w-2/3 mx-auto">
                     <div class="flex items-center justify-center">
@@ -233,11 +227,9 @@
                     </div>
                 </button>
             </div>
-
             <div class="text-center mt-10"><p class="text-indigo-200 mb-3 text-lg">Choisis ta mission, jeune aventurier !</p><div class="flex justify-center space-x-4"><div class="star text-yellow-300 text-3xl">★</div><div class="star text-yellow-300 text-3xl" style="animation-delay: 0.25s">★</div><div class="star text-yellow-300 text-3xl" style="animation-delay: 0.5s">★</div></div></div>
         </div>
 
-        <!-- Écran de sélection de niveau -->
         <div id="level-screen" class="screen p-8 hidden">
             <div class="flex justify-between items-center mb-8">
                 <button onclick="showHomeScreenFromLevel()" class="bg-indigo-700 hover:bg-indigo-600 p-3 rounded-full shadow-md"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg></button>
@@ -252,7 +244,6 @@
             <div class="bg-indigo-800 p-6 rounded-xl shadow-inner"><h3 class="font-bold mb-2 text-yellow-300 text-lg">Règles du JEU :</h3><ul class="text-indigo-200 text-sm space-y-1"><li>⚡ <span id="quiz-rules-total-questions">15</span> questions explosives par niveau</li><li>⌛ Réponds avant la fin du compte à rebours !</li><li>💰 Gagne des XP pour chaque bonne réponse</li><li>🚀 Plus tu réponds vite, plus tu gagnes d'XP !</li><li>🔥 Enchaîne les bonnes réponses pour un COMBO bonus !</li></ul></div>
         </div>
 
-        <!-- Écran de quiz -->
         <div id="quiz-screen" class="screen hidden">
             <div class="bg-indigo-800 p-4 shadow-md">
                 <div class="flex justify-between items-center w-full">
@@ -266,11 +257,6 @@
                     </div>
                     
                     <div class="flex items-center space-x-2 sm:space-x-3 whitespace-nowrap pl-2"> 
-                        <button onclick="confirmQuitQuiz()" title="Retour à l'accueil" class="p-2 bg-red-600 hover:bg-red-500 rounded-full shadow-md flex-shrink-0"> 
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                            </svg>
-                        </button>
                         <div class="text-sm text-indigo-200">Score: <span id="score" class="font-bold text-lg">0</span></div> 
                         <span class="text-orange-400 font-bold" id="combo-display"></span> 
                     </div>
@@ -279,11 +265,21 @@
             <div class="relative p-4"><div class="timer-bar-container"><div id="timer-bar-inner" class="timer-bar bg-gradient-to-r from-green-400 to-cyan-400 w-full"></div></div></div>
             <div class="p-8">
                 <div class="mb-8 min-h-[100px] flex flex-col justify-center"><h3 id="question-text" class="text-xl md:text-2xl font-bold mb-2 text-center"></h3><p id="question-detail" class="text-indigo-200 text-center"></p></div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="answers-container"></div>
-            </div>
-        </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="answers-container">
+                    {/* Les réponses seront injectées ici */}
+                </div>
 
-        <!-- Écran de résultat -->
+                <div class="mt-8 text-center">
+                    <button onclick="confirmQuitQuiz()" title="Retour à l'accueil" class="py-2 px-5 bg-red-600 hover:bg-red-500 text-white rounded-lg shadow-md inline-flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                        </svg>
+                        Quitter le Quiz
+                    </button>
+                </div>
+            </div> 
+        </div> 
+
         <div id="result-screen" class="screen p-8 hidden">
             <div class="text-center mb-8"><h2 class="text-4xl font-bold mb-2 text-yellow-300" id="result-title-text">Quiz terminé !</h2><p class="text-xl text-indigo-200">Voici ton exploit :</p></div>
             <div class="bg-indigo-800 rounded-xl p-6 mb-8 shadow-xl">
@@ -297,21 +293,18 @@
             </div>
         </div>
 
-        <!-- Écran Arcade -->
         <div id="arcade-screen" class="screen p-8 hidden">
             <div class="flex justify-between items-center mb-12">
                 <button onclick="transitionToScreen('home-screen')" class="bg-indigo-700 hover:bg-indigo-600 p-3 rounded-full shadow-md">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
                 </button>
                 <h2 class="text-3xl font-bold text-center text-yellow-300">Salle d'Arcade</h2>
-                <div class="w-10"></div> <!-- Spacer -->
+                <div class="w-10"></div>
             </div>
             <div id="arcade-games-container" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Les boutons de jeu seront injectés ici par JS -->
             </div>
         </div>
 
-        <!-- Modal pour afficher les jeux -->
         <div id="game-iframe-modal" class="fixed inset-0 bg-black bg-opacity-80 flex flex-col items-center justify-center z-[2000] hidden">
             <div class="w-[95vw] h-[95vh] md:w-[90vw] md:h-[80vh] lg:w-[80vw] lg:h-[90vh] max-w-[1200px] bg-gray-900 rounded-lg shadow-2xl overflow-hidden relative" style="min-width: 320px; min-height: 480px; max-height: 100vh;">
                 <button id="close-game-iframe-btn" class="absolute top-2 right-2 bg-red-600 hover:bg-red-500 text-white rounded-full p-2 z-10 shadow-lg">
@@ -320,10 +313,8 @@
                 <iframe id="game-iframe-content" class="w-full h-full border-0" allowfullscreen></iframe>
             </div>
         </div>
-
     </div>
 
-    <!-- Modal de confirmation pour quitter le quiz -->
     <div id="quit-confirm-modal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-[1000] hidden">
         <div class="bg-indigo-800 p-6 rounded-xl shadow-2xl text-center w-full max-w-md">
             <h3 class="text-2xl font-bold text-yellow-300 mb-4">Quitter le Quiz ?</h3>
@@ -343,7 +334,6 @@
     </div>
 
     <script>
-        // --- GAME CONSTANTS ---
         const TIME_PER_QUESTION = 15;
         const BASE_POINTS_CORRECT = 100;
         const TIME_BONUS_MULTIPLIER = 8;
@@ -352,7 +342,6 @@
         const XP_LEVEL_BASE = 100;
         const XP_LEVEL_FACTOR = 1.5;
 
-        // --- GLOBAL GAME VARIABLES ---
         let currentSubject = '';
         let currentLevel = 0;
         let currentQuestionIndex = 0;
@@ -373,11 +362,9 @@
             { id: 'pong', name: 'Pong', file: 'pong.html', unlocked: false, unlockMessage: "Termine un quiz de Grammaire (Niv.1) avec 50% de réussite pour débloquer.", condition: { subject: 'grammaire', level: 1, minCorrectPercentage: 50 } }
         ];
 
-        // --- PLAYER DATA ---
         let playerXP = 0;
         let playerLevel = 1;
 
-        // --- DOM ELEMENTS ---
         const gameContainerEl = document.querySelector('.game-container');
         const homeScreenEl = document.getElementById('home-screen');
         const levelScreenEl = document.getElementById('level-screen');
@@ -392,7 +379,6 @@
         const totalQuestionsDisplayEl = document.getElementById('total-questions-display');
         const quizRulesTotalQuestionsEl = document.getElementById('quiz-rules-total-questions');
         const playerStatsEl = document.getElementById('player-stats'); 
-
 
         const screens = {
             'home-screen': homeScreenEl,
@@ -409,16 +395,13 @@
         const scoreEl = document.getElementById('score');
         const questionNumberEl = document.getElementById('question-number');
         const comboDisplayEl = document.getElementById('combo-display');
-
         const playerLevelDisplay = document.getElementById('player-level-display');
         const playerXpBar = document.getElementById('player-xp-bar');
         const playerXpDisplay = document.getElementById('player-xp-display');
         const xpToNextLevelDisplay = document.getElementById('xp-to-next-level-display');
         const levelUpOverlay = document.getElementById('level-up-overlay');
 
-        // --- SOUND EFFECTS ---
         const sounds = { click: null, correct: null, incorrect: null, levelUp: null, gameOver: null, unlock: null };
-        // Example: sounds.click = new Audio('sounds/ui_click.wav');
 
         function playSound(soundName) {
             if (sounds[soundName] && sounds[soundName].src) {
@@ -427,44 +410,25 @@
             }
         }
 
-        // --- QUESTION DATABASE ---
         let questionDatabase = {};
-
         async function loadQuestionDatabase() {
             try {
                 const response = await fetch('questions.json');
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 questionDatabase = await response.json();
                 console.log("Base de données des questions chargée !");
             } catch (error) {
                 console.error("Impossible de charger la base de données des questions:", error);
-                if (gameContainerEl) {
-                    gameContainerEl.innerHTML = `
-                        <div class="p-8 text-center">
-                            <h2 class="text-2xl text-red-400 font-bold mb-4">Erreur Critique</h2>
-                            <p class="text-indigo-200">Impossible de charger les questions du quiz.</p>
-                            <p class="text-indigo-300 mt-2">Vérifiez que le fichier 'questions.json' existe et est accessible.</p>
-                            <p class="text-xs text-gray-400 mt-4">Détail: ${error.message}</p>
-                        </div>`;
-                }
+                if (gameContainerEl) gameContainerEl.innerHTML = `<div class="p-8 text-center"><h2 class="text-2xl text-red-400 font-bold mb-4">Erreur Critique</h2><p class="text-indigo-200">Impossible de charger les questions du quiz.</p><p class="text-indigo-300 mt-2">Vérifiez que le fichier 'questions.json' existe et est accessible.</p><p class="text-xs text-gray-400 mt-4">Détail: ${error.message}</p></div>`;
             }
         }
 
-        // --- PLAYER PROGRESSION FUNCTIONS ---
-        function xpForLevel(level) {
-            return Math.floor(XP_LEVEL_BASE * Math.pow(XP_LEVEL_FACTOR, level - 1));
-        }
+        function xpForLevel(level) { return Math.floor(XP_LEVEL_BASE * Math.pow(XP_LEVEL_FACTOR, level - 1)); }
 
         function loadPlayerData() {
             playerXP = parseInt(localStorage.getItem('quizPlayerXP') || '0');
             playerLevel = parseInt(localStorage.getItem('quizPlayerLevel') || '1');
-
-            ARCADE_GAMES.forEach(game => {
-                game.unlocked = localStorage.getItem(`game_${game.id}_unlocked`) === 'true';
-            });
-
+            ARCADE_GAMES.forEach(game => { game.unlocked = localStorage.getItem(`game_${game.id}_unlocked`) === 'true'; });
             updatePlayerStatsUI();
             updateArcadeScreen();
         }
@@ -473,11 +437,8 @@
             localStorage.setItem('quizPlayerXP', playerXP.toString());
             localStorage.setItem('quizPlayerLevel', playerLevel.toString());
             ARCADE_GAMES.forEach(game => {
-                if (game.unlocked) {
-                    localStorage.setItem(`game_${game.id}_unlocked`, 'true');
-                } else {
-                    localStorage.removeItem(`game_${game.id}_unlocked`);
-                }
+                if (game.unlocked) localStorage.setItem(`game_${game.id}_unlocked`, 'true');
+                else localStorage.removeItem(`game_${game.id}_unlocked`);
             });
         }
 
@@ -485,7 +446,6 @@
             if (amount <= 0) return;
             playerXP += Math.floor(amount);
             let xpNeeded = xpForLevel(playerLevel);
-
             let leveledUp = false;
             while (playerXP >= xpNeeded) {
                 playerLevel++;
@@ -497,15 +457,12 @@
                 playSound('levelUp');
                 levelUpOverlay.classList.remove('hidden');
                 levelUpOverlay.style.animation = 'none';
-                levelUpOverlay.offsetHeight; // Trigger reflow
+                levelUpOverlay.offsetHeight; 
                 levelUpOverlay.style.animation = 'level-up-anim 2.5s ease-out forwards';
-                setTimeout(() => {
-                    levelUpOverlay.classList.add('hidden');
-                }, 2500);
+                setTimeout(() => { levelUpOverlay.classList.add('hidden'); }, 2500);
             }
             updatePlayerStatsUI();
         }
-
 
         function updatePlayerStatsUI() {
             if (playerLevelDisplay) playerLevelDisplay.textContent = playerLevel;
@@ -515,476 +472,183 @@
             if (playerXpBar) playerXpBar.style.width = `${Math.min(100, (playerXP / xpNeeded) * 100)}%`;
         }
 
-        // --- SCREEN TRANSITIONS ---
         function transitionToScreen(screenId) {
             playSound('click');
-            Object.values(screens).forEach(screenElement => {
-                if (screenElement && screenElement.id !== screenId) {
-                    screenElement.classList.add('hidden');
-                }
-            });
-
-            if (screens[screenId]) {
-                screens[screenId].offsetHeight; 
-                screens[screenId].classList.remove('hidden');
-            }
+            Object.values(screens).forEach(s => { if (s && s.id !== screenId) s.classList.add('hidden'); });
+            if (screens[screenId]) { screens[screenId].offsetHeight; screens[screenId].classList.remove('hidden'); }
             activeScreen = screenId;
         }
 
-        function showHomeScreenFromLevel() {
-            currentSubject = '';
-            transitionToScreen('home-screen');
-        }
+        function showHomeScreenFromLevel() { currentSubject = ''; transitionToScreen('home-screen'); }
 
-        // --- GAME FLOW FUNCTIONS ---
         function selectSubject(subject) {
             currentSubject = subject;
-            const subjectTitles = { orthographe: "Orthographe", grammaire: "Grammaire", mathematiques: "Mathématiques", multiplication: "Tables de multiplication", histoire: "Histoire" };
-            const subjectTitleEl = document.getElementById('subject-title');
-            if (subjectTitleEl) subjectTitleEl.textContent = `Prêt pour ${subjectTitles[subject] || 'ce sujet'} ?`;
+            const titles = { orthographe: "Orthographe", grammaire: "Grammaire", mathematiques: "Mathématiques", multiplication: "Tables de multiplication", histoire: "Histoire" };
+            if (document.getElementById('subject-title')) document.getElementById('subject-title').textContent = `Prêt pour ${titles[subject] || 'ce sujet'} ?`;
             transitionToScreen('level-screen');
         }
 
         function startQuiz(level) {
-            if (Object.keys(questionDatabase).length === 0) {
-                console.error("questionDatabase est vide.");
-                alert("Erreur: Les données du quiz n'ont pas pu être chargées.");
-                transitionToScreen('home-screen');
-                return;
-            }
-            if (!questionDatabase[currentSubject] || !questionDatabase[currentSubject][level] || questionDatabase[currentSubject][level].length === 0) {
-                console.error(`Questions non trouvées pour ${currentSubject} niveau ${level}.`);
-                alert(`Désolé, il n'y a pas encore de questions pour ce sujet/niveau.`);
-                transitionToScreen('level-screen');
-                return;
-            }
-
-            currentLevel = level;
-            currentQuestionIndex = 0;
-            score = 0;
-            correctAnswersCount = 0;
-            currentStreak = 0;
+            if (Object.keys(questionDatabase).length === 0) { console.error("DB vide."); alert("Erreur chargement quiz."); transitionToScreen('home-screen'); return; }
+            if (!questionDatabase[currentSubject] || !questionDatabase[currentSubject][level] || questionDatabase[currentSubject][level].length === 0) { console.error(`Pas de Q pour ${currentSubject} niv ${level}.`); alert(`Pas de questions pour ce sujet/niveau.`); transitionToScreen('level-screen'); return; }
+            currentLevel = level; currentQuestionIndex = 0; score = 0; correctAnswersCount = 0; currentStreak = 0;
             questions = shuffleArray([...questionDatabase[currentSubject][level]]);
-
-            if (scoreEl) scoreEl.textContent = '0';
-            if (comboDisplayEl) comboDisplayEl.textContent = '';
-            if (questionNumberEl) questionNumberEl.textContent = '1';
-
-            if (totalQuestionsDisplayEl) {
-                totalQuestionsDisplayEl.textContent = questions.length;
-            }
-            if(quizRulesTotalQuestionsEl) {
-                quizRulesTotalQuestionsEl.textContent = questions.length;
-            }
-
-
-            const levelNames = { 1: "Débutant", 2: "Intermédiaire", 3: "Expert" };
-            const subjectNames = { orthographe: "Orthographe", grammaire: "Grammaire", mathematiques: "Mathématiques", multiplication: "Tables de multiplication", histoire: "Histoire" };
-
-            const currentSubjectEl = document.getElementById('current-subject');
-            if (currentSubjectEl) currentSubjectEl.textContent = subjectNames[currentSubject] || "Sujet inconnu";
-            const currentLevelEl = document.getElementById('current-level');
-            if (currentLevelEl) currentLevelEl.textContent = `Niveau ${level} - ${levelNames[level] || 'Inconnu'}`;
-
-            transitionToScreen('quiz-screen');
-            showQuestion();
+            if (scoreEl) scoreEl.textContent = '0'; if (comboDisplayEl) comboDisplayEl.textContent = ''; if (questionNumberEl) questionNumberEl.textContent = '1';
+            if (totalQuestionsDisplayEl) totalQuestionsDisplayEl.textContent = questions.length; if(quizRulesTotalQuestionsEl) quizRulesTotalQuestionsEl.textContent = questions.length;
+            const lvlNames = { 1: "Débutant", 2: "Intermédiaire", 3: "Expert" }; const subjNames = { orthographe: "Orthographe", grammaire: "Grammaire", mathematiques: "Mathématiques", multiplication: "Tables de multiplication", histoire: "Histoire" };
+            if (document.getElementById('current-subject')) document.getElementById('current-subject').textContent = subjNames[currentSubject] || "Sujet";
+            if (document.getElementById('current-level')) document.getElementById('current-level').textContent = `Niveau ${level} - ${lvlNames[level] || ''}`;
+            transitionToScreen('quiz-screen'); showQuestion();
         }
 
         function showQuestion() {
-            if (currentQuestionIndex >= questions.length) {
-                endQuiz();
-                return;
-            }
-            const question = questions[currentQuestionIndex];
-            if (questionTextEl) questionTextEl.textContent = question.question;
-            if (questionDetailEl) questionDetailEl.textContent = question.detail || "";
-
+            if (currentQuestionIndex >= questions.length) { endQuiz(); return; }
+            const q = questions[currentQuestionIndex];
+            if (questionTextEl) questionTextEl.textContent = q.question; if (questionDetailEl) questionDetailEl.textContent = q.detail || "";
             if (answersContainerEl) {
                 answersContainerEl.innerHTML = '';
-                const gridColsClass = question.answers.some(ans => ans.length > 25) ? 'grid-cols-1' : 'md:grid-cols-2';
-                answersContainerEl.className = `grid ${gridColsClass} gap-4`;
-
-                question.answers.forEach((answer, index) => {
-                    const button = document.createElement('button');
-                    button.className = 'answer-btn bg-indigo-600 hover:bg-indigo-500 p-3 md:p-4 rounded-xl text-left shadow-md text-sm md:text-base';
-                    button.innerHTML = `<div class="flex items-center"><div class="bg-indigo-500 h-8 w-8 rounded-full flex items-center justify-center mr-2 md:mr-3 flex-shrink-0"><span>${String.fromCharCode(65 + index)}</span></div><span class="break-words">${answer}</span></div>`;
-                    button.onclick = () => handleAnswer(index, button);
-                    answersContainerEl.appendChild(button);
+                const colsCls = q.answers.some(ans => ans.length > 25) ? 'grid-cols-1' : 'md:grid-cols-2';
+                answersContainerEl.className = `grid ${colsCls} gap-4`;
+                q.answers.forEach((ans, i) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'answer-btn bg-indigo-600 hover:bg-indigo-500 p-3 md:p-4 rounded-xl text-left shadow-md text-sm md:text-base';
+                    btn.innerHTML = `<div class="flex items-center"><div class="bg-indigo-500 h-8 w-8 rounded-full flex items-center justify-center mr-2 md:mr-3 flex-shrink-0"><span>${String.fromCharCode(65 + i)}</span></div><span class="break-words">${ans}</span></div>`;
+                    btn.onclick = () => handleAnswer(i, btn);
+                    answersContainerEl.appendChild(btn);
                 });
             }
-
-            if (questionNumberEl) questionNumberEl.textContent = currentQuestionIndex + 1;
-            resetTimer();
+            if (questionNumberEl) questionNumberEl.textContent = currentQuestionIndex + 1; resetTimer();
         }
 
         function resetTimer() {
-            clearInterval(timerInterval);
-            timeLeft = TIME_PER_QUESTION;
-            if (timerBarInner) {
-                timerBarInner.style.width = '100%';
-                timerBarInner.className = 'timer-bar bg-gradient-to-r from-green-400 to-cyan-400 w-full';
-            }
+            clearInterval(timerInterval); timeLeft = TIME_PER_QUESTION;
+            if (timerBarInner) { timerBarInner.style.width = '100%'; timerBarInner.className = 'timer-bar bg-gradient-to-r from-green-400 to-cyan-400 w-full'; }
             if (gameContainerEl) gameContainerEl.classList.remove('screen-shake');
-
             timerInterval = setInterval(() => {
-                timeLeft--;
-                if (timerBarInner) timerBarInner.style.width = `${(timeLeft / TIME_PER_QUESTION) * 100}%`;
-
-                if (timeLeft <= 5 && timeLeft > 2) {
-                    if (timerBarInner) timerBarInner.className = 'timer-bar bg-gradient-to-r from-yellow-400 to-orange-500 w-full';
-                } else if (timeLeft <= 2) {
-                    if (timerBarInner) timerBarInner.className = 'timer-bar bg-gradient-to-r from-red-500 to-pink-600 w-full';
-                    if (gameContainerEl && !gameContainerEl.classList.contains('screen-shake')) {
-                        gameContainerEl.classList.add('screen-shake');
-                    }
-                }
-
-                if (timeLeft <= 0) {
-                    clearInterval(timerInterval);
-                    if (gameContainerEl) gameContainerEl.classList.remove('screen-shake');
-                    handleAnswer(-1, null);
-                }
+                timeLeft--; if (timerBarInner) timerBarInner.style.width = `${(timeLeft / TIME_PER_QUESTION) * 100}%`;
+                if (timeLeft <= 5 && timeLeft > 2) { if (timerBarInner) timerBarInner.className = 'timer-bar bg-gradient-to-r from-yellow-400 to-orange-500 w-full'; }
+                else if (timeLeft <= 2) { if (timerBarInner) timerBarInner.className = 'timer-bar bg-gradient-to-r from-red-500 to-pink-600 w-full'; if (gameContainerEl && !gameContainerEl.classList.contains('screen-shake')) gameContainerEl.classList.add('screen-shake'); }
+                if (timeLeft <= 0) { clearInterval(timerInterval); if (gameContainerEl) gameContainerEl.classList.remove('screen-shake'); handleAnswer(-1, null); }
             }, 1000);
         }
 
         function handleAnswer(selectedIndex, clickedButton) {
-            clearInterval(timerInterval);
-            if (gameContainerEl) gameContainerEl.classList.remove('screen-shake');
-
-            const question = questions[currentQuestionIndex];
-            if (!question) return;
-
+            clearInterval(timerInterval); if (gameContainerEl) gameContainerEl.classList.remove('screen-shake');
+            const q = questions[currentQuestionIndex]; if (!q) return;
             if (answersContainerEl) {
-                const answerButtons = answersContainerEl.querySelectorAll('.answer-btn');
-                answerButtons.forEach(btn => btn.disabled = true);
-
-                let isCorrect = selectedIndex === question.correct;
-
+                const btns = answersContainerEl.querySelectorAll('.answer-btn'); btns.forEach(b => b.disabled = true);
+                let isCorrect = selectedIndex === q.correct;
                 if (isCorrect) {
-                    correctAnswersCount++;
-                    currentStreak++;
-
-                    let pointsEarned = BASE_POINTS_CORRECT + (timeLeft * TIME_BONUS_MULTIPLIER);
-                    if (currentStreak > 1) {
-                        const streakBonus = pointsEarned * (STREAK_BONUS_MULTIPLIER * (currentStreak - 1));
-                        pointsEarned += Math.floor(streakBonus);
-                        if (comboDisplayEl) comboDisplayEl.textContent = `COMBO x${currentStreak}!`;
-                        showFloatingText(`+${Math.floor(streakBonus)} COMBO!`, '#ff9800', clickedButton || questionTextEl || gameContainerEl, true);
-                    }
-                    score += pointsEarned;
-
-                    playSound('correct');
-                    if (clickedButton) clickedButton.classList.add('correct');
-                    showFloatingText(`+${pointsEarned}`, '#4caf50', clickedButton || questionTextEl || gameContainerEl);
-
+                    correctAnswersCount++; currentStreak++; let pts = BASE_POINTS_CORRECT + (timeLeft * TIME_BONUS_MULTIPLIER);
+                    if (currentStreak > 1) { const bonus = pts * (STREAK_BONUS_MULTIPLIER * (currentStreak - 1)); pts += Math.floor(bonus); if (comboDisplayEl) comboDisplayEl.textContent = `COMBO x${currentStreak}!`; showFloatingText(`+${Math.floor(bonus)} COMBO!`, '#ff9800', clickedButton || questionTextEl || gameContainerEl, true); }
+                    score += pts; playSound('correct'); if (clickedButton) clickedButton.classList.add('correct'); showFloatingText(`+${pts}`, '#4caf50', clickedButton || questionTextEl || gameContainerEl);
                 } else {
-                    playSound('incorrect');
-                    currentStreak = 0;
-                    if (comboDisplayEl) comboDisplayEl.textContent = '';
-                    if (clickedButton) clickedButton.classList.add('incorrect');
-                    if (answerButtons[question.correct]) answerButtons[question.correct].classList.add('correct');
-                    if (gameContainerEl) gameContainerEl.classList.add('screen-shake');
-                    setTimeout(() => { if (gameContainerEl) gameContainerEl.classList.remove('screen-shake') }, 300);
+                    playSound('incorrect'); currentStreak = 0; if (comboDisplayEl) comboDisplayEl.textContent = ''; if (clickedButton) clickedButton.classList.add('incorrect'); if (btns[q.correct]) btns[q.correct].classList.add('correct'); if (gameContainerEl) gameContainerEl.classList.add('screen-shake'); setTimeout(() => { if (gameContainerEl) gameContainerEl.classList.remove('screen-shake') }, 300);
                 }
             }
-
-            if (scoreEl) scoreEl.textContent = score;
-            setTimeout(nextQuestion, selectedIndex === (question ? question.correct : -1) ? 1500 : 2000);
+            if (scoreEl) scoreEl.textContent = score; setTimeout(nextQuestion, selectedIndex === (q ? q.correct : -1) ? 1500 : 2000);
         }
 
-        function nextQuestion() {
-            currentQuestionIndex++;
-            if (currentStreak === 0 && comboDisplayEl) comboDisplayEl.textContent = '';
-            showQuestion();
-        }
+        function nextQuestion() { currentQuestionIndex++; if (currentStreak === 0 && comboDisplayEl) comboDisplayEl.textContent = ''; showQuestion(); }
 
         function endQuiz() {
             playSound('gameOver');
-
-            const finalScoreEl = document.getElementById('final-score');
-            if (finalScoreEl) finalScoreEl.textContent = score;
-            const correctAnswersEl = document.getElementById('correct-answers');
-            if (correctAnswersEl) correctAnswersEl.textContent = `${correctAnswersCount}/${questions.length}`;
-
-            const subjectNames = { orthographe: "Orthographe", grammaire: "Grammaire", mathematiques: "Mathématiques", multiplication: "Tables de multiplication", histoire: "Histoire" };
-            const resultSubjectEl = document.getElementById('result-subject');
-            if (resultSubjectEl) resultSubjectEl.textContent = subjectNames[currentSubject] || "Inconnu";
-            const resultLevelEl = document.getElementById('result-level');
-            if (resultLevelEl) resultLevelEl.textContent = `Niveau ${currentLevel}`;
-
-            let performanceMessage, resultTitle;
-            const percentage = questions.length > 0 ? (correctAnswersCount / questions.length) * 100 : 0;
-
-            if (percentage >= 90) {
-                resultTitle = "Performance LÉGENDAIRE !";
-                performanceMessage = "INCROYABLE ! Tu es un MAÎTRE DU QUIZ ! 🏆✨";
-                createConfettiBurst(100);
-            } else if (percentage >= 70) {
-                resultTitle = "Excellent Travail !";
-                performanceMessage = "TRÈS FORT ! Tu progresses à vitesse grand V ! 🌟🚀";
-                createConfettiBurst(50);
-            } else if (percentage >= 50) {
-                resultTitle = "Bien Joué !";
-                performanceMessage = "PAS MAL ! Continue comme ça, tu es sur la bonne voie ! 👍";
-            } else {
-                resultTitle = "Essaie Encore !";
-                performanceMessage = "NE LÂCHE RIEN ! Chaque erreur est une leçon ! 💪🧠";
-            }
-            const performanceMessageEl = document.getElementById('performance-message');
-            if (performanceMessageEl) performanceMessageEl.textContent = performanceMessage;
-            const resultTitleTextEl = document.getElementById('result-title-text');
-            if (resultTitleTextEl) resultTitleTextEl.textContent = resultTitle;
-
+            if (document.getElementById('final-score')) document.getElementById('final-score').textContent = score;
+            if (document.getElementById('correct-answers')) document.getElementById('correct-answers').textContent = `${correctAnswersCount}/${questions.length}`;
+            const subjNames = { orthographe: "Orthographe", grammaire: "Grammaire", mathematiques: "Mathématiques", multiplication: "Tables de multiplication", histoire: "Histoire" };
+            if (document.getElementById('result-subject')) document.getElementById('result-subject').textContent = subjNames[currentSubject] || "Inconnu";
+            if (document.getElementById('result-level')) document.getElementById('result-level').textContent = `Niveau ${currentLevel}`;
+            let perfMsg, resTitle; const perc = questions.length > 0 ? (correctAnswersCount / questions.length) * 100 : 0;
+            if (perc >= 90) { resTitle = "Performance LÉGENDAIRE !"; perfMsg = "INCROYABLE ! Tu es un MAÎTRE DU QUIZ ! 🏆✨"; createConfettiBurst(100); }
+            else if (perc >= 70) { resTitle = "Excellent Travail !"; perfMsg = "TRÈS FORT ! Tu progresses à vitesse grand V ! 🌟🚀"; createConfettiBurst(50); }
+            else if (perc >= 50) { resTitle = "Bien Joué !"; perfMsg = "PAS MAL ! Continue comme ça, tu es sur la bonne voie ! 👍"; }
+            else { resTitle = "Essaie Encore !"; perfMsg = "NE LÂCHE RIEN ! Chaque erreur est une leçon ! 💪🧠"; }
+            if (document.getElementById('performance-message')) document.getElementById('performance-message').textContent = perfMsg;
+            if (document.getElementById('result-title-text')) document.getElementById('result-title-text').textContent = resTitle;
             addXP(score * XP_PER_POINT);
-
-            let gamesUnlockedThisSession = []; 
-
-            ARCADE_GAMES.forEach(game => {
-                if (!game.unlocked) {
-                    let conditionsMet = false;
-                    const cond = game.condition;
-
-                    if (cond.playerLevel && cond.subject && cond.level !== undefined && cond.minCorrectPercentage !== undefined) {
-                        conditionsMet = (playerLevel >= cond.playerLevel) &&
-                                        (currentSubject === cond.subject) &&
-                                        (currentLevel >= cond.level) &&
-                                        (percentage >= cond.minCorrectPercentage);
-                    } else if (cond.playerLevel) {
-                        conditionsMet = (playerLevel >= cond.playerLevel);
-                    } else if (cond.subject && cond.level !== undefined && cond.minCorrectPercentage !== undefined) {
-                        conditionsMet = (currentSubject === cond.subject) &&
-                                        (currentLevel >= cond.level) &&
-                                        (percentage >= cond.minCorrectPercentage);
-                    }
-
-                    if (conditionsMet) {
-                        game.unlocked = true;
-                        gamesUnlockedThisSession.push(game); 
-                        playSound('unlock'); 
-                    }
+            let gamesUnlockedThisSess = [];
+            ARCADE_GAMES.forEach(g => {
+                if (!g.unlocked) {
+                    let met = false; const c = g.condition;
+                    if (c.playerLevel && c.subject && c.level !== undefined && c.minCorrectPercentage !== undefined) met = (playerLevel >= c.playerLevel) && (currentSubject === c.subject) && (currentLevel >= c.level) && (perc >= c.minCorrectPercentage);
+                    else if (c.playerLevel) met = (playerLevel >= c.playerLevel);
+                    else if (c.subject && c.level !== undefined && c.minCorrectPercentage !== undefined) met = (currentSubject === c.subject) && (currentLevel >= c.level) && (perc >= c.minCorrectPercentage);
+                    if (met) { g.unlocked = true; gamesUnlockedThisSess.push(g); playSound('unlock'); }
                 }
             });
-
-            savePlayerData();
-            transitionToScreen('result-screen');
-
-            if (gamesUnlockedThisSession.length > 0 && resultTitleTextEl) {
-                setTimeout(() => {
-                    let unlockMessagesHTML = "";
-                    gamesUnlockedThisSession.forEach(game => {
-                        unlockMessagesHTML += `<br><span class="text-2xl text-fuchsia-400 animate-pulse">Jeu ${game.name} débloqué !</span>`;
-                    });
-                    resultTitleTextEl.innerHTML += unlockMessagesHTML;
-                    createConfettiBurst(150 + gamesUnlockedThisSession.length * 50); 
-                }, 600);
-                updateArcadeScreen(); 
+            savePlayerData(); transitionToScreen('result-screen');
+            if (gamesUnlockedThisSess.length > 0 && document.getElementById('result-title-text')) {
+                setTimeout(() => { let html = ""; gamesUnlockedThisSess.forEach(g => { html += `<br><span class="text-2xl text-fuchsia-400 animate-pulse">Jeu ${g.name} débloqué !</span>`; }); document.getElementById('result-title-text').innerHTML += html; createConfettiBurst(150 + gamesUnlockedThisSess.length * 50); }, 600);
+                updateArcadeScreen();
             }
         }
 
+        function restartQuiz() { startQuiz(currentLevel); }
 
-        function restartQuiz() {
-            startQuiz(currentLevel);
-        }
-
-        // --- ARCADE FUNCTIONS ---
         function updateArcadeScreen() {
-            if (!arcadeGamesContainerEl) return;
-            arcadeGamesContainerEl.innerHTML = '';
-
-            ARCADE_GAMES.forEach(game => {
-                const button = document.createElement('button');
-                button.className = `arcade-btn p-6 rounded-2xl text-left shadow-lg text-white transition-all duration-300 ease-in-out`;
-
-                let contentHTML = `
-                    <div class="flex items-center">
-                        <div class="bg-white bg-opacity-20 p-3 rounded-full mr-4 shadow-inner">
-                             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="8" y1="12" x2="16" y2="12"></line><line x1="12" y1="8" x2="12" y2="16"></line></svg>
-                        </div>
-                        <div>
-                            <h2 class="text-xl font-bold">${game.name}</h2>`;
-
-                if (game.unlocked) {
-                    button.classList.add('bg-gradient-to-br', 'from-green-500', 'to-teal-700', 'hover:from-green-600', 'hover:to-teal-800', 'cursor-pointer');
-                    button.onclick = () => playGame(game.file);
-                    contentHTML += `<p class="text-sm text-teal-200">Prêt à jouer !</p>`;
-                } else {
-                    button.classList.add('bg-gray-700', 'opacity-70', 'cursor-not-allowed');
-                    contentHTML += `<p class="text-sm text-gray-300">Verrouillé</p>
-                                    <p class="text-xs mt-1 text-gray-400">${game.unlockMessage || 'Termine des quiz pour débloquer.'}</p>`;
-                    button.disabled = true;
-                }
-                contentHTML += `</div></div>`;
-                button.innerHTML = contentHTML;
-                arcadeGamesContainerEl.appendChild(button);
+            if (!arcadeGamesContainerEl) return; arcadeGamesContainerEl.innerHTML = '';
+            ARCADE_GAMES.forEach(g => {
+                const btn = document.createElement('button'); btn.className = `arcade-btn p-6 rounded-2xl text-left shadow-lg text-white transition-all duration-300 ease-in-out`;
+                let html = `<div class="flex items-center"><div class="bg-white bg-opacity-20 p-3 rounded-full mr-4 shadow-inner"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="8" y1="12" x2="16" y2="12"></line><line x1="12" y1="8" x2="12" y2="16"></line></svg></div><div><h2 class="text-xl font-bold">${g.name}</h2>`;
+                if (g.unlocked) { btn.classList.add('bg-gradient-to-br', 'from-green-500', 'to-teal-700', 'hover:from-green-600', 'hover:to-teal-800', 'cursor-pointer'); btn.onclick = () => playGame(g.file); html += `<p class="text-sm text-teal-200">Prêt à jouer !</p>`; }
+                else { btn.classList.add('bg-gray-700', 'opacity-70', 'cursor-not-allowed'); html += `<p class="text-sm text-gray-300">Verrouillé</p><p class="text-xs mt-1 text-gray-400">${g.unlockMessage || 'Termine des quiz pour débloquer.'}</p>`; btn.disabled = true; }
+                html += `</div></div>`; btn.innerHTML = html; arcadeGamesContainerEl.appendChild(btn);
             });
         }
 
         function playGame(gameFile) {
-            if (gameIframeModalEl && gameIframeContentEl) {
-                gameIframeContentEl.src = gameFile;
-                gameIframeModalEl.classList.remove('hidden');
-                if (playerStatsEl) playerStatsEl.classList.add('hidden-during-game'); 
-            }
+            if (gameIframeModalEl && gameIframeContentEl) { gameIframeContentEl.src = gameFile; gameIframeModalEl.classList.remove('hidden'); if (playerStatsEl) playerStatsEl.classList.add('hidden-during-game'); }
         }
         
         function closeGameModal() {
-            if (gameIframeContentEl) gameIframeContentEl.src = 'about:blank';
-            if (gameIframeModalEl) gameIframeModalEl.classList.add('hidden');
-            if (playerStatsEl) playerStatsEl.classList.remove('hidden-during-game'); 
-            playSound('click');
+            if (gameIframeContentEl) gameIframeContentEl.src = 'about:blank'; if (gameIframeModalEl) gameIframeModalEl.classList.add('hidden'); if (playerStatsEl) playerStatsEl.classList.remove('hidden-during-game'); playSound('click');
         }
 
-
-        // --- QUIT QUIZ FUNCTIONS ---
         function confirmQuitQuiz() {
-            playSound('click');
-            clearInterval(timerInterval);
-            if (gameContainerEl) gameContainerEl.classList.remove('screen-shake');
-            if (quitConfirmModalEl) quitConfirmModalEl.classList.remove('hidden');
+            playSound('click'); clearInterval(timerInterval); if (gameContainerEl) gameContainerEl.classList.remove('screen-shake'); if (quitConfirmModalEl) quitConfirmModalEl.classList.remove('hidden');
         }
 
         function closeQuitConfirmModal() {
-            playSound('click');
-            if (quitConfirmModalEl) quitConfirmModalEl.classList.add('hidden');
-
+            playSound('click'); if (quitConfirmModalEl) quitConfirmModalEl.classList.add('hidden');
             if (activeScreen === 'quiz-screen' && timeLeft > 0 && questions && currentQuestionIndex < questions.length) {
                 timerInterval = setInterval(() => {
-                    timeLeft--;
-                    if (timerBarInner) timerBarInner.style.width = `${(timeLeft / TIME_PER_QUESTION) * 100}%`;
-
-                    if (timeLeft <= 5 && timeLeft > 2) {
-                        if (timerBarInner) timerBarInner.className = 'timer-bar bg-gradient-to-r from-yellow-400 to-orange-500 w-full';
-                    } else if (timeLeft <= 2) {
-                        if (timerBarInner) timerBarInner.className = 'timer-bar bg-gradient-to-r from-red-500 to-pink-600 w-full';
-                        if (gameContainerEl && !gameContainerEl.classList.contains('screen-shake')) {
-                            gameContainerEl.classList.add('screen-shake');
-                        }
-                    }
-
-                    if (timeLeft <= 0) {
-                        clearInterval(timerInterval);
-                        if (gameContainerEl) gameContainerEl.classList.remove('screen-shake');
-                        handleAnswer(-1, null);
-                    }
+                    timeLeft--; if (timerBarInner) timerBarInner.style.width = `${(timeLeft / TIME_PER_QUESTION) * 100}%`;
+                    if (timeLeft <= 5 && timeLeft > 2) { if (timerBarInner) timerBarInner.className = 'timer-bar bg-gradient-to-r from-yellow-400 to-orange-500 w-full'; }
+                    else if (timeLeft <= 2) { if (timerBarInner) timerBarInner.className = 'timer-bar bg-gradient-to-r from-red-500 to-pink-600 w-full'; if (gameContainerEl && !gameContainerEl.classList.contains('screen-shake')) gameContainerEl.classList.add('screen-shake'); }
+                    if (timeLeft <= 0) { clearInterval(timerInterval); if (gameContainerEl) gameContainerEl.classList.remove('screen-shake'); handleAnswer(-1, null); }
                 }, 1000);
             }
         }
 
-        function executeQuitQuiz() {
-            playSound('click');
-            if (quitConfirmModalEl) quitConfirmModalEl.classList.add('hidden');
-            currentSubject = '';
-            currentLevel = 0;
-            transitionToScreen('home-screen');
-        }
+        function executeQuitQuiz() { playSound('click'); if (quitConfirmModalEl) quitConfirmModalEl.classList.add('hidden'); currentSubject = ''; currentLevel = 0; transitionToScreen('home-screen'); }
 
-        // --- UTILITY FUNCTIONS ---
-        function shuffleArray(array) {
-            if (!array) return [];
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-            return array;
-        }
+        function shuffleArray(array) { if (!array) return []; for (let i = array.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [array[i], array[j]] = [array[j], array[i]]; } return array; }
 
         function showFloatingText(text, color, anchorElement, isCombo = false) {
-            if (!gameContainerEl || !anchorElement) return;
-
-            const floatText = document.createElement('div');
-            floatText.className = 'floating-text';
-            floatText.textContent = text;
-            floatText.style.color = color;
-
-            gameContainerEl.appendChild(floatText);
-            const floatTextWidth = floatText.offsetWidth;
-
-            const anchorRect = anchorElement.getBoundingClientRect();
-            const containerRect = gameContainerEl.getBoundingClientRect();
-
+            if (!gameContainerEl || !anchorElement) return; const floatText = document.createElement('div'); floatText.className = 'floating-text'; floatText.textContent = text; floatText.style.color = color; gameContainerEl.appendChild(floatText);
+            const floatTextWidth = floatText.offsetWidth; const anchorRect = anchorElement.getBoundingClientRect(); const containerRect = gameContainerEl.getBoundingClientRect();
             floatText.style.left = `${anchorRect.left - containerRect.left + (anchorRect.width / 2) - (floatTextWidth / 2)}px`;
-
-            if (isCombo) {
-                floatText.style.top = `${anchorRect.top - containerRect.top - 50}px`;
-                floatText.style.fontSize = '22px';
-                floatText.style.textShadow = '3px 3px 0px rgba(100,0,0,0.6)';
-            } else {
-                floatText.style.top = `${anchorRect.top - containerRect.top - 30}px`;
-            }
-
+            if (isCombo) { floatText.style.top = `${anchorRect.top - containerRect.top - 50}px`; floatText.style.fontSize = '22px'; floatText.style.textShadow = '3px 3px 0px rgba(100,0,0,0.6)'; }
+            else { floatText.style.top = `${anchorRect.top - containerRect.top - 30}px`; }
             setTimeout(() => floatText.remove(), 1400);
         }
 
         function createConfettiBurst(count = 50) {
-            const confettiContainer = document.querySelector('.confetti-cannon');
-            if (!confettiContainer) return;
-
-            const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#ffa500', '#ffc0cb'];
-
+            const cfC = document.querySelector('.confetti-cannon'); if (!cfC) return; const clrs = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#ffa500', '#ffc0cb'];
             for (let i = 0; i < count; i++) {
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti';
-                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                confetti.style.left = `${Math.random() * 60 + 20}%`;
-                confetti.style.bottom = '0%';
-                const duration = Math.random() * 3 + 2.5;
-                const delay = Math.random() * 0.5;
-                confetti.style.animation = `float-and-spin ${duration}s cubic-bezier(0.1, 0.7, 0.3, 1) ${delay}s forwards`;
-
-                const size = Math.random() * 8 + 6;
-                confetti.style.width = `${size}px`;
-                confetti.style.height = `${size}px`;
-
-                confettiContainer.appendChild(confetti);
-
-                setTimeout(() => confetti.remove(), (duration + delay) * 1000 + 100);
+                const cf = document.createElement('div'); cf.className = 'confetti'; cf.style.backgroundColor = clrs[Math.floor(Math.random() * clrs.length)]; cf.style.left = `${Math.random() * 60 + 20}%`; cf.style.bottom = '0%';
+                const dur = Math.random() * 3 + 2.5; const del = Math.random() * 0.5; cf.style.animation = `float-and-spin ${dur}s cubic-bezier(0.1, 0.7, 0.3, 1) ${del}s forwards`;
+                const sz = Math.random() * 8 + 6; cf.style.width = `${sz}px`; cf.style.height = `${sz}px`; cfC.appendChild(cf); setTimeout(() => cf.remove(), (dur + del) * 1000 + 100);
             }
         }
 
-        // --- INITIALIZATION ---
         window.onload = async () => {
-            // --- AJOUT POUR VIDER LE CACHE/PROGRESSION À CHAQUE OUVERTURE ---
-            console.log("Réinitialisation de la progression du joueur...");
-            localStorage.removeItem('quizPlayerXP');
-            localStorage.removeItem('quizPlayerLevel');
-            ARCADE_GAMES.forEach(game => { 
-                localStorage.removeItem(`game_${game.id}_unlocked`);
-            });
-            localStorage.removeItem('snakeTutorialSeen'); 
-            // --- FIN DE L'AJOUT ---
-
-            await loadQuestionDatabase();
-            loadPlayerData(); 
-
-            Object.values(screens).forEach(s => {
-                if (s && s.id !== 'home-screen') {
-                    s.classList.add('hidden');
-                }
-            });
-            if (screens['home-screen']) {
-                screens['home-screen'].classList.remove('hidden');
-            }
-            activeScreen = 'home-screen';
-
-            const gotoArcadeBtn = document.getElementById('goto-arcade-btn');
-            if (gotoArcadeBtn) {
-                gotoArcadeBtn.addEventListener('click', () => {
-                    updateArcadeScreen();
-                    transitionToScreen('arcade-screen');
-                });
-            }
-
-            if (closeGameIframeBtn) {
-                closeGameIframeBtn.addEventListener('click', () => {
-                    closeGameModal();
-                });
-            }
-
-            window.addEventListener('message', (event) => {
-                if (event.data === 'closeGameIframe') {
-                    closeGameModal();
-                }
-            });
+            console.log("Réinitialisation de la progression du joueur..."); localStorage.removeItem('quizPlayerXP'); localStorage.removeItem('quizPlayerLevel'); ARCADE_GAMES.forEach(g => { localStorage.removeItem(`game_${g.id}_unlocked`); }); localStorage.removeItem('snakeTutorialSeen');
+            await loadQuestionDatabase(); loadPlayerData();
+            Object.values(screens).forEach(s => { if (s && s.id !== 'home-screen') s.classList.add('hidden'); }); if (screens['home-screen']) screens['home-screen'].classList.remove('hidden'); activeScreen = 'home-screen';
+            const gotoArcadeBtn = document.getElementById('goto-arcade-btn'); if (gotoArcadeBtn) gotoArcadeBtn.addEventListener('click', () => { updateArcadeScreen(); transitionToScreen('arcade-screen'); });
+            if (closeGameIframeBtn) closeGameIframeBtn.addEventListener('click', () => { closeGameModal(); });
+            window.addEventListener('message', (e) => { if (e.data === 'closeGameIframe') closeGameModal(); });
         };
     </script>
 </body>
