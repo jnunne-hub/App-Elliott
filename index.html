@@ -255,20 +255,27 @@
         <!-- Écran de quiz -->
         <div id="quiz-screen" class="screen hidden">
             <div class="bg-indigo-800 p-4 shadow-md">
-                <div class="flex justify-between items-center">
-                    <div class="text-sm text-indigo-200">Question <span id="question-number" class="font-bold text-lg">1</span>/<span id="total-questions-display">15</span></div>
-                    <div class="text-center">
-                        <div id="current-subject" class="font-bold text-yellow-300 text-lg"></div>
+                <div class="flex justify-between items-center space-x-2 sm:space-x-4"> {/* Ajout de space-x */}
+                    {/* Section Gauche: Numéro de question */}
+                    <div class="text-sm text-indigo-200 flex-shrink-0"> 
+                        Question <span id="question-number" class="font-bold text-lg">1</span>/<span id="total-questions-display">15</span>
+                    </div>
+                    
+                    {/* Section Centrale: Sujet et Niveau */}
+                    <div class="text-center flex-grow min-w-0"> 
+                        <div id="current-subject" class="font-bold text-yellow-300 text-lg truncate"></div> 
                         <div id="current-level" class="text-xs text-indigo-200"></div>
                     </div>
-                    <div class="flex items-center">
-                        <button onclick="confirmQuitQuiz()" title="Retour à l'accueil" class="mr-3 p-2 bg-red-600 hover:bg-red-500 rounded-full shadow-md">
+                    
+                    {/* Section Droite: Bouton Quitter, Score, Combo */}
+                    <div class="flex items-center flex-shrink-0 space-x-2 sm:space-x-3"> 
+                        <button onclick="confirmQuitQuiz()" title="Retour à l'accueil" class="p-2 bg-red-600 hover:bg-red-500 rounded-full shadow-md">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                             </svg>
                         </button>
-                        <div class="text-sm text-indigo-200">Score: <span id="score" class="font-bold text-lg">0</span></div>
-                        <span class="ml-2 text-orange-400 font-bold" id="combo-display"></span>
+                        <div class="text-sm text-indigo-200 whitespace-nowrap">Score: <span id="score" class="font-bold text-lg">0</span></div> 
+                        <span class="ml-1 sm:ml-2 text-orange-400 font-bold" id="combo-display"></span> 
                     </div>
                 </div>
             </div>
@@ -386,7 +393,7 @@
         const quitConfirmModalEl = document.getElementById('quit-confirm-modal');
         const totalQuestionsDisplayEl = document.getElementById('total-questions-display');
         const quizRulesTotalQuestionsEl = document.getElementById('quiz-rules-total-questions');
-        const playerStatsEl = document.getElementById('player-stats'); // Ajout pour masquer/afficher
+        const playerStatsEl = document.getElementById('player-stats'); 
 
 
         const screens = {
@@ -819,15 +826,14 @@
             if (gameIframeModalEl && gameIframeContentEl) {
                 gameIframeContentEl.src = gameFile;
                 gameIframeModalEl.classList.remove('hidden');
-                if (playerStatsEl) playerStatsEl.classList.add('hidden-during-game'); // Masquer les stats
-                // playSound('click'); 
+                if (playerStatsEl) playerStatsEl.classList.add('hidden-during-game'); 
             }
         }
         
         function closeGameModal() {
             if (gameIframeContentEl) gameIframeContentEl.src = 'about:blank';
             if (gameIframeModalEl) gameIframeModalEl.classList.add('hidden');
-            if (playerStatsEl) playerStatsEl.classList.remove('hidden-during-game'); // Réafficher les stats
+            if (playerStatsEl) playerStatsEl.classList.remove('hidden-during-game'); 
             playSound('click');
         }
 
@@ -944,14 +950,14 @@
             console.log("Réinitialisation de la progression du joueur...");
             localStorage.removeItem('quizPlayerXP');
             localStorage.removeItem('quizPlayerLevel');
-            ARCADE_GAMES.forEach(game => { // ARCADE_GAMES est défini globalement plus haut
+            ARCADE_GAMES.forEach(game => { 
                 localStorage.removeItem(`game_${game.id}_unlocked`);
             });
-            localStorage.removeItem('snakeTutorialSeen'); // Pour réinitialiser aussi le tutoriel Snake
+            localStorage.removeItem('snakeTutorialSeen'); 
             // --- FIN DE L'AJOUT ---
 
             await loadQuestionDatabase();
-            loadPlayerData(); // Sera initialisé avec les valeurs par défaut après la suppression
+            loadPlayerData(); 
 
             Object.values(screens).forEach(s => {
                 if (s && s.id !== 'home-screen') {
@@ -978,8 +984,6 @@
             }
 
             window.addEventListener('message', (event) => {
-                // Pour la sécurité, vous pourriez vérifier event.origin ici
-                // if (event.origin !== "http://votre-domaine.com") return;
                 if (event.data === 'closeGameIframe') {
                     closeGameModal();
                 }
