@@ -1,0 +1,1167 @@
+{
+    "orthographe": {
+        "1": [
+            {
+                "question": "Comment écrit-on le pluriel de 'cheval' ?",
+                "answers": ["chevals", "chevaus", "chevaux", "chevauls"],
+                "correct": 2,
+                "detail": "Les noms en -al font souvent leur pluriel en -aux."
+            },
+            {
+                "question": "Quelle est la bonne orthographe ?",
+                "answers": ["une pomme", "une pome", "une pomm", "une paume"],
+                "correct": 0,
+                "detail": "Attention aux doubles consonnes !"
+            },
+            {
+                "question": "Comment écrit-on le son [o] dans le mot 'ch___colat' ?",
+                "answers": ["o", "au", "eau", "ot"],
+                "correct": 0,
+                "detail": "C'est la graphie la plus simple pour ce son ici."
+            },
+            {
+                "question": "Quelle est la bonne orthographe ?",
+                "answers": ["un garson", "un garçon", "un garsson", "un guarçon"],
+                "correct": 1,
+                "detail": "N'oublie pas la cédille sous le 'c' devant 'o'."
+            },
+            {
+                "question": "Comment écrit-on le son [ɛ̃] dans le mot 'mat___' (moment de la journée) ?",
+                "answers": ["ain", "in", "ein", "un"],
+                "correct": 1,
+                "detail": "C'est une graphie courante pour ce son nasal."
+            },
+            {
+                "question": "Quelle est la bonne orthographe du mot pour une habitation ?",
+                "answers": ["une maisson", "une méson", "une maison", "une mézon"],
+                "correct": 2,
+                "detail": "Le son [ɛ] s'écrit 'ai' ici."
+            },
+            {
+                "question": "Comment écrit-on le son [ɛ] dans le mot 'f___te' (célébration) ?",
+                "answers": ["ai", "è", "ê", "ei"],
+                "correct": 2,
+                "detail": "L'accent circonflexe marque souvent une ancienne lettre 's'."
+            },
+            {
+                "question": "Quelle est la bonne orthographe de l'animal à trompe ?",
+                "answers": ["un éléphant", "un élèfant", "un éléfant", "un élléphant"],
+                "correct": 0,
+                "detail": "Attention aux accents et aux consonnes."
+            },
+            {
+                "question": "Comment écrit-on le pluriel de 'journal' ?",
+                "answers": ["journals", "journaux", "journales", "journaus"],
+                "correct": 1,
+                "detail": "Comme 'cheval', les noms en -al ont un pluriel en -aux."
+            },
+            {
+                "question": "Quelle est la bonne orthographe du véhicule à deux roues ?",
+                "answers": ["une bicyclette", "une bisyclette", "une bicyclète", "une biciclette"],
+                "correct": 0,
+                "detail": "Un mot courant, mais attention aux lettres."
+            },
+            {
+                "question": "Choisis le mot correctement écrit :",
+                "answers": ["addresse", "adresse", "addrese", "adrese"],
+                "correct": 1,
+                "detail": "Un seul 'd' et deux 's'."
+            },
+            {
+                "question": "Comment écrit-on le son [k] au début de '___role' (légume orange) ?",
+                "answers": ["c", "k", "qu", "ch"],
+                "correct": 0,
+                "detail": "Le 'c' devant 'a', 'o', 'u' fait le son [k]."
+            },
+            {
+                "question": "Quel mot signifie 'très fatigué' ?",
+                "answers": ["épuisé", "éppuiser", "épouisé", "épuisser"],
+                "correct": 0,
+                "detail": "Fais attention à la terminaison et aux lettres."
+            },
+            {
+                "question": "Comment s'écrit le contraire de 'content' ?",
+                "answers": ["mécontant", "mécontent", "maiscontent", "mecontent"],
+                "correct": 1,
+                "detail": "Le préfixe 'mé-' indique la négation ou le contraire."
+            },
+            {
+                "question": "Pluriel de 'un gâteau' :",
+                "answers": ["des gâteaus", "des gâteau", "des gâteaux", "des gâteux"],
+                "correct": 2,
+                "detail": "Les mots en -eau prennent un 'x' au pluriel."
+            }
+        ],
+        "2": [
+            {
+                "question": "Comment écrit-on le pluriel de 'travail' ?",
+                "answers": ["travails", "traveaux", "travaux", "travailles"],
+                "correct": 2,
+                "detail": "Les noms en -ail ont souvent un pluriel en -aux (sauf exceptions)."
+            },
+            {
+                "question": "Quelle est la bonne orthographe ?",
+                "answers": ["un exercise", "un exercice", "un exersice", "un exersise"],
+                "correct": 1,
+                "detail": "Le 'c' se prononce [s] devant 'i'."
+            },
+            {
+                "question": "Comment s'écrit le mot 'dif___cile' ?",
+                "answers": ["i", "y", "fi", "ff"],
+                "correct": 0,
+                "detail": "Un 'i' simple pour ce mot courant."
+            },
+            {
+                "question": "Quelle est la bonne orthographe du lieu où l'on emprunte des livres ?",
+                "answers": ["la bibliothèque", "la bibliotèque", "la bibliothèke", "la bibliotèke"],
+                "correct": 0,
+                "detail": "Un 'h' muet après 'bibliot-'."
+            },
+            {
+                "question": "Comment écrit-on le son [s] dans 'gar___on' ?",
+                "answers": ["s", "ss", "c", "ç"],
+                "correct": 3,
+                "detail": "La cédille est nécessaire pour le son [s] devant 'o'."
+            },
+            {
+                "question": "Quelle est la bonne orthographe pour un instrument, un outil ?",
+                "answers": ["un apareil", "un appareil", "un aparreil", "un appareille"],
+                "correct": 1,
+                "detail": "Attention aux doubles consonnes 'p' et 'l'."
+            },
+            {
+                "question": "Comment écrit-on le son [ʒ] dans 'ma___icien' ?",
+                "answers": ["j", "g", "ge", "gi"],
+                "correct": 1,
+                "detail": "Le 'g' devant 'i' fait le son [ʒ]."
+            },
+            {
+                "question": "Quelle est la bonne orthographe du mot signifiant 'façon de parler' ?",
+                "answers": ["un language", "un langaje", "un langage", "un langagge"],
+                "correct": 2,
+                "detail": "Le 'g' se prononce [ʒ] ici."
+            },
+            {
+                "question": "Comment écrit-on le pluriel de 'pneu' ?",
+                "answers": ["pneus", "pneux", "pneues", "pneuz"],
+                "correct": 0,
+                "detail": "Les mots en -eu prennent un 's' au pluriel, sauf exceptions (bleu, émeu, lieu, pneu)."
+            },
+            {
+                "question": "Quelle est la bonne orthographe du livre des mots ?",
+                "answers": ["un dictionaire", "un dictionère", "un dictionnaire", "un dictionnnaire"],
+                "correct": 2,
+                "detail": "Deux 'n' et 'aire' à la fin."
+            },
+            {
+                "question": "Le mot signifiant 'se souvenir' :",
+                "answers": ["rappeller", "rapeller", "rappeler", "rapeler"],
+                "correct": 2,
+                "detail": "Un seul 'l' au milieu, mais attention au verbe 'appeler'."
+            },
+            {
+                "question": "Complète : 'Il faut travai___er dur.'",
+                "answers": ["ll", "l", "lli", "li"],
+                "correct": 0,
+                "detail": "Verbe 'travailler'."
+            },
+            {
+                "question": "Quelle orthographe pour ce sentiment ? 'l'amiti___'",
+                "answers": ["é", "ée", "er", "ez"],
+                "correct": 0,
+                "detail": "Nom féminin 'l'amitié'."
+            },
+            {
+                "question": "Le son [g] dans '___itare' :",
+                "answers": ["g", "gu", "gh", "gue"],
+                "correct": 1,
+                "detail": "Le 'gu' est utilisé devant 'i' pour faire le son [g]."
+            },
+            {
+                "question": "Orthographe du mot pour 'accueillir quelqu'un' :",
+                "answers": ["acceuillir", "accueillir", "aceuillir", "acueuillir"],
+                "correct": 1,
+                "detail": "Un mot complexe avec 'cc' et 'ueill'."
+            }
+        ],
+        "3": [
+            {
+                "question": "Comment s'écrit le mot signifiant 'discutable, incertain' ?",
+                "answers": ["ambigu", "ambigü", "anbigu", "anbigü"],
+                "correct": 0,
+                "detail": "Attention à la terminaison en 'u' et au tréma sur le 'u' au féminin : ambiguë."
+            },
+            {
+                "question": "Quelle est la bonne orthographe du mot signifiant 'rythme régulier' ?",
+                "answers": ["un rythme", "un rhythme", "un ritme", "un rithme"],
+                "correct": 0,
+                "detail": "Contient un 'y' et un 'h' muet."
+            },
+            {
+                "question": "Comment s'écrit le mot 'a___ueil' (action d'accueillir) ?",
+                "answers": ["c", "cc", "cu", "ccu"],
+                "correct": 2,
+                "detail": "La graphie 'cueil' est importante ici."
+            },
+            {
+                "question": "Quelle est la bonne orthographe de la figure géométrique ?",
+                "answers": ["un paralèllogramme", "un parallélogramme", "un paralélogramme", "un parallèlogramme"],
+                "correct": 1,
+                "detail": "Deux 'l' successifs et un accent aigu."
+            },
+            {
+                "question": "Comment écrit-on le son [k] dans 'or___estre' ?",
+                "answers": ["k", "qu", "c", "ch"],
+                "correct": 3,
+                "detail": "Le 'ch' peut faire le son [k] dans certains mots d'origine grecque."
+            },
+            {
+                "question": "Quelle est la bonne orthographe du mot signifiant 'environnement, entourage' ?",
+                "answers": ["un millieu", "un milieu", "un millieux", "un milieux"],
+                "correct": 1,
+                "detail": "Un seul 'l' et 'ieu' à la fin."
+            },
+            {
+                "question": "Comment écrit-on le son [f] dans 'nénu___ar' (plante aquatique) ?",
+                "answers": ["f", "ff", "ph", "pf"],
+                "correct": 2,
+                "detail": "La graphie 'ph' pour le son [f] est courante."
+            },
+            {
+                "question": "Quelle est la bonne orthographe de l'objet pour ranger l'argent ?",
+                "answers": ["un porte-feuille", "un portefeuille", "un porte-feuil", "un portefeuil"],
+                "correct": 1,
+                "detail": "Mot composé, mais soudé. 'Feuille' prend 'e'."
+            },
+            {
+                "question": "Comment écrit-on le pluriel de 'festival' ?",
+                "answers": ["festivals", "festivaux", "festivales", "festivalles"],
+                "correct": 0,
+                "detail": "La plupart des noms en -al forment leur pluriel en -als (bal, carnaval, festival, etc.)."
+            },
+            {
+                "question": "Quelle est la bonne orthographe du sentiment vif ?",
+                "answers": ["un enthoussiasme", "un enthousiasme", "un enthousiasm", "un enthousyasme"],
+                "correct": 1,
+                "detail": "Un 'h' après le 't' et un 's' au milieu."
+            },
+            {
+                "question": "Choisis le mot correctement écrit :",
+                "answers": ["dilemne", "dilemme", "dileme", "dillemme"],
+                "correct": 1,
+                "detail": "Avec 'mm'."
+            },
+            {
+                "question": "L'adjectif signifiant 'qui ne varie pas' :",
+                "answers": ["immuable", "imuable", "immuabble", "inmuable"],
+                "correct": 0,
+                "detail": "Double 'm'."
+            },
+            {
+                "question": "Comment écrit-on le verbe 'acquérir' conjugué au présent (je) ?",
+                "answers": ["j'acquierts", "j'acquiers", "j'acquier", "j'acquière"],
+                "correct": 1,
+                "detail": "Verbe du 3ème groupe avec une conjugaison particulière."
+            },
+            {
+                "question": "Le nom du fruit rouge souvent en tarte :",
+                "answers": ["framboise", "franboise", "framboize", "phramboise"],
+                "correct": 0,
+                "detail": "Un mot simple mais qui peut prêter à confusion."
+            },
+            {
+                "question": "Orthographe du mot signifiant 'simultané' :",
+                "answers": ["concomittant", "concommitant", "concomitant", "concomitent"],
+                "correct": 2,
+                "detail": "Un seul 'm' et 't' à la fin."
+            }
+        ]
+    },
+    "grammaire": {
+        "1": [
+            {
+                "question": "Quel est le sujet dans la phrase 'Le chat mange une souris' ?",
+                "answers": ["Le chat", "mange", "une souris", "chat"],
+                "correct": 0,
+                "detail": "Le sujet est celui qui fait l'action."
+            },
+            {
+                "question": "Quelle est la bonne conjugaison : 'Tu (être) mon ami.' ?",
+                "answers": ["es", "est", "ai", "sont"],
+                "correct": 0,
+                "detail": "Verbe être au présent, 2ème personne du singulier."
+            },
+            {
+                "question": "Le pluriel de 'un journal' est :",
+                "answers": ["des journals", "des journaux", "des journales", "des jouraux"],
+                "correct": 1,
+                "detail": "Les mots en -al ont souvent leur pluriel en -aux."
+            },
+            {
+                "question": "Quel est le féminin de 'un chanteur' ?",
+                "answers": ["une chanteuse", "une chantrice", "une chanterelle", "une chanturière"],
+                "correct": 0,
+                "detail": "Le suffixe -eur devient -euse au féminin."
+            },
+            {
+                "question": "Dans 'Elle court rapidement', 'rapidement' est un...",
+                "answers": ["Nom", "Adjectif", "Verbe", "Adverbe"],
+                "correct": 3,
+                "detail": "Il modifie le verbe 'court' et se termine par -ment."
+            },
+            {
+                "question": "Quelle est la bonne conjugaison : 'Nous (avoir) faim.' ?",
+                "answers": ["avons", "ont", "avez", "ai"],
+                "correct": 0,
+                "detail": "Verbe avoir au présent, 1ère personne du pluriel."
+            },
+            {
+                "question": "Dans 'la petite fille', 'petite' est un...",
+                "answers": ["Nom", "Adjectif", "Verbe", "Article"],
+                "correct": 1,
+                "detail": "Il qualifie le nom 'fille'."
+            },
+            {
+                "question": "Quelle est la nature du mot 'manger' (sans être conjugué) ?",
+                "answers": ["Verbe à l'infinitif", "Nom", "Participe passé", "Adjectif"],
+                "correct": 0,
+                "detail": "L'infinitif est la forme non conjuguée du verbe."
+            },
+            {
+                "question": "'Demain' est un mot qui indique...",
+                "answers": ["Un lieu", "Une manière", "Un temps", "Une cause"],
+                "correct": 2,
+                "detail": "C'est un adverbe de temps."
+            },
+            {
+                "question": "Dans la phrase 'J'aime les pommes', 'les' est un...",
+                "answers": ["Adjectif", "Pronom", "Article défini", "Préposition"],
+                "correct": 2,
+                "detail": "Il précède le nom 'pommes'."
+            },
+            {
+                "question": "Quelle est la nature du mot 'chien' ?",
+                "answers": ["Nom commun", "Adjectif qualificatif", "Verbe", "Nom propre"],
+                "correct": 0,
+                "detail": "Il désigne un être animé de manière générale."
+            },
+            {
+                "question": "Comment appelle-t-on les mots comme 'et', 'ou', 'mais' ?",
+                "answers": ["Prépositions", "Adverbes", "Conjonctions de coordination", "Articles"],
+                "correct": 2,
+                "detail": "Ils servent à relier des mots ou des groupes de mots de même fonction."
+            },
+            {
+                "question": "Quel est le verbe dans la phrase : 'Le soleil brille fort' ?",
+                "answers": ["Le soleil", "brille", "fort", "soleil brille"],
+                "correct": 1,
+                "detail": "Le verbe exprime l'action ou l'état."
+            },
+            {
+                "question": "Si je dis 'Il EST grand', 'EST' est le verbe...",
+                "answers": ["Avoir", "Aller", "Être", "Faire"],
+                "correct": 2,
+                "detail": "C'est une forme du verbe être."
+            },
+            {
+                "question": "Un mot qui remplace un nom est un...",
+                "answers": ["Adjectif", "Pronom", "Adverbe", "Déterminant"],
+                "correct": 1,
+                "detail": "Par exemple : 'il', 'elle', 'lequel'."
+            }
+        ],
+        "2": [
+            {
+                "question": "Quel est le COD (Complément d'Objet Direct) dans : 'Le musicien joue du piano.' ?",
+                "answers": ["Le musicien", "joue", "du piano", "Il n'y en a pas"],
+                "correct": 2,
+                "detail": "Le COD répond à la question 'quoi ?' ou 'qui ?' après le verbe."
+            },
+            {
+                "question": "Conjugue le verbe 'finir' au futur simple, 1ère pers. sing. : 'Je ...'",
+                "answers": ["finis", "finirai", "finirais", "vais finir"],
+                "correct": 1,
+                "detail": "Futur simple de l'indicatif."
+            },
+            {
+                "question": "Dans 'Elle voyage souvent en train', 'souvent' est un adverbe de...",
+                "answers": ["Manière", "Lieu", "Temps", "Quantité"],
+                "correct": 2,
+                "detail": "'Souvent' indique la fréquence, donc le temps."
+            },
+            {
+                "question": "Quel type de pronom est 'le mien' dans 'Ce livre est le mien' ?",
+                "answers": ["Pronom personnel", "Pronom possessif", "Pronom démonstratif", "Pronom relatif"],
+                "correct": 1,
+                "detail": "Il indique la possession."
+            },
+            {
+                "question": "Quel est le COI (Complément d'Objet Indirect) dans : 'Elle parle à sa voisine.' ?",
+                "answers": ["Elle", "parle", "sa voisine", "à sa voisine"],
+                "correct": 3,
+                "detail": "Le COI répond à 'à qui ?', 'à quoi ?', 'de qui ?', 'de quoi ?' après le verbe."
+            },
+            {
+                "question": "'Si j'avais su, je (venir)' au conditionnel passé :",
+                "answers": ["serais venu", "viendrais", "étais venu", "suis venu"],
+                "correct": 0,
+                "detail": "Conditionnel passé : auxiliaire être/avoir au conditionnel présent + participe passé."
+            },
+            {
+                "question": "La phrase 'Le chat a été trouvé par Marie' est à la voix...",
+                "answers": ["Active", "Passive", "Pronominale", "Négative"],
+                "correct": 1,
+                "detail": "Le sujet ('Le chat') subit l'action."
+            },
+            {
+                "question": "Quelle est la nature du mot 'parce que' ?",
+                "answers": ["Préposition", "Conjonction de subordination", "Adverbe", "Conjonction de coordination"],
+                "correct": 1,
+                "detail": "Elle introduit une proposition subordonnée."
+            },
+            {
+                "question": "Dans 'Le livre QUE tu m'as prêté', 'que' est un...",
+                "answers": ["Pronom interrogatif", "Pronom relatif", "Conjonction de subordination", "Adverbe"],
+                "correct": 1,
+                "detail": "Il introduit une proposition subordonnée relative et remplace 'le livre'."
+            },
+            {
+                "question": "Un verbe qui se conjugue avec un pronom réfléchi (me, te, se...) est un verbe...",
+                "answers": ["Transitif", "Intransitif", "Pronominal", "Auxiliaire"],
+                "correct": 2,
+                "detail": "Exemple : se laver, se lever."
+            },
+            {
+                "question": "Quelle est la fonction du groupe 'dans le jardin' dans 'Les enfants jouent dans le jardin' ?",
+                "answers": ["COD", "COI", "Attribut du sujet", "Complément circonstanciel de lieu"],
+                "correct": 3,
+                "detail": "Il répond à la question 'où ?'."
+            },
+            {
+                "question": "Comment appelle-t-on un mot invariable qui modifie un verbe, un adjectif ou un autre adverbe ?",
+                "answers": ["Préposition", "Conjonction", "Adverbe", "Interjection"],
+                "correct": 2,
+                "detail": "Définition de l'adverbe."
+            },
+            {
+                "question": "Le participe présent du verbe 'chanter' est :",
+                "answers": ["Chanté", "Chantant", "Chanta", "Chantons"],
+                "correct": 1,
+                "detail": "Il se termine généralement par -ant."
+            },
+            {
+                "question": "À quel temps est conjugué 'il mangeait' ?",
+                "answers": ["Présent", "Passé composé", "Imparfait", "Futur simple"],
+                "correct": 2,
+                "detail": "L'imparfait exprime une action passée qui dure ou se répète."
+            },
+            {
+                "question": "Un groupe nominal est généralement composé d'un déterminant et d'un...",
+                "answers": ["Verbe", "Nom", "Adjectif", "Adverbe"],
+                "correct": 1,
+                "detail": "Exemple : 'le chat', 'une pomme'."
+            }
+        ],
+        "3": [
+            {
+                "question": "Quel est le mode du verbe dans 'Je voudrais que tu (réussir) ton examen.' ?",
+                "answers": ["Indicatif", "Subjonctif", "Conditionnel", "Impératif"],
+                "correct": 1,
+                "detail": "Après 'que' exprimant un souhait, un ordre, on utilise le subjonctif."
+            },
+            {
+                "question": "Dans 'C'est un homme dont je respecte l'avis', 'dont' remplace...",
+                "answers": ["L'homme", "L'avis", "De l'homme / de qui", "Que"],
+                "correct": 2,
+                "detail": "'Dont' est un pronom relatif qui remplace un complément introduit par 'de'."
+            },
+            {
+                "question": "La phrase 'Qu'il pleuve ou qu'il vente, je sortirai.' contient une subordonnée...",
+                "answers": ["Relative", "Conjonctive complétive", "Circonstancielle de concession", "Interrogative indirecte"],
+                "correct": 2,
+                "detail": "Elle exprime une opposition qui n'empêche pas l'action principale."
+            },
+            {
+                "question": "Identifier la nature du mot 'afin que'.",
+                "answers": ["Préposition", "Locution conjonctive de subordination", "Adverbe de but", "Conjonction de coordination"],
+                "correct": 1,
+                "detail": "Elle introduit une subordonnée de but et est suivie du subjonctif."
+            },
+            {
+                "question": "Quelle est la fonction du groupe 'Extrêmement fatigué' dans 'Extrêmement fatigué, il s'endormit.' ?",
+                "answers": ["Épithète détachée", "Attribut du sujet", "COD", "Apposition"],
+                "correct": 0,
+                "detail": "Qualifie 'il' mais est séparé par une virgule."
+            },
+            {
+                "question": "Le gérondif est formé de la préposition 'en' suivie du...",
+                "answers": ["Participe passé", "Participe présent", "Infinitif", "Subjonctif présent"],
+                "correct": 1,
+                "detail": "Exemple : en chantant, en mangeant."
+            },
+            {
+                "question": "Dans 'Il se peut qu'il vienne.', le verbe 'venir' est au subjonctif. Pourquoi ?",
+                "answers": ["Parce qu'il exprime une action future", "Après une locution impersonnelle exprimant la possibilité", "Car c'est une proposition principale", "C'est une erreur, il devrait être à l'indicatif"],
+                "correct": 1,
+                "detail": "Les verbes impersonnels ou locutions exprimant le doute, la possibilité, le souhait sont souvent suivis du subjonctif."
+            },
+            {
+                "question": "Le plus-que-parfait de l'indicatif exprime une action...",
+                "answers": ["Antérieure à une autre action passée", "Simultanée à une action présente", "Postérieure à une action future", "Habituelle dans le passé"],
+                "correct": 0,
+                "detail": "C'est le 'passé dans le passé'."
+            },
+            {
+                "question": "L'accord du participe passé des verbes pronominaux est complexe. S'il est COD et placé avant, il s'accorde. Vrai ou Faux ?",
+                "answers": ["Vrai", "Faux"],
+                "correct": 0,
+                "detail": "Exemple : 'Les fleurs qu'elle s'est offertes'. 'offertes' (COD avant) s'accorde avec fleurs. Mais 'Elle s'est lavé les mains' (mains est COD après, 'se' est COI)."
+            },
+            {
+                "question": "'Bien que difficile, l'épreuve fut réussie.' 'Bien que' introduit une subordonnée de :",
+                "answers": ["Cause", "Conséquence", "But", "Concession"],
+                "correct": 3,
+                "detail": "Similaire à 'quoique', 'malgré que'."
+            },
+            {
+                "question": "Identifier la nature et la fonction de 'travailler' dans 'Son rêve est de travailler à l'étranger.'",
+                "answers": ["Verbe à l'infinitif, COD", "Nom, sujet", "Verbe à l'infinitif, attribut du sujet", "Verbe à l'infinitif, COI"],
+                "correct": 2,
+                "detail": "L'infinitif 'travailler' est attribut du sujet 'rêve' via le verbe 'être'."
+            },
+            {
+                "question": "Une phrase nominale est une phrase...",
+                "answers": ["Qui contient beaucoup de noms", "Où le verbe est sous-entendu ou absent", "Qui est très longue", "Qui utilise des pronoms nominaux"],
+                "correct": 1,
+                "detail": "Exemple : 'Incroyable !', 'Départ immédiat.'"
+            },
+            {
+                "question": "Quelle est la différence principale entre une préposition et une conjonction de subordination ?",
+                "answers": ["La préposition relie des mots, la conjonction des phrases.", "La préposition introduit un complément, la conjonction une proposition subordonnée.", "Il n'y a pas de différence majeure.", "La préposition est variable, la conjonction invariable."],
+                "correct": 1,
+                "detail": "La préposition (à, de, par, pour...) introduit un groupe nominal, pronom, infinitif. La conjonction de subordination (que, quand, si...) introduit une phrase qui dépend d'une autre."
+            },
+            {
+                "question": "L'emploi du futur antérieur exprime une action future qui sera terminée avant...",
+                "answers": ["Une autre action future", "Le moment présent", "Une action passée", "Une condition irréelle"],
+                "correct": 0,
+                "detail": "Exemple : 'Quand tu arriveras, j'aurai fini mes devoirs.'"
+            },
+            {
+                "question": "Quelle est la figure de style : 'Mourir de soif' ?",
+                "answers": ["Métaphore", "Hyperbole", "Litote", "Euphémisme"],
+                "correct": 1,
+                "detail": "C'est une exagération."
+            }
+        ]
+    },
+    "mathematiques": {
+        "1": [
+            {
+                "question": "Combien font 15 + 8 ?",
+                "answers": ["21", "22", "23", "24"],
+                "correct": 2,
+                "detail": "Calcule la somme de ces deux nombres."
+            },
+            {
+                "question": "Si tu as 5 pommes et que tu en manges 2, combien t'en reste-t-il ?",
+                "answers": ["2", "3", "4", "5"],
+                "correct": 1,
+                "detail": "C'est une soustraction simple."
+            },
+            {
+                "question": "Combien de côtés a un triangle ?",
+                "answers": ["2", "3", "4", "5"],
+                "correct": 1,
+                "detail": "Pense au mot 'tri-'."
+            },
+            {
+                "question": "Quel nombre vient après 99 ?",
+                "answers": ["98", "100", "101", "1000"],
+                "correct": 1,
+                "detail": "Compte simplement !"
+            },
+            {
+                "question": "2 multiplié par 4 égale :",
+                "answers": ["6", "8", "10", "24"],
+                "correct": 1,
+                "detail": "C'est la table de 2."
+            },
+            {
+                "question": "Quelle est la moitié de 10 ?",
+                "answers": ["2", "4", "5", "8"],
+                "correct": 2,
+                "detail": "Divise 10 par 2."
+            },
+            {
+                "question": "Si une horloge indique 3 heures, quelle heure indiquera-t-elle 2 heures plus tard ?",
+                "answers": ["4 heures", "5 heures", "1 heure", "6 heures"],
+                "correct": 1,
+                "detail": "Ajoute les heures."
+            },
+            {
+                "question": "Combien font 7 - 0 ?",
+                "answers": ["0", "7", "70", "Indéfini"],
+                "correct": 1,
+                "detail": "Soustraire zéro ne change pas le nombre."
+            },
+            {
+                "question": "Combien y a-t-il de jours dans une semaine ?",
+                "answers": ["5", "6", "7", "8"],
+                "correct": 2,
+                "detail": "Lundi, Mardi, Mercredi..."
+            },
+            {
+                "question": "Quel est le symbole pour l'addition ?",
+                "answers": ["-", "x", "+", "/"],
+                "correct": 2,
+                "detail": "Celui qui ressemble à une croix."
+            },
+            {
+                "question": "20 + 30 = ?",
+                "answers": ["40", "50", "60", "2030"],
+                "correct": 1,
+                "detail": "Additionne les dizaines."
+            },
+            {
+                "question": "Un carré a combien de côtés égaux ?",
+                "answers": ["2", "3", "4", "Aucun"],
+                "correct": 2,
+                "detail": "C'est une de ses caractéristiques principales."
+            },
+            {
+                "question": "Si tu as 3 paquets de 2 bonbons, combien as-tu de bonbons ?",
+                "answers": ["3", "5", "6", "2"],
+                "correct": 2,
+                "detail": "C'est une multiplication."
+            },
+            {
+                "question": "Quel nombre est le plus grand : 17 ou 71 ?",
+                "answers": ["17", "71", "Ils sont égaux"],
+                "correct": 1,
+                "detail": "Compare les chiffres des dizaines."
+            },
+            {
+                "question": "Combien d'angles droits y a-t-il dans un rectangle ?",
+                "answers": ["0", "1", "2", "4"],
+                "correct": 3,
+                "detail": "Les coins d'un rectangle sont des angles droits."
+            }
+        ],
+        "2": [
+            {
+                "question": "Combien font 125 + 48 ?",
+                "answers": ["163", "173", "183", "193"],
+                "correct": 1,
+                "detail": "Additionne en colonnes ou mentalement."
+            },
+            {
+                "question": "Quelle est l'aire d'un rectangle de 6cm de long et 4cm de large ?",
+                "answers": ["10 cm²", "20 cm²", "24 cm²", "36 cm²"],
+                "correct": 2,
+                "detail": "Aire = Longueur x largeur."
+            },
+            {
+                "question": "Convertis 3/4 en pourcentage.",
+                "answers": ["25%", "50%", "75%", "100%"],
+                "correct": 2,
+                "detail": "(3/4) * 100."
+            },
+            {
+                "question": "Quel est le périmètre d'un carré de côté 5 cm ?",
+                "answers": ["10 cm", "15 cm", "20 cm", "25 cm"],
+                "correct": 2,
+                "detail": "Périmètre = 4 x côté."
+            },
+            {
+                "question": "Si un film dure 1h30, combien de minutes cela fait-il ?",
+                "answers": ["60 minutes", "90 minutes", "120 minutes", "130 minutes"],
+                "correct": 1,
+                "detail": "1 heure = 60 minutes."
+            },
+            {
+                "question": "Calcule : 15 x 100 =",
+                "answers": ["150", "1500", "15000", "1.5"],
+                "correct": 1,
+                "detail": "Multiplier par 100 revient à ajouter deux zéros."
+            },
+            {
+                "question": "Combien font 5.5 + 2.3 ?",
+                "answers": ["7.2", "7.5", "7.8", "8.0"],
+                "correct": 2,
+                "detail": "Addition de nombres décimaux."
+            },
+            {
+                "question": "Un angle aigu mesure...",
+                "answers": ["Moins de 90°", "Exactement 90°", "Plus de 90°", "Exactement 180°"],
+                "correct": 0,
+                "detail": "Pense à une pointe 'aiguë'."
+            },
+            {
+                "question": "Si 8 stylos coûtent 16 euros, combien coûte 1 stylo ?",
+                "answers": ["1 euro", "2 euros", "4 euros", "8 euros"],
+                "correct": 1,
+                "detail": "C'est une division."
+            },
+            {
+                "question": "Quel est le plus petit nombre premier ?",
+                "answers": ["0", "1", "2", "3"],
+                "correct": 2,
+                "detail": "Un nombre premier a exactement deux diviseurs : 1 et lui-même."
+            },
+            {
+                "question": "1000 grammes est égal à combien de kilogrammes ?",
+                "answers": ["0.1 kg", "1 kg", "10 kg", "100 kg"],
+                "correct": 1,
+                "detail": "Conversion d'unités de masse."
+            },
+            {
+                "question": "Quelle est la moyenne de 10, 20 et 30 ?",
+                "answers": ["10", "15", "20", "60"],
+                "correct": 2,
+                "detail": "Somme des nombres divisée par leur quantité."
+            },
+            {
+                "question": "Le nombre romain 'X' correspond à :",
+                "answers": ["1", "5", "10", "50"],
+                "correct": 2,
+                "detail": "Connaissance des chiffres romains."
+            },
+            {
+                "question": "Combien de millilitres dans 1 litre ?",
+                "answers": ["10 ml", "100 ml", "1000 ml", "10000 ml"],
+                "correct": 2,
+                "detail": "Conversion d'unités de volume."
+            },
+            {
+                "question": "Un tiers (1/3) de 27 est :",
+                "answers": ["3", "7", "9", "12"],
+                "correct": 2,
+                "detail": "Divise 27 par 3."
+            }
+        ],
+        "3": [
+            {
+                "question": "Combien font (15 × 4) + (12 × 5) - 10 ?",
+                "answers": ["100", "110", "120", "130"],
+                "correct": 0,
+                "detail": "Respecte la priorité des opérations (PEMDAS/BODMAS)."
+            },
+            {
+                "question": "Quel est le PGCD (Plus Grand Commun Diviseur) de 48 et 72 ?",
+                "answers": ["12", "16", "24", "48"],
+                "correct": 2,
+                "detail": "Trouve le plus grand nombre qui divise les deux."
+            },
+            {
+                "question": "Si 3x - 7 = 11, quelle est la valeur de x ?",
+                "answers": ["3", "4", "5", "6"],
+                "correct": 3,
+                "detail": "Résous l'équation pour trouver l'inconnue."
+            },
+            {
+                "question": "L'aire d'un cercle de rayon 'r' est donnée par la formule :",
+                "answers": ["πr", "2πr", "πr²", "2πr²"],
+                "correct": 2,
+                "detail": "Formule de base de la géométrie du cercle."
+            },
+            {
+                "question": "La somme des angles d'un triangle est toujours égale à :",
+                "answers": ["90°", "180°", "270°", "360°"],
+                "correct": 1,
+                "detail": "Propriété fondamentale des triangles."
+            },
+            {
+                "question": "Combien font 5/6 - 1/3 ?",
+                "answers": ["4/3", "2/3", "1/2", "1/6"],
+                "correct": 2,
+                "detail": "Trouve un dénominateur commun avant de soustraire."
+            },
+            {
+                "question": "Si un train parcourt 300 km en 2.5 heures, quelle est sa vitesse moyenne ?",
+                "answers": ["100 km/h", "120 km/h", "125 km/h", "150 km/h"],
+                "correct": 1,
+                "detail": "Vitesse = Distance / Temps."
+            },
+            {
+                "question": "Le volume d'une sphère de rayon 'r' est (4/3)πr³. Si r=3cm, le volume est ?",
+                "answers": ["9π cm³", "12π cm³", "27π cm³", "36π cm³"],
+                "correct": 3,
+                "detail": "Applique la formule avec r=3."
+            },
+            {
+                "question": "La probabilité de tirer un roi d'un jeu de 52 cartes est :",
+                "answers": ["1/52", "2/52", "4/52 (1/13)", "13/52 (1/4)"],
+                "correct": 2,
+                "detail": "Il y a 4 rois dans un jeu de 52 cartes."
+            },
+            {
+                "question": "Combien de permutations possibles avec les lettres du mot 'MATH' ?",
+                "answers": ["4", "12", "16", "24"],
+                "correct": 3,
+                "detail": "C'est 4! (factorielle de 4) = 4*3*2*1."
+            },
+            {
+                "question": "Un article coûte 80€. Il est soldé à 20%. Quel est son nouveau prix ?",
+                "answers": ["16€", "60€", "64€", "78€"],
+                "correct": 2,
+                "detail": "Calcule la réduction (20% de 80€) puis soustrais-la."
+            },
+            {
+                "question": "Quelle est la racine carrée de 144 ?",
+                "answers": ["10", "11", "12", "14"],
+                "correct": 2,
+                "detail": "Quel nombre multiplié par lui-même donne 144 ?"
+            },
+            {
+                "question": "Dans un triangle rectangle, le théorème de Pythagore s'écrit (c étant l'hypoténuse) :",
+                "answers": ["a+b=c", "a²+b²=c²", "ab=c²", "a/b=c"],
+                "correct": 1,
+                "detail": "Relation entre les côtés d'un triangle rectangle."
+            },
+            {
+                "question": "Le PPCM (Plus Petit Commun Multiple) de 12 et 18 est :",
+                "answers": ["6", "18", "36", "72"],
+                "correct": 2,
+                "detail": "Trouve le plus petit nombre divisible par 12 et 18."
+            },
+            {
+                "question": "0.05 sous forme de fraction irréductible est :",
+                "answers": ["5/10", "1/2", "1/20", "5/1000"],
+                "correct": 2,
+                "detail": "0.05 = 5/100. Simplifie cette fraction."
+            }
+        ]
+    },
+    "multiplication": {
+        "1": [
+            { "question": "2 × 7 =", "answers": ["12", "14", "16", "18"], "correct": 1, "detail": "Table de 2" },
+            { "question": "5 × 3 =", "answers": ["12", "15", "18", "20"], "correct": 1, "detail": "Table de 5" },
+            { "question": "3 × 3 =", "answers": ["6", "8", "9", "12"], "correct": 2, "detail": "Table de 3" },
+            { "question": "4 × 5 =", "answers": ["16", "18", "20", "24"], "correct": 2, "detail": "Table de 4" },
+            { "question": "1 × 9 =", "answers": ["1", "9", "10", "19"], "correct": 1, "detail": "Table de 1" },
+            { "question": "6 × 2 =", "answers": ["10", "12", "14", "16"], "correct": 1, "detail": "Table de 6" },
+            { "question": "7 × 1 =", "answers": ["1", "7", "8", "17"], "correct": 1, "detail": "Table de 7" },
+            { "question": "8 × 0 =", "answers": ["0", "1", "8", "80"], "correct": 0, "detail": "Tout nombre multiplié par zéro égale zéro." },
+            { "question": "9 × 2 =", "answers": ["16", "18", "20", "27"], "correct": 1, "detail": "Table de 9" },
+            { "question": "10 × 4 =", "answers": ["14", "30", "40", "104"], "correct": 2, "detail": "Table de 10" },
+            { "question": "2 × 5 =", "answers": ["7", "9", "10", "12"], "correct": 2, "detail": "Table de 2" },
+            { "question": "3 × 4 =", "answers": ["7", "10", "12", "15"], "correct": 2, "detail": "Table de 3" },
+            { "question": "5 × 1 =", "answers": ["1", "4", "5", "6"], "correct": 2, "detail": "Table de 5" },
+            { "question": "4 × 0 =", "answers": ["0", "1", "4", "40"], "correct": 0, "detail": "Propriété du zéro." },
+            { "question": "6 × 3 =", "answers": ["9", "15", "18", "21"], "correct": 2, "detail": "Table de 6" }
+        ],
+        "2": [
+            { "question": "6 × 7 =", "answers": ["36", "42", "48", "54"], "correct": 1, "detail": "Table de 6" },
+            { "question": "8 × 5 =", "answers": ["35", "40", "45", "50"], "correct": 1, "detail": "Table de 8" },
+            { "question": "9 × 6 =", "answers": ["45", "48", "51", "54"], "correct": 3, "detail": "Table de 9" },
+            { "question": "7 × 8 =", "answers": ["48", "54", "56", "64"], "correct": 2, "detail": "Table de 7" },
+            { "question": "6 × 9 =", "answers": ["45", "48", "51", "54"], "correct": 3, "detail": "Table de 6" },
+            { "question": "8 × 8 =", "answers": ["56", "60", "64", "72"], "correct": 2, "detail": "Le carré de 8." },
+            { "question": "7 × 7 =", "answers": ["42", "47", "49", "56"], "correct": 2, "detail": "Le carré de 7." },
+            { "question": "9 × 4 =", "answers": ["32", "34", "36", "38"], "correct": 2, "detail": "Table de 9" },
+            { "question": "8 × 6 =", "answers": ["42", "46", "48", "54"], "correct": 2, "detail": "Table de 8" },
+            { "question": "9 × 5 =", "answers": ["40", "45", "50", "55"], "correct": 1, "detail": "Table de 9" },
+            { "question": "7 × 4 =", "answers": ["24", "28", "32", "35"], "correct": 1, "detail": "Table de 7" },
+            { "question": "6 × 6 =", "answers": ["30", "32", "36", "42"], "correct": 2, "detail": "Le carré de 6." },
+            { "question": "8 × 3 =", "answers": ["21", "24", "27", "32"], "correct": 1, "detail": "Table de 8" },
+            { "question": "9 × 8 =", "answers": ["63", "64", "72", "81"], "correct": 2, "detail": "Table de 9" },
+            { "question": "7 × 5 =", "answers": ["30", "32", "35", "40"], "correct": 2, "detail": "Table de 7" }
+        ],
+        "3": [
+            { "question": "9 × 9 =", "answers": ["72", "81", "90", "99"], "correct": 1, "detail": "Le carré de 9." },
+            { "question": "12 × 5 =", "answers": ["55", "60", "65", "70"], "correct": 1, "detail": "Pense à 10x5 + 2x5." },
+            { "question": "11 × 6 =", "answers": ["60", "61", "66", "72"], "correct": 2, "detail": "Répétition facile." },
+            { "question": "7 × 12 =", "answers": ["74", "78", "82", "84"], "correct": 3, "detail": "Décompose si besoin : 7x10 + 7x2." },
+            { "question": "8 × 11 =", "answers": ["80", "81", "88", "96"], "correct": 2, "detail": "Table de 11." },
+            { "question": "11 × 11 =", "answers": ["111", "121", "131", "141"], "correct": 1, "detail": "Le carré de 11." },
+            { "question": "12 × 8 =", "answers": ["86", "92", "96", "108"], "correct": 2, "detail": "Pense à 10x8 + 2x8." },
+            { "question": "9 × 11 =", "answers": ["89", "90", "99", "108"], "correct": 2, "detail": "Table de 11." },
+            { "question": "12 × 6 =", "answers": ["62", "66", "72", "78"], "correct": 2, "detail": "Décompose : 10x6 + 2x6." },
+            { "question": "12 × 12 =", "answers": ["124", "134", "144", "154"], "correct": 2, "detail": "Le carré de 12." },
+            { "question": "13 × 3 =", "answers": ["33", "36", "39", "42"], "correct": 2, "detail": "10x3 + 3x3." },
+            { "question": "14 × 2 =", "answers": ["24", "26", "28", "30"], "correct": 2, "detail": "Simple à doubler." },
+            { "question": "15 × 4 =", "answers": ["45", "50", "55", "60"], "correct": 3, "detail": "Pense à 15+15+15+15 ou (10x4) + (5x4)." },
+            { "question": "10 × 17 =", "answers": ["107", "117", "170", "1017"], "correct": 2, "detail": "Ajoute un zéro." },
+            { "question": "11 × 12 =", "answers": ["121", "122", "132", "142"], "correct": 2, "detail": "11x10 + 11x2 ou 12x10 + 12x1." }
+        ]
+    },
+    "histoire": {
+        "1": [
+            {
+                "question": "Qui a découvert l'Amérique en 1492, pensant arriver aux Indes ?",
+                "answers": ["Marco Polo", "Christophe Colomb", "Vasco de Gama", "Magellan"],
+                "correct": 1,
+                "detail": "Navigateur génois au service de l'Espagne."
+            },
+            {
+                "question": "Quel roi de France était surnommé 'le Roi Soleil' ?",
+                "answers": ["Louis XIII", "Louis XIV", "Louis XV", "Henri IV"],
+                "correct": 1,
+                "detail": "Son règne fut l'un des plus longs de l'histoire."
+            },
+            {
+                "question": "La Révolution française a commencé en quelle année ?",
+                "answers": ["1776", "1789", "1804", "1815"],
+                "correct": 1,
+                "detail": "Avec la prise de la Bastille comme événement symbolique."
+            },
+            {
+                "question": "Quel monument parisien célèbre les victoires de Napoléon Ier ?",
+                "answers": ["La Tour Eiffel", "Le Louvre", "L'Arc de Triomphe", "Notre-Dame"],
+                "correct": 2,
+                "detail": "Il se trouve en haut des Champs-Élysées."
+            },
+            {
+                "question": "Comment s'appelait le chef gaulois qui a résisté à Jules César ?",
+                "answers": ["Astérix", "Clovis", "Vercingétorix", "Charlemagne"],
+                "correct": 2,
+                "detail": "Sa défaite à Alésia marqua la fin de la Guerre des Gaules."
+            },
+            {
+                "question": "En Égypte ancienne, quel titre portait le souverain ?",
+                "answers": ["Empereur", "Roi", "Pharaon", "Sultan"],
+                "correct": 2,
+                "detail": "Considéré comme un dieu vivant."
+            },
+            {
+                "question": "Qui était Jeanne d'Arc ?",
+                "answers": ["Une reine de France", "Une écrivaine célèbre", "Une héroïne militaire", "Une scientifique"],
+                "correct": 2,
+                "detail": "Elle a joué un rôle crucial pendant la Guerre de Cent Ans."
+            },
+            {
+                "question": "L'invention de l'imprimerie par Gutenberg date environ de :",
+                "answers": ["1250", "1450", "1650", "1850"],
+                "correct": 1,
+                "detail": "Cette invention a révolutionné la diffusion du savoir."
+            },
+            {
+                "question": "Quelle était la principale fonction des pyramides d'Égypte ?",
+                "answers": ["Palais royaux", "Temples religieux", "Tombeaux pour les pharaons", "Observatoires astronomiques"],
+                "correct": 2,
+                "detail": "Elles devaient assurer l'immortalité du pharaon."
+            },
+            {
+                "question": "La Première Guerre mondiale s'est déroulée principalement entre :",
+                "answers": ["1900-1905", "1914-1918", "1929-1935", "1939-1945"],
+                "correct": 1,
+                "detail": "Aussi appelée la Grande Guerre."
+            },
+            {
+                "question": "Dans quelle ville italienne peut-on voir le Colisée ?",
+                "answers": ["Venise", "Florence", "Rome", "Milan"],
+                "correct": 2,
+                "detail": "C'était un immense amphithéâtre pour les jeux de gladiateurs."
+            },
+            {
+                "question": "Quel pays a offert la Statue de la Liberté aux États-Unis ?",
+                "answers": ["L'Angleterre", "L'Espagne", "L'Allemagne", "La France"],
+                "correct": 3,
+                "detail": "En signe d'amitié entre les deux nations."
+            },
+            {
+                "question": "Le mur de Berlin séparait quelle ville en deux ?",
+                "answers": ["Paris", "Londres", "Moscou", "Berlin"],
+                "correct": 3,
+                "detail": "Symbole de la Guerre Froide."
+            },
+            {
+                "question": "Comment s'appelait l'empire dirigé par Jules César puis Auguste ?",
+                "answers": ["L'Empire Grec", "L'Empire Perse", "L'Empire Romain", "L'Empire Égyptien"],
+                "correct": 2,
+                "detail": "Il a dominé le bassin méditerranéen pendant des siècles."
+            },
+            {
+                "question": "Quel explorateur a été le premier Européen à atteindre l'Inde par la mer en contournant l'Afrique ?",
+                "answers": ["Christophe Colomb", "Ferdinand Magellan", "Vasco de Gama", "James Cook"],
+                "correct": 2,
+                "detail": "Son voyage a ouvert une nouvelle route commerciale."
+            }
+        ],
+        "2": [
+            {
+                "question": "Quel événement a déclenché la Première Guerre mondiale en 1914 ?",
+                "answers": ["L'invasion de la Pologne", "L'attaque de Pearl Harbor", "L'assassinat de l'archiduc François-Ferdinand", "La crise économique de 1929"],
+                "correct": 2,
+                "detail": "Cet événement à Sarajevo a mis le feu aux poudres."
+            },
+            {
+                "question": "Qui fut le premier empereur romain, successeur de Jules César ?",
+                "answers": ["Néron", "Caligula", "Auguste (Octave)", "Marc Aurèle"],
+                "correct": 2,
+                "detail": "Son règne marqua le début de la Pax Romana."
+            },
+            {
+                "question": "La Guerre de Cent Ans opposa principalement quels royaumes ?",
+                "answers": ["France et Espagne", "Angleterre et Écosse", "France et Angleterre", "Rome et Carthage"],
+                "correct": 2,
+                "detail": "Pour la succession au trône de France."
+            },
+            {
+                "question": "Quelle civilisation a construit le Machu Picchu ?",
+                "answers": ["Les Aztèques", "Les Mayas", "Les Incas", "Les Égyptiens"],
+                "correct": 2,
+                "detail": "Cité perchée dans les Andes au Pérou."
+            },
+            {
+                "question": "La 'Renaissance' est une période de renouveau artistique et intellectuel qui a débuté en :",
+                "answers": ["Grèce antique", "Italie", "France", "Angleterre"],
+                "correct": 1,
+                "detail": "Aux XIVe-XVIe siècles, avec des artistes comme Léonard de Vinci."
+            },
+            {
+                "question": "Qui a mené la réforme protestante au XVIe siècle, critiquant l'Église catholique ?",
+                "answers": ["Ignace de Loyola", "Martin Luther", "Jean Calvin", "Henri VIII"],
+                "correct": 1,
+                "detail": "Ses 95 thèses ont marqué un tournant."
+            },
+            {
+                "question": "Quelle bataille de 1066 marqua la conquête normande de l'Angleterre ?",
+                "answers": ["Bataille d'Azincourt", "Bataille de Waterloo", "Bataille d'Hastings", "Bataille de Crécy"],
+                "correct": 2,
+                "detail": "Guillaume le Conquérant devint roi d'Angleterre."
+            },
+            {
+                "question": "L'Apartheid était un système de ségrégation raciale institutionnalisé dans quel pays africain ?",
+                "answers": ["Nigeria", "Kenya", "Afrique du Sud", "Égypte"],
+                "correct": 2,
+                "detail": "Nelson Mandela a lutté contre ce régime."
+            },
+            {
+                "question": "Quand les premiers pas de l'Homme sur la Lune ont-ils eu lieu ?",
+                "answers": ["1959", "1969", "1979", "1989"],
+                "correct": 1,
+                "detail": "Mission Apollo 11, avec Neil Armstrong."
+            },
+            {
+                "question": "Alexandre le Grand était roi de quel ancien royaume ?",
+                "answers": ["Sparte", "Athènes", "Macédoine", "Perse"],
+                "correct": 2,
+                "detail": "Il a conquis un immense empire s'étendant jusqu'en Inde."
+            },
+            {
+                "question": "La chute du mur de Berlin, symbole de la fin de la Guerre Froide, a eu lieu en :",
+                "answers": ["1985", "1989", "1991", "1993"],
+                "correct": 1,
+                "detail": "Cet événement a mené à la réunification de l'Allemagne."
+            },
+            {
+                "question": "Quel philosophe des Lumières a écrit 'Du Contrat Social' ?",
+                "answers": ["Voltaire", "Montesquieu", "Diderot", "Jean-Jacques Rousseau"],
+                "correct": 3,
+                "detail": "Il y explore les fondements de l'ordre politique légitime."
+            },
+            {
+                "question": "Quelle était la 'Route de la Soie' ?",
+                "answers": ["Une course de chars en Chine", "Un réseau de routes commerciales entre l'Asie et l'Europe", "Un type de tissu précieux", "Une dynastie d'empereurs chinois"],
+                "correct": 1,
+                "detail": "Elle a permis les échanges culturels et économiques pendant des siècles."
+            },
+            {
+                "question": "Hannibal Barca, célèbre pour avoir traversé les Alpes avec des éléphants, était un général de :",
+                "answers": ["Rome", "Grèce", "Carthage", "Égypte"],
+                "correct": 2,
+                "detail": "Il a combattu Rome durant les Guerres Puniques."
+            },
+            {
+                "question": "Qui fut le premier président des États-Unis ?",
+                "answers": ["Abraham Lincoln", "Thomas Jefferson", "Benjamin Franklin", "George Washington"],
+                "correct": 3,
+                "detail": "Il a mené l'armée continentale à la victoire pendant la guerre d'Indépendance."
+            }
+        ],
+        "3": [
+            {
+                "question": "Le traité de Versailles, signé en 1919, a officiellement mis fin à quelle guerre ?",
+                "answers": ["La Guerre de Sécession", "La Première Guerre mondiale", "La Guerre Froide", "La Guerre de Corée"],
+                "correct": 1,
+                "detail": "Il a imposé de lourdes conditions à l'Allemagne."
+            },
+            {
+                "question": "Quelle civilisation mésoaméricaine a prospéré dans la péninsule du Yucatán et est connue pour ses pyramides et son calendrier complexe ?",
+                "answers": ["Les Incas", "Les Aztèques", "Les Mayas", "Les Olmèques"],
+                "correct": 2,
+                "detail": "Leurs cités incluent Chichén Itzá et Tikal."
+            },
+            {
+                "question": "La 'Guerre Froide' était une période de tension géopolitique entre quelles superpuissances ?",
+                "answers": ["France et Allemagne", "Royaume-Uni et Chine", "États-Unis et Union Soviétique", "Japon et Russie"],
+                "correct": 2,
+                "detail": "Elle a duré de la fin de la Seconde Guerre mondiale à 1991."
+            },
+            {
+                "question": "Qui a écrit 'L'Esprit des Lois', prônant la séparation des pouvoirs ?",
+                "answers": ["Rousseau", "Voltaire", "Montesquieu", "Diderot"],
+                "correct": 2,
+                "detail": "Son œuvre a influencé de nombreuses constitutions modernes."
+            },
+            {
+                "question": "La bataille de Stalingrad fut un tournant majeur sur quel front de la Seconde Guerre mondiale ?",
+                "answers": ["Front de l'Ouest (France)", "Front du Pacifique", "Front de l'Est (URSS)", "Front Nord-Africain"],
+                "correct": 2,
+                "detail": "Elle marqua le début du recul allemand face à l'Armée Rouge."
+            },
+            {
+                "question": "L'Empire Ottoman, qui a duré plusieurs siècles, avait pour capitale :",
+                "answers": ["Bagdad", "Damas", "Le Caire", "Constantinople (Istanbul)"],
+                "correct": 3,
+                "detail": "Après la prise de la ville en 1453."
+            },
+            {
+                "question": "Quel était le but principal du 'Projet Manhattan' pendant la Seconde Guerre mondiale ?",
+                "answers": ["Développer le premier radar", "Casser les codes ennemis Enigma", "Construire la première bombe atomique", "Préparer le débarquement en Normandie"],
+                "correct": 2,
+                "detail": "Il a mené aux bombardements d'Hiroshima et Nagasaki."
+            },
+            {
+                "question": "La 'Déclaration des Droits de l'Homme et du Citoyen' a été adoptée en France en :",
+                "answers": ["1776", "1789", "1793", "1804"],
+                "correct": 1,
+                "detail": "Document fondamental de la Révolution française."
+            },
+            {
+                "question": "Marco Polo était un explorateur vénitien célèbre pour ses voyages en :",
+                "answers": ["Amérique", "Afrique", "Chine et Asie de l'Est", "Australie"],
+                "correct": 2,
+                "detail": "Son 'Livre des Merveilles' a fasciné l'Europe."
+            },
+            {
+                "question": "Quelle reine d'Égypte, célèbre pour sa beauté et son intelligence, fut la dernière de la dynastie des Ptolémées ?",
+                "answers": ["Néfertiti", "Hatchepsout", "Cléopâtre VII", "Isis"],
+                "correct": 2,
+                "detail": "Elle a eu des liaisons avec Jules César et Marc Antoine."
+            },
+            {
+                "question": "Le 'Code d'Hammurabi' est l'un des plus anciens ensembles de lois écrits. Il provient de :",
+                "answers": ["Grèce antique", "Rome antique", "Égypte ancienne", "Mésopotamie (Babylone)"],
+                "correct": 3,
+                "detail": "Connu pour le principe 'œil pour œil, dent pour dent'."
+            },
+            {
+                "question": "Qui était le principal leader du mouvement pour les droits civiques aux États-Unis dans les années 1950-1960 ?",
+                "answers": ["Malcolm X", "Rosa Parks", "Martin Luther King Jr.", "John F. Kennedy"],
+                "correct": 2,
+                "detail": "Connu pour son discours 'I Have a Dream'."
+            },
+            {
+                "question": "La Guerre du Péloponnèse a opposé quelles cités-États grecques ?",
+                "answers": ["Athènes et Sparte", "Corinthe et Thèbes", "Sparte et Macédoine", "Athènes et Perse"],
+                "correct": 0,
+                "detail": "Elle a duré près de 30 ans au Ve siècle av. J.-C."
+            },
+            {
+                "question": "La dynastie Ming a régné sur quel pays pendant plusieurs siècles, construisant notamment la Cité Interdite ?",
+                "answers": ["Japon", "Inde", "Corée", "Chine"],
+                "correct": 3,
+                "detail": "De 1368 à 1644."
+            },
+            {
+                "question": "L'Âge des Vikings se situe approximativement entre :",
+                "answers": ["Le Ve et le VIIIe siècle", "Le VIIIe et le XIe siècle", "Le XIe et le XIVe siècle", "Le XIVe et le XVIIe siècle"],
+                "correct": 1,
+                "detail": "Période d'expansion, de raids et de commerce des peuples scandinaves."
+            }
+        ]
+    }
+}

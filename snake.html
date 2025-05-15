@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake - Jeu d'Arcade</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1c2c, #4a306d);
+            margin: 0;
+            padding: 1rem;
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            overflow-y: auto;
+            touch-action: manipulation;
+        }
+
+        #game-wrapper {
+            width: 100%;
+            max-width: 28rem; /* max-w-md */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-sizing: border-box;
+        }
+
+        #game-board {
+            background-color: #0f172a;
+            display: grid;
+            width: 90vw;
+            height: 90vw;
+            max-width: 400px;
+            max-height: 400px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .snake { background-color: #22c55e; border-radius: 20%; margin: 1px; }
+        .snake-head { background-color: #16a34a; border-radius: 30% 30% 10% 10%; box-shadow: 0 0 5px #16a34a; }
+        .food { background-color: #ef4444; border-radius: 50%; margin: 2px; box-shadow: 0 0 8px #ef4444; }
+        .obstacle { background-color: #9333ea; border-radius: 2px; box-shadow: 0 0 5px #9333ea; }
+
+        .game-over-overlay {
+            background-color: rgba(0, 0, 0, 0.85);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 10;
+            color: white;
+            font-size: 1.75rem;
+            text-align: center;
+            border-radius: 8px;
+        }
+        .game-over-overlay .text-xl { font-size: 1.25rem; }
+
+        .control-btn {
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .level-btn.active {
+            background-color: #4f46e5;
+            transform: scale(1.05);
+            box-shadow: 0 0 10px #4f46e5;
+        }
+        .swipe-area {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 5;
+        }
+        .tutorial {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 20;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+        }
+        @media (max-width: 380px) {
+            #level-selector {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            #level-selector .level-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="game-wrapper">
+        <h1 class="text-3xl font-bold mb-2 text-center">Snake</h1>
+
+        <div class="flex justify-between items-center w-full mb-2">
+            <div class="text-xl">Score: <span id="score">0</span></div>
+            <div class="text-xl">Niveau: <span id="level-display">Facile</span></div>
+        </div>
+
+        <div class="flex justify-between items-center w-full mb-4">
+            <button id="start-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg shadow-md">Démarrer</button>
+            <button id="help-btn" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg shadow-md">Aide</button>
+        </div>
+
+        <div id="level-selector" class="flex justify-center space-x-1 sm:space-x-2 w-full mb-4 flex-wrap">
+            <button class="level-btn bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-lg shadow-sm text-sm sm:text-base active" data-level="easy">Facile</button>
+            <button class="level-btn bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-1 rounded-lg shadow-sm text-sm sm:text-base" data-level="medium">Moyen</button>
+            <button class="level-btn bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-lg shadow-sm text-sm sm:text-base" data-level="hard">Difficile</button>
+            <button class="level-btn bg-purple-600 hover:bg-purple-700 text-white px-3 py-1 rounded-lg shadow-sm text-sm sm:text-base" data-level="extreme">Extrême</button>
+        </div>
+
+        <div id="game-container" class="w-full relative" style="max-width: 400px;">
+            <div id="game-board"></div>
+            <div id="game-over" class="game-over-overlay hidden">
+                <div class="mb-4">Game Over!</div>
+                <div class="text-xl mb-4">Score final: <span id="final-score">0</span></div>
+                <button id="restart-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg text-xl shadow-lg">Rejouer</button>
+            </div>
+            <div class="swipe-area" id="swipe-area"></div>
+        </div>
+
+        <div class="mt-4 grid grid-cols-3 gap-2 w-48">
+            <div></div>
+            <button class="control-btn bg-gray-700 hover:bg-gray-600 text-white rounded-lg shadow-md" id="up">↑</button>
+            <div></div>
+            <button class="control-btn bg-gray-700 hover:bg-gray-600 text-white rounded-lg shadow-md" id="left">←</button>
+            <button class="control-btn bg-gray-700 hover:bg-gray-600 text-white rounded-lg shadow-md" id="down">↓</button>
+            <button class="control-btn bg-gray-700 hover:bg-gray-600 text-white rounded-lg shadow-md" id="right">→</button>
+        </div>
+
+        <div class="w-full flex justify-center mt-6 mb-4">
+            <button id="back-to-quiz-btn" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg text-lg shadow-md">
+                Retour au Menu Quiz
+            </button>
+        </div>
+    </div>
+
+    <div id="tutorial" class="tutorial hidden">
+        <div class="bg-gray-800 p-6 rounded-xl max-w-sm shadow-xl">
+            <h2 class="text-2xl font-bold mb-4">Comment jouer</h2>
+            <div class="mb-4">
+                <h3 class="text-xl font-semibold mb-2">Sur mobile:</h3>
+                <p class="mb-1">• Glissez sur l'écran dans la direction souhaitée.</p>
+                <p class="mb-1">• Ou utilisez les boutons directionnels.</p>
+            </div>
+            <div class="mb-4">
+                <h3 class="text-xl font-semibold mb-2">Sur ordinateur:</h3>
+                <p class="mb-1">• Utilisez les flèches du clavier.</p>
+                <p class="mb-1">• Espace pour Démarrer/Pause/Continuer.</p>
+            </div>
+            <div class="mb-6">
+                <h3 class="text-xl font-semibold mb-2">Niveaux:</h3>
+                <p class="mb-1">• <span class="text-green-400">Facile</span>: Vitesse lente, pas d'obstacles.</p>
+                <p class="mb-1">• <span class="text-yellow-400">Moyen</span>: Vitesse moyenne, quelques obstacles.</p>
+                <p class="mb-1">• <span class="text-red-400">Difficile</span>: Vitesse rapide, plus d'obstacles.</p>
+                <p>• <span class="text-purple-400">Extrême</span>: Très rapide, beaucoup d'obstacles.</p>
+            </div>
+            <button id="close-tutorial" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg">Compris !</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const boardElement = document.getElementById('game-board');
+            const scoreElement = document.getElementById('score');
+            const finalScoreElement = document.getElementById('final-score');
+            const startButton = document.getElementById('start-btn');
+            const restartButton = document.getElementById('restart-btn');
+            const gameOverScreen = document.getElementById('game-over');
+            const levelButtons = document.querySelectorAll('.level-btn');
+            const levelDisplay = document.getElementById('level-display');
+            const helpButton = document.getElementById('help-btn');
+            const tutorial = document.getElementById('tutorial');
+            const closeTutorialButton = document.getElementById('close-tutorial');
+            const swipeArea = document.getElementById('swipe-area');
+            const backToQuizButton = document.getElementById('back-to-quiz-btn');
+
+            const GRID_SIZE = 20;
+            let snake = [];
+            let food = {};
+            let obstacles = [];
+            let direction = 'right';
+            let nextDirection = 'right';
+            let gameInterval;
+            let score = 0;
+            let gameSpeed = 150;
+            let gameRunning = false;
+            let currentLevel = 'easy'; // Niveau par défaut
+            let touchStartX = 0;
+            let touchStartY = 0;
+
+            const levels = {
+                easy: { speed: 150, obstacles: 0, speedIncrease: 5, pointsPerFood: 10, name: 'Facile' },
+                medium: { speed: 120, obstacles: 5, speedIncrease: 8, pointsPerFood: 15, name: 'Moyen' },
+                hard: { speed: 100, obstacles: 10, speedIncrease: 10, pointsPerFood: 20, name: 'Difficile' },
+                extreme: { speed: 80, obstacles: 20, speedIncrease: 12, pointsPerFood: 30, name: 'Extrême' }
+            };
+
+            function initBoard() {
+                boardElement.innerHTML = '';
+                boardElement.style.gridTemplateRows = `repeat(${GRID_SIZE}, 1fr)`;
+                boardElement.style.gridTemplateColumns = `repeat(${GRID_SIZE}, 1fr)`;
+                for (let i = 0; i < GRID_SIZE * GRID_SIZE; i++) {
+                    const cell = document.createElement('div');
+                    boardElement.appendChild(cell);
+                }
+            }
+
+            function coordsToIndex(x, y) {
+                return y * GRID_SIZE + x;
+            }
+
+            function initGame(isFirstInit = false) {
+                clearInterval(gameInterval);
+                snake = [ {x: 10, y: 10}, {x: 9, y: 10}, {x: 8, y: 10} ];
+                direction = 'right';
+                nextDirection = 'right';
+                score = 0;
+                if(scoreElement) scoreElement.textContent = score;
+                if(finalScoreElement) finalScoreElement.textContent = score; // Important pour reset
+                if(gameOverScreen) gameOverScreen.classList.add('hidden');
+
+                gameSpeed = levels[currentLevel].speed;
+                generateObstacles();
+                placeFood();
+                drawGame();
+
+                gameRunning = false;
+                if(startButton) {
+                    startButton.textContent = 'Démarrer';
+                    startButton.disabled = false;
+                }
+            }
+
+            function generateObstacles() {
+                obstacles = [];
+                const obstacleCount = levels[currentLevel].obstacles;
+                for (let i = 0; i < obstacleCount; i++) {
+                    let validPosition = false;
+                    let x, y;
+                    while (!validPosition) {
+                        x = Math.floor(Math.random() * GRID_SIZE);
+                        y = Math.floor(Math.random() * GRID_SIZE);
+                        const isOnSnake = snake.some(segment => segment.x === x && segment.y === y);
+                        const isTooCloseToHead = Math.abs(snake[0].x - x) < 3 && Math.abs(snake[0].y - y) < 3;
+                        const isOnExistingObstacle = obstacles.some(obs => obs.x === x && obs.y === y);
+                        if (!isOnSnake && !isTooCloseToHead && !isOnExistingObstacle) {
+                            validPosition = true;
+                        }
+                    }
+                    obstacles.push({x, y});
+                }
+            }
+
+            function placeFood() {
+                let foodPlaced = false;
+                while (!foodPlaced) {
+                    const x = Math.floor(Math.random() * GRID_SIZE);
+                    const y = Math.floor(Math.random() * GRID_SIZE);
+                    const isOnSnake = snake.some(segment => segment.x === x && segment.y === y);
+                    const isOnObstacle = obstacles.some(obs => obs.x === x && obs.y === y);
+                    if (!isOnSnake && !isOnObstacle) {
+                        food = {x, y};
+                        foodPlaced = true;
+                    }
+                }
+            }
+
+            function drawGame() {
+                const cells = boardElement.children;
+                for (let i = 0; i < cells.length; i++) {
+                    cells[i].className = '';
+                }
+                obstacles.forEach(obstacle => {
+                    const idx = coordsToIndex(obstacle.x, obstacle.y);
+                    if (idx >= 0 && idx < cells.length) cells[idx].classList.add('obstacle');
+                });
+                snake.forEach((segment, index) => {
+                    const idx = coordsToIndex(segment.x, segment.y);
+                    if (idx >= 0 && idx < cells.length) {
+                        cells[idx].classList.add(index === 0 ? 'snake-head' : 'snake');
+                    }
+                });
+                const foodIdx = coordsToIndex(food.x, food.y);
+                if (foodIdx >= 0 && foodIdx < cells.length) cells[foodIdx].classList.add('food');
+            }
+
+            function updateGame() {
+                if (!gameRunning) return;
+
+                direction = nextDirection;
+                const head = {...snake[0]};
+                switch (direction) {
+                    case 'up': head.y--; break;
+                    case 'down': head.y++; break;
+                    case 'left': head.x--; break;
+                    case 'right': head.x++; break;
+                }
+
+                if (head.x < 0 || head.x >= GRID_SIZE || head.y < 0 || head.y >= GRID_SIZE ||
+                    snake.some(segment => segment.x === head.x && segment.y === head.y) ||
+                    obstacles.some(obs => obs.x === x && obs.y === y && obs.x === head.x && obs.y === head.y)) { // Correction ici pour la collision avec obstacle
+                    triggerGameOver();
+                    return;
+                }
+
+                snake.unshift(head);
+
+                if (head.x === food.x && head.y === food.y) {
+                    score += levels[currentLevel].pointsPerFood;
+                    if(scoreElement) scoreElement.textContent = score;
+                    placeFood();
+                    if (score > 0 && score % (levels[currentLevel].pointsPerFood * 5) === 0 && gameSpeed > 40) {
+                        gameSpeed = Math.max(40, gameSpeed - levels[currentLevel].speedIncrease);
+                        clearInterval(gameInterval);
+                        gameInterval = setInterval(updateGame, gameSpeed);
+                    }
+                } else {
+                    snake.pop();
+                }
+                drawGame();
+            }
+
+            function triggerGameOver() {
+                clearInterval(gameInterval);
+                gameRunning = false;
+                if(finalScoreElement) finalScoreElement.textContent = score;
+                if(gameOverScreen) gameOverScreen.classList.remove('hidden');
+                if(startButton) startButton.textContent = 'Rejouer'; // Change le texte pour "Rejouer" après Game Over
+            }
+
+             function toggleGame() {
+                if (!gameOverScreen.classList.contains('hidden')) { // Si c'est un écran de Game Over
+                    initGame(); // Réinitialise tout, gameRunning devient false, startButton.textContent = 'Démarrer'
+                    // On va ensuite tomber dans le bloc 'else' ci-dessous pour démarrer le jeu.
+                }
+
+                if (gameRunning) {
+                    clearInterval(gameInterval);
+                    gameRunning = false;
+                    if(startButton) startButton.textContent = 'Continuer';
+                } else {
+                     // Si le serpent n'est pas initialisé (longueur 0 ou tête non définie)
+                    if (snake.length === 0 || typeof snake[0].x === 'undefined') {
+                        initGame(); // Assurer une initialisation propre si ce n'est pas déjà fait
+                    }
+                    gameInterval = setInterval(updateGame, gameSpeed);
+                    gameRunning = true;
+                    if(startButton) startButton.textContent = 'Pause';
+                }
+            }
+
+
+            function changeLevel(levelKey) {
+                currentLevel = levelKey;
+                if(levelDisplay) levelDisplay.textContent = levels[levelKey].name;
+                levelButtons.forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.level === levelKey);
+                });
+                initGame(false); // Appelle initGame, qui mettra gameRunning à false et le bouton à "Démarrer"
+            }
+
+            function handleTouchStart(e) {
+                if (!gameRunning && !gameOverScreen.classList.contains('hidden')) return; // Ne pas traiter si jeu pas démarré et pas game over
+                if (tutorial.classList.contains('hidden')) e.preventDefault(); // Empêche le scroll si le tutoriel n'est pas visible
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+            }
+
+            function handleTouchMove(e) {
+                if (!touchStartX || !touchStartY) return;
+                if (tutorial.classList.contains('hidden')) e.preventDefault();
+                
+                const touchEndX = e.touches[0].clientX;
+                const touchEndY = e.touches[0].clientY;
+                const diffX = touchStartX - touchEndX;
+                const diffY = touchStartY - touchEndY;
+
+                if (Math.abs(diffX) > 15 || Math.abs(diffY) > 15) { // Ajuster sensibilité si besoin
+                    if (gameRunning) { // Changer de direction seulement si le jeu est en cours
+                        if (Math.abs(diffX) > Math.abs(diffY)) {
+                            if (diffX > 0 && direction !== 'right') nextDirection = 'left';
+                            else if (diffX < 0 && direction !== 'left') nextDirection = 'right';
+                        } else {
+                            if (diffY > 0 && direction !== 'down') nextDirection = 'up';
+                            else if (diffY < 0 && direction !== 'up') nextDirection = 'down';
+                        }
+                    }
+                    touchStartX = 0; touchStartY = 0;
+                }
+            }
+            function handleTouchEnd() { /* Peut rester vide si la logique est dans move */ }
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === ' ' && !tutorial.classList.contains('hidden')) {
+                     if(closeTutorialButton) closeTutorialButton.click();
+                     e.preventDefault();
+                     return;
+                }
+
+                // Permettre à 'Espace' de fonctionner pour (Re)Démarrer / Pause / Continuer
+                if (e.key === ' ') {
+                    toggleGame();
+                    e.preventDefault();
+                    return;
+                }
+
+                if (!gameRunning) return; // Pour les autres touches, ne rien faire si le jeu n'est pas en cours
+
+                switch (e.key) {
+                    case 'ArrowUp': if (direction !== 'down') nextDirection = 'up'; e.preventDefault(); break;
+                    case 'ArrowDown': if (direction !== 'up') nextDirection = 'down'; e.preventDefault(); break;
+                    case 'ArrowLeft': if (direction !== 'right') nextDirection = 'left'; e.preventDefault(); break;
+                    case 'ArrowRight': if (direction !== 'left') nextDirection = 'right'; e.preventDefault(); break;
+                }
+            });
+
+            document.getElementById('up').addEventListener('click', () => { if (direction !== 'down' && gameRunning) nextDirection = 'up'; });
+            document.getElementById('down').addEventListener('click', () => { if (direction !== 'up' && gameRunning) nextDirection = 'down'; });
+            document.getElementById('left').addEventListener('click', () => { if (direction !== 'right' && gameRunning) nextDirection = 'left'; });
+            document.getElementById('right').addEventListener('click', () => { if (direction !== 'left' && gameRunning) nextDirection = 'right'; });
+
+            if(startButton) startButton.addEventListener('click', toggleGame);
+            if(restartButton) restartButton.addEventListener('click', () => {
+                initGame(false); // Réinitialise
+                toggleGame();    // Et démarre
+            });
+
+            levelButtons.forEach(button => {
+                button.addEventListener('click', () => changeLevel(button.dataset.level));
+            });
+
+            if(helpButton) helpButton.addEventListener('click', () => tutorial.classList.remove('hidden'));
+            if(closeTutorialButton) closeTutorialButton.addEventListener('click', () => tutorial.classList.add('hidden'));
+
+            if(swipeArea) {
+                swipeArea.addEventListener('touchstart', handleTouchStart, {passive: false});
+                swipeArea.addEventListener('touchmove', handleTouchMove, {passive: false});
+                swipeArea.addEventListener('touchend', handleTouchEnd, {passive: false});
+            }
+
+            if (backToQuizButton) {
+                backToQuizButton.addEventListener('click', () => {
+                    if (window.parent && window.parent !== window) {
+                        window.parent.postMessage('closeGameIframe', '*');
+                    } else {
+                        console.warn("Not in an iframe or cannot communicate with parent.");
+                    }
+                });
+            }
+
+            initBoard();
+            changeLevel(currentLevel); // Important pour initialiser avec le niveau par défaut et appeler initGame
+
+            if (!localStorage.getItem('snakeTutorialSeen')) {
+                if(tutorial) tutorial.classList.remove('hidden');
+                localStorage.setItem('snakeTutorialSeen', 'true');
+            }
+        });
+    </script>
+</body>
+</html>
