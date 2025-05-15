@@ -928,8 +928,18 @@
 
         // --- INITIALIZATION ---
         window.onload = async () => {
+            // --- AJOUT POUR VIDER LE CACHE/PROGRESSION À CHAQUE OUVERTURE ---
+            console.log("Réinitialisation de la progression du joueur...");
+            localStorage.removeItem('quizPlayerXP');
+            localStorage.removeItem('quizPlayerLevel');
+            ARCADE_GAMES.forEach(game => { // ARCADE_GAMES est défini globalement plus haut
+                localStorage.removeItem(`game_${game.id}_unlocked`);
+            });
+            localStorage.removeItem('snakeTutorialSeen'); // Pour réinitialiser aussi le tutoriel Snake
+            // --- FIN DE L'AJOUT ---
+
             await loadQuestionDatabase();
-            loadPlayerData();
+            loadPlayerData(); // Sera initialisé avec les valeurs par défaut après la suppression
 
             Object.values(screens).forEach(s => {
                 if (s && s.id !== 'home-screen') {
