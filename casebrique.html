@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Casse-Briques Rétro 80's</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+        body {
+            font-family: 'Press Start 2P', cursive;
+            background-color: #000;
+            color: #fff;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+            display: flex; /* Pour centrer game-wrapper */
+            flex-direction: column; /* Pour le bouton retour */
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .game-wrapper { /* Nouveau conteneur pour le jeu et le bouton */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .game-ui-top {
+            display: flex;
+            justify-content: space-between;
+            width: 100%; /* Prendra la largeur du canvas via JS */
+            padding: 5px 10px;
+            box-sizing: border-box;
+            font-size: clamp(0.7rem, 2vmin, 1rem);
+            position: absolute; /* Positionné par rapport à game-container ou game-wrapper */
+            top: 5px;
+            left: 0;
+            z-index: 5; /* Au-dessus du canvas mais en dessous des overlays */
+        }
+         .game-ui-top > div {
+            padding: 5px 8px;
+            background-color: rgba(0,0,0,0.5);
+            border-radius: 4px;
+        }
+
+
+        .game-board-container { /* Conteneur pour le canvas */
+            position: relative; /* Pour les overlays */
+            border: 4px solid #ff00ff;
+            background-color: #000;
+            box-shadow: 0 0 20px #ff00ff, 0 0 40px #00ffff;
+        }
+
+        #gameBoard { /* Canvas */
+            display: block; /* Enlève l'espace en dessous */
+        }
+
+        .paddle { /* Styles pour les éléments dessinés sur canvas si besoin, mais ici c'est juste conceptuel */ }
+        .ball { /* Idem */ }
+        .brick { /* Idem */ }
+
+        .start-screen, .game-over-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.85);
+            z-index: 10;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .btn {
+            background: linear-gradient(to right, #ff00ff, #00ffff);
+            color: #000;
+            border: none;
+            padding: 15px 30px;
+            margin-top: 20px;
+            font-family: 'Press Start 2P', cursive;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 4px;
+            box-shadow: 0 0 10px #00ffff;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px #00ffff;
+        }
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .grid-effect { /* Reste conceptuel, sera dessiné sur canvas */ }
+        .flash { animation: flash-animation 0.2s; }
+        @keyframes flash-animation { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+
+    </style>
+</head>
+<body>
+    <div class="game-wrapper">
+        <div id="game-board-container"> 
+            <div class="game-ui-top">
+                <div class="score-display">SCORE: <span id="score">0</span></div>
+                <div class="level-display">NIVEAU: <span id="level">1</span></div>
+                <div class="lives-display">VIES: <span id="lives">3</span></div>
+            </div>
+            <canvas id="gameBoard"></canvas>
+            
+            <div id="startScreen" class="start-screen">
+                <h1 class="text-4xl mb-4 text-center" style="color: #ff00ff; text-shadow: 0 0 10px #00ffff;">CASSE-BRIQUES</h1>
+                <p class="text-xl mb-8 text-center" style="color: #00ffff; text-shadow: 0 0 5px #ff00ff;">STYLE ANNÉES 80</p>
+                <button id="startButton" class="btn">JOUER</button>
+                <p class="mt-8 text-center text-sm" style="color: #ffff00;">Utilisez les flèches ← → ou touchez/glissez pour déplacer la raquette</p>
+                <p class="mt-2 text-center text-sm" style="color: #ffff00;">Barre Espace pour lancer la balle</p>
+            </div>
+            
+            <div id="gameOverScreen" class="game-over-screen" style="display: none;">
+                <h1 class="text-4xl mb-4 text-center" style="color: #ff00ff; text-shadow: 0 0 10px #00ffff;">GAME OVER</h1>
+                <p class="text-xl mb-2 text-center" style="color: #00ffff;">SCORE FINAL: <span id="finalScore">0</span></p>
+                <p class="text-xl mb-8 text-center" style="color: #ffff00;">NIVEAU ATTEINT: <span id="finalLevel">1</span></p>
+                <button id="restartButton" class="btn">REJOUER</button>
+            </div>
+        </div>
+        <div class="w-full flex justify-center mt-4">
+             <button id="back-to-quiz-btn-breakout" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg text-lg shadow-md">
+                Retour au Menu Quiz
+            </button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const canvas = document.getElementById('gameBoard');
+            const ctx = canvas.getContext('2d');
+            const gameBoardContainer = document.getElementById('game-board-container'); // Conteneur du canvas
+            const gameUiTop = document.querySelector('.game-ui-top'); // Barre d'UI
+            const startScreen = document.getElementById('startScreen');
+            const gameOverScreen = document.getElementById('gameOverScreen');
+            const startButton = document.getElementById('startButton');
+            const restartButton = document.getElementById('restartButton');
+            const scoreElement = document.getElementById('score');
+            const livesElement = document.getElementById('lives');
+            const levelElement = document.getElementById('level');
+            const finalScoreElement = document.getElementById('finalScore');
+            const finalLevelElement = document.getElementById('finalLevel');
+            const backToQuizButtonBreakout = document.getElementById('back-to-quiz-btn-breakout');
+
+
+            // Configuration du jeu
+            let gameWidth, gameHeight; // Sera défini par resizeGame
+            let paddleWidth, paddleHeight = 15, ballRadius = 8;
+            let paddleX, ballX, ballY, ballSpeedX = 0, ballSpeedY = 0; // Vitesse initiale à 0 quand collée
+            let rightPressed = false, leftPressed = false;
+            let gameRunning = false, score = 0, lives = 3, level = 1;
+            let bricks = [];
+            let ballStuck = true; // La balle commence collée à la raquette
+            let touchX = null;
+            let animationFrameId;
+
+
+            // Configuration des briques
+            let brickRowCount = 5; // Peut changer par niveau
+            let brickColumnCount = 8; // Peut changer par niveau
+            let brickWidth, brickHeight, brickPadding, brickOffsetTop, brickOffsetLeft;
+
+            const baseBrickColors = ['#ff0000', '#ff6600', '#ffcc00', '#33cc33', '#0099cc', '#6633cc'];
+            const levelBrickColors = [
+                baseBrickColors,
+                ['#ff33cc', '#ff6600', '#ffff00', '#33ff33', '#00ccff', '#9933ff'],
+                ['#ff0066', '#ff9900', '#ccff00', '#00ff99', '#0066ff', '#cc00ff'],
+                ['#D32F2F', '#F57C00', '#FBC02D', '#388E3C', '#0288D1', '#5E35B1'], // Couleurs plus sombres
+                ['#C2185B', '#E64A19', '#FFA000', '#689F38', '#00796B', '#7B1FA2']  // Encore différentes
+            ];
+            
+            function playSound(type) { console.log(`Sound: ${type}`); }
+
+            function calculateBrickLayout() {
+                brickPadding = gameWidth * 0.015;
+                brickOffsetLeft = gameWidth * 0.05;
+                const totalBricksWidth = (brickColumnCount * (brickWidth + brickPadding)) - brickPadding;
+                // Recalculer brickWidth pour s'adapter
+                brickWidth = (gameWidth - (2 * brickOffsetLeft) - (brickColumnCount - 1) * brickPadding) / brickColumnCount;
+                brickHeight = gameHeight * 0.035;
+                brickOffsetTop = gameHeight * 0.12; // Plus d'espace pour l'UI
+            }
+            
+            function resizeGame() {
+                const container = document.querySelector('.game-wrapper'); // Utiliser game-wrapper pour le calcul de la taille disponible
+                const availableWidth = container.clientWidth;
+                const availableHeight = window.innerHeight - document.querySelector('.game-ui-top').offsetHeight - document.getElementById('back-to-quiz-btn-breakout').offsetHeight - 40; // Espace pour UI et bouton retour
+
+                const aspectRatio = 4/3.2; // Ratio légèrement plus vertical
+
+                if (availableWidth / availableHeight > aspectRatio) {
+                    gameHeight = Math.min(availableHeight * 0.95, 600); // Max 600px de haut
+                    gameWidth = gameHeight * aspectRatio;
+                } else {
+                    gameWidth = Math.min(availableWidth * 0.98, 800); // Max 800px de large
+                    gameHeight = gameWidth / aspectRatio;
+                }
+                
+                canvas.width = gameWidth;
+                canvas.height = gameHeight;
+
+                gameBoardContainer.style.width = `${gameWidth}px`;
+                gameBoardContainer.style.height = `${gameHeight}px`;
+                gameUiTop.style.width = `${gameWidth}px`;
+
+
+                paddleWidth = Math.max(gameWidth * 0.15, 70); // Raquette 15% de la largeur, min 70px
+                ballRadius = Math.max(gameWidth * 0.01, 7); // Balle proportionnelle
+                
+                calculateBrickLayout(); // Calculer la disposition des briques après avoir défini gameWidth/Height
+
+                if (ballStuck || !gameRunning) { // Si la balle est collée ou que le jeu n'a pas commencé
+                    paddleX = (gameWidth - paddleWidth) / 2;
+                    ballX = paddleX + paddleWidth / 2;
+                    ballY = gameHeight - paddleHeight - ballRadius - 5; // Légèrement au-dessus de la raquette
+                }
+                
+                if (gameRunning) { // Si le jeu est en cours, s'assurer que les briques sont recréées
+                    createBricks(); 
+                } else { // Si sur l'écran de démarrage ou game over, dessiner l'état initial
+                    createBricks(); // Pour que l'écran de démarrage montre les briques
+                    drawStaticElements(); // Dessiner briques et raquette seulement
+                }
+            }
+            
+            function createBricks() {
+                bricks = [];
+                // Adapter le nombre de colonnes et rangées au niveau, avec un max
+                brickColumnCount = Math.min(8 + Math.floor(level/2), 12);
+                brickRowCount = Math.min(5 + Math.floor(level/3), 8);
+                calculateBrickLayout(); // Recalculer avec les nouveaux nombres
+
+                const colorSet = levelBrickColors[Math.min(level - 1, levelBrickColors.length - 1)];
+                
+                for (let c = 0; c < brickColumnCount; c++) {
+                    bricks[c] = [];
+                    for (let r = 0; r < brickRowCount; r++) {
+                        const brickX = (c * (brickWidth + brickPadding)) + brickOffsetLeft;
+                        const brickY = (r * (brickHeight + brickPadding)) + brickOffsetTop;
+                        // Briques plus résistantes pour niveaux > 3 (nécessitent 2 coups)
+                        const status = (level > 3 && r < Math.floor(brickRowCount/2) ) ? 2 : 1; 
+                        const color = colorSet[r % colorSet.length];
+                        bricks[c][r] = { x: brickX, y: brickY, status: status, color: color, baseColor: color };
+                    }
+                }
+            }
+
+            function drawPaddle() {
+                ctx.beginPath();
+                ctx.rect(paddleX, gameHeight - paddleHeight, paddleWidth, paddleHeight);
+                const gradient = ctx.createLinearGradient(paddleX, 0, paddleX + paddleWidth, 0);
+                gradient.addColorStop(0, "#ff00ff"); gradient.addColorStop(0.5, "#00ffff"); gradient.addColorStop(1, "#ff00ff");
+                ctx.fillStyle = gradient;
+                ctx.fill();
+                ctx.strokeStyle = "rgba(255,255,255,0.5)"; ctx.lineWidth=1; ctx.stroke();
+                ctx.closePath();
+            }
+
+            function drawBall() {
+                ctx.beginPath();
+                ctx.arc(ballX, ballY, ballRadius, 0, Math.PI * 2);
+                const gradient = ctx.createRadialGradient(ballX, ballY, 0, ballX, ballY, ballRadius);
+                gradient.addColorStop(0, "#ffffff"); gradient.addColorStop(0.8, "#00ffff");  gradient.addColorStop(1, "#008f8f");
+                ctx.fillStyle = gradient;
+                ctx.fill();
+                ctx.closePath();
+            }
+
+            function drawBricks() {
+                for (let c = 0; c < brickColumnCount; c++) {
+                    for (let r = 0; r < brickRowCount; r++) {
+                        if (bricks[c][r].status > 0) {
+                            const b = bricks[c][r];
+                            ctx.beginPath();
+                            ctx.rect(b.x, b.y, brickWidth, brickHeight);
+                            // Si la brique a un statut > 1 (plusieurs coups), la rendre plus sombre
+                            ctx.fillStyle = b.status === 2 ? shadeColor(b.baseColor, -40) : b.color;
+                            ctx.fill();
+                            ctx.strokeStyle = "rgba(0,0,0,0.3)"; ctx.lineWidth = 1;
+                            ctx.stroke();
+                            ctx.closePath();
+                        }
+                    }
+                }
+            }
+            // Fonction pour assombrir une couleur (pour les briques à plusieurs coups)
+            function shadeColor(color, percent) {
+                let R = parseInt(color.substring(1,3),16);
+                let G = parseInt(color.substring(3,5),16);
+                let B = parseInt(color.substring(5,7),16);
+                R = parseInt(R * (100 + percent) / 100);
+                G = parseInt(G * (100 + percent) / 100);
+                B = parseInt(B * (100 + percent) / 100);
+                R = (R<255)?R:255; G = (G<255)?G:255; B = (B<255)?B:255;
+                R = (R>0)?R:0; G = (G>0)?G:0; B = (B>0)?B:0;
+                return "#"+(R.toString(16).padStart(2,'0'))+(G.toString(16).padStart(2,'0'))+(B.toString(16).padStart(2,'0'));
+            }
+
+
+            function drawBackground() {
+                ctx.fillStyle = "#00001a"; // Fond plus sombre
+                ctx.fillRect(0, 0, gameWidth, gameHeight);
+                
+                ctx.strokeStyle = "rgba(255, 0, 255, 0.08)"; // Grille plus subtile
+                ctx.lineWidth = 1;
+                for (let y = 0; y < gameHeight; y += 25) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(gameWidth, y); ctx.stroke(); }
+                for (let x = 0; x < gameWidth; x += 25) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, gameHeight); ctx.stroke(); }
+            }
+
+            function collisionDetection() {
+                for (let c = 0; c < brickColumnCount; c++) {
+                    for (let r = 0; r < brickRowCount; r++) {
+                        const b = bricks[c][r];
+                        if (b.status > 0) {
+                            if (ballX + ballRadius > b.x && ballX - ballRadius < b.x + brickWidth && 
+                                ballY + ballRadius > b.y && ballY - ballRadius < b.y + brickHeight) {
+                                
+                                // Déterminer de quel côté la collision a eu lieu pour un rebond plus précis
+                                const overlapX = (ballX < b.x + brickWidth/2) ? (ballX + ballRadius - b.x) : (b.x + brickWidth - (ballX - ballRadius));
+                                const overlapY = (ballY < b.y + brickHeight/2) ? (ballY + ballRadius - b.y) : (b.y + brickHeight - (ballY - ballRadius));
+
+                                if (overlapX < overlapY) ballSpeedX = -ballSpeedX; // Collision latérale
+                                else ballSpeedY = -ballSpeedY; // Collision haut/bas
+                                
+                                b.status--;
+                                if (b.status === 0) {
+                                    score += 10 * level; // Plus de points pour les niveaux supérieurs
+                                } else {
+                                    score += 5 * level; // Moins de points si la brique n'est pas encore cassée
+                                    b.color = shadeColor(b.baseColor, -20); // Changer la couleur pour indiquer un coup
+                                }
+                                scoreElement.textContent = score;
+                                playSound('brick');
+                                canvas.classList.add('flash');
+                                setTimeout(() => { canvas.classList.remove('flash'); }, 100);
+                                
+                                if (checkLevelComplete()) {
+                                    level++;
+                                    levelElement.textContent = level;
+                                    ballSpeedX = (level + 3) * Math.sign(ballSpeedX); // Augmenter la vitesse
+                                    ballSpeedY = -(level + 3) * Math.sign(Math.abs(ballSpeedY)); // Garder la direction Y vers le haut
+                                    ballStuck = true;
+                                    createBricks();
+                                    playSound('levelUp');
+                                    // Pas besoin de réinitialiser la position de la balle ici, elle sera collée à la raquette
+                                }
+                                return; // Sortir après la première collision détectée pour éviter multi-hits
+                            }
+                        }
+                    }
+                }
+            }
+
+            function checkLevelComplete() {
+                for (let c = 0; c < brickColumnCount; c++) {
+                    for (let r = 0; r < brickRowCount; r++) {
+                        if (bricks[c] && bricks[c][r] && bricks[c][r].status > 0) { // Vérifier si bricks[c] et bricks[c][r] existent
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            }
+            
+            function drawStaticElements() { // Pour dessiner quand le jeu n'est pas en 'run' (ex: écran de démarrage)
+                ctx.clearRect(0, 0, gameWidth, gameHeight);
+                drawBackground();
+                if (bricks && bricks.length > 0) drawBricks(); // Dessiner les briques si elles existent
+                drawPaddle(); // Dessiner la raquette
+                 // Dessiner la balle collée à la raquette si c'est l'état initial
+                if (ballStuck) {
+                    ballX = paddleX + paddleWidth / 2;
+                    ballY = gameHeight - paddleHeight - ballRadius - 5;
+                    drawBall();
+                }
+            }
+
+
+            function gameLoop() {
+                if (!gameRunning) return;
+
+                ctx.clearRect(0, 0, gameWidth, gameHeight);
+                drawBackground();
+                drawBricks();
+                drawPaddle();
+                drawBall();
+                collisionDetection();
+                
+                // Mouvement de la raquette
+                if (rightPressed && paddleX < gameWidth - paddleWidth) paddleX += 7;
+                else if (leftPressed && paddleX > 0) paddleX -= 7;
+
+                // Mouvement de la balle
+                if (ballStuck) {
+                    ballX = paddleX + paddleWidth / 2;
+                    ballY = gameHeight - paddleHeight - ballRadius - 5;
+                } else {
+                    ballX += ballSpeedX;
+                    ballY += ballSpeedY;
+
+                    // Collisions murs
+                    if (ballX + ballRadius > gameWidth || ballX - ballRadius < 0) {
+                        ballSpeedX = -ballSpeedX;
+                        playSound('wall');
+                    }
+                    if (ballY - ballRadius < 0) {
+                        ballSpeedY = -ballSpeedY;
+                        playSound('wall');
+                    }
+
+                    // Collision raquette
+                    if (ballY + ballRadius > gameHeight - paddleHeight && 
+                        ballY - ballRadius < gameHeight && // Évite de se coincer sous la raquette
+                        ballX > paddleX && ballX < paddleX + paddleWidth) {
+                        
+                        // Calcul du point d'impact relatif sur la raquette (-1 à 1)
+                        let collidePoint = (ballX - (paddleX + paddleWidth / 2)) / (paddleWidth / 2);
+                        // Angle de rebond (entre -60 et 60 degrés, ou -PI/3 à PI/3)
+                        let angleRad = collidePoint * (Math.PI / 3);
+                        
+                        let currentSpeed = Math.sqrt(ballSpeedX*ballSpeedX + ballSpeedY*ballSpeedY);
+                        ballSpeedX = currentSpeed * Math.sin(angleRad);
+                        ballSpeedY = -currentSpeed * Math.cos(angleRad);
+                        
+                        ballY = gameHeight - paddleHeight - ballRadius -1; // Repositionner pour éviter de rester coincé
+                        playSound('paddle');
+                    } 
+                    // Balle tombe en bas
+                    else if (ballY + ballRadius > gameHeight) {
+                        lives--;
+                        livesElement.textContent = lives;
+                        playSound('life');
+                        if (lives <= 0) {
+                            gameOver();
+                            return;
+                        } else {
+                            ballStuck = true;
+                            // Pas besoin de réinitialiser ballSpeedX et ballSpeedY ici, ils gardent leur vitesse.
+                        }
+                    }
+                }
+                
+                animationFrameId = requestAnimationFrame(gameLoop);
+            }
+            
+            function gameOver() {
+                gameRunning = false;
+                cancelAnimationFrame(animationFrameId);
+                finalScoreElement.textContent = score;
+                finalLevelElement.textContent = level;
+                gameOverScreen.style.display = 'flex';
+                playSound('gameOver');
+            }
+
+
+            function keyDownHandler(e) {
+                if (e.key === 'Right' || e.key === 'ArrowRight') rightPressed = true;
+                else if (e.key === 'Left' || e.key === 'ArrowLeft') leftPressed = true;
+                else if ((e.key === ' ' || e.key === 'Spacebar') && ballStuck && gameRunning) {
+                    ballStuck = false;
+                    // Donner une direction initiale si la balle est lancée pour la première fois au niveau
+                    if (ballSpeedX === 0 && ballSpeedY === 0) { // Devrait être géré par la vitesse de niveau
+                         ballSpeedX = (level + 3); 
+                         ballSpeedY = -(level + 3);
+                    }
+                    playSound('launch');
+                }
+            }
+            function keyUpHandler(e) {
+                if (e.key === 'Right' || e.key === 'ArrowRight') rightPressed = false;
+                else if (e.key === 'Left' || e.key === 'ArrowLeft') leftPressed = false;
+            }
+
+            function touchStartHandler(e) {
+                e.preventDefault();
+                if (ballStuck && gameRunning) {
+                    ballStuck = false;
+                    if (ballSpeedX === 0 && ballSpeedY === 0) {
+                         ballSpeedX = (level + 3); ballSpeedY = -(level + 3);
+                    }
+                    playSound('launch');
+                }
+                if (e.touches.length > 0) touchX = e.touches[0].clientX;
+            }
+            function touchMoveHandler(e) {
+                e.preventDefault();
+                if (!touchX || !gameRunning) return;
+                const currentClientX = e.touches[0].clientX;
+                const diff = currentClientX - touchX;
+                
+                const gameBoardRect = canvas.getBoundingClientRect();
+                const scaleFactor = gameWidth / gameBoardRect.width; // Pour convertir les pixels de l'écran en pixels du canvas
+                paddleX += diff * scaleFactor;
+                
+                if (paddleX < 0) paddleX = 0;
+                if (paddleX > gameWidth - paddleWidth) paddleX = gameWidth - paddleWidth;
+                touchX = currentClientX;
+            }
+            function touchEndHandler() { touchX = null; }
+
+            function startGameFlow() {
+                startScreen.style.display = 'none';
+                gameOverScreen.style.display = 'none';
+                
+                score = 0; lives = 3; level = 1;
+                ballStuck = true;
+                
+                // Vitesses initiales pour le niveau 1
+                const baseSpeed = 3 + level; // Vitesse augmente avec le niveau
+                ballSpeedX = baseSpeed * (Math.random() < 0.5 ? 1 : -1); // Direction X aléatoire
+                ballSpeedY = -baseSpeed;
+
+
+                scoreElement.textContent = score;
+                livesElement.textContent = lives;
+                levelElement.textContent = level;
+                
+                resizeGame(); // Important pour définir les dimensions et créer les briques initiales
+                // createBricks() est appelé dans resizeGame
+                
+                gameRunning = true;
+                if (animationFrameId) cancelAnimationFrame(animationFrameId);
+                gameLoop();
+                playSound('start');
+            }
+
+            document.addEventListener('keydown', keyDownHandler);
+            document.addEventListener('keyup', keyUpHandler);
+            canvas.addEventListener('touchstart', touchStartHandler, { passive: false });
+            canvas.addEventListener('touchmove', touchMoveHandler, { passive: false });
+            canvas.addEventListener('touchend', touchEndHandler);
+            window.addEventListener('resize', resizeGame);
+            
+            startButton.addEventListener('click', startGameFlow);
+            restartButton.addEventListener('click', startGameFlow);
+
+            if (backToQuizButtonBreakout) {
+                backToQuizButtonBreakout.addEventListener('click', () => {
+                    gameRunning = false;
+                    if (animationFrameId) cancelAnimationFrame(animationFrameId);
+                    if (window.parent && window.parent !== window) {
+                        window.parent.postMessage('closeGameIframe', '*');
+                    } else {
+                        console.warn("Breakout: Not in an iframe or cannot communicate with parent.");
+                    }
+                });
+            }
+            
+            resizeGame(); // Appel initial pour configurer la taille et dessiner l'état de démarrage
+            // drawStaticElements(); // Pour l'écran de démarrage
+        });
+    </script>
+</body>
+</html>
