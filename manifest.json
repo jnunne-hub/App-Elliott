@@ -2,24 +2,24 @@
   "name": "Quiz Aventure ULTIMATE",
   "short_name": "QuizApp",
   "description": "Une aventure éducative avec des quiz et des jeux d'arcade.",
-  "start_url": "/index.html", // Ou juste "/" si index.html est la racine
-  "display": "standalone", // Ou "fullscreen" ou "minimal-ui"
+  "start_url": "index.html",
+  "display": "standalone",
   "background_color": "#4c1d95",
   "theme_color": "#4c1d95",
   "icons": [
     {
       "src": "quiz-icon.svg",
-      "sizes": "any", // Pour les SVG, "any" est souvent accepté
+      "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"
     },
     { // Vous pouvez ajouter des versions PNG pour une meilleure compatibilité si besoin
-      "src": "path/to/icon-192x192.png", // Exemple
+      "src": "path/to/icon-192x192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "path/to/icon-512x512.png", // Exemple
+      "src": "path/to/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
