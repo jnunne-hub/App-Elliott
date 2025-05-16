@@ -357,14 +357,16 @@
         let currentStreak = 0;
         let activeScreen = 'home-screen';
 
-                const ARCADE_GAMES = [
-            { id: 'morpion', name: 'Morpion', file: 'morpion.html', unlocked: false, unlockMessage: "Termine un quiz d'Orthographe (Niv.1) avec 50% de réussite pour débloquer.", condition: { subject: 'orthographe', level: 1, minCorrectPercentage: 50 } },
-            { id: 'snake', name: 'Snake', file: 'snake.html', unlocked: false, unlockMessage: "Termine un quiz de Maths (Niv.1) avec 50% de réussite pour débloquer.", condition: { subject: 'mathematiques', level: 1, minCorrectPercentage: 50 } },
-            { id: 'tetris', name: 'Tetris', file: 'tetris.html', unlocked: false, unlockMessage: "Termine un quiz de Multiplication (Niv.1) avec 70% de réussite pour débloquer.", condition: { subject: 'multiplication', level: 1, minCorrectPercentage: 70 } },
-            { id: 'spaceinvader', name: 'Space Invaders', file: 'spaceinvader.html', unlocked: false, unlockMessage: "Termine un quiz d'Histoire (Niv.2) avec 60% de réussite pour débloquer.", condition: { subject: 'histoire', level: 2, minCorrectPercentage: 60 } },
-            { id: 'streetfighter', name: 'Street Fighter', file: 'streetfighters.html', unlocked: false, unlockMessage: "Termine un quiz de Multiplication (Niv.2) avec 70% de réussite pour débloquer.", condition: { subject: 'multiplication', level: 2, minCorrectPercentage: 70 } }, // NOUVELLE CONDITION
-            { id: 'pong', name: 'Pong', file: 'pong.html', unlocked: false, unlockMessage: "Termine un quiz de Grammaire (Niv.1) avec 50% de réussite pour débloquer.", condition: { subject: 'grammaire', level: 1, minCorrectPercentage: 50 } }
-        ];
+const ARCADE_GAMES = [
+    // ... vos jeux existants ...
+    { id: 'morpion', name: 'Morpion', file: 'morpion.html', unlocked: false, unlockMessage: "Termine un quiz d'Orthographe (Niv.1) avec 50% de réussite pour débloquer.", condition: { subject: 'orthographe', level: 1, minCorrectPercentage: 50 } },
+    { id: 'snake', name: 'Snake', file: 'snake.html', unlocked: false, unlockMessage: "Termine un quiz de Maths (Niv.1) avec 50% de réussite pour débloquer.", condition: { subject: 'mathematiques', level: 1, minCorrectPercentage: 50 } },
+    { id: 'tetris', name: 'Tetris', file: 'tetris.html', unlocked: false, unlockMessage: "Termine un quiz de Multiplication (Niv.1) avec 70% de réussite pour débloquer.", condition: { subject: 'multiplication', level: 1, minCorrectPercentage: 70 } },
+    { id: 'spaceinvader', name: 'Space Invaders', file: 'spaceinvader.html', unlocked: false, unlockMessage: "Termine un quiz d'Histoire (Niv.2) avec 60% de réussite pour débloquer.", condition: { subject: 'histoire', level: 2, minCorrectPercentage: 60 } },
+    { id: 'streetfighter', name: 'Street Fighter', file: 'streetfighters.html', unlocked: false, unlockMessage: "Termine un quiz de Multiplication (Niv.2) avec 70% de réussite pour débloquer.", condition: { subject: 'multiplication', level: 2, minCorrectPercentage: 70 } },
+    { id: 'pong', name: 'Pong', file: 'pong.html', unlocked: false, unlockMessage: "Termine un quiz de Grammaire (Niv.1) avec 50% de réussite pour débloquer.", condition: { subject: 'grammaire', level: 1, minCorrectPercentage: 50 } },
+    { id: 'whacamole', name: 'Tape-Taupe', file: 'whac-a-mole.html', unlocked: false, unlockMessage: "Atteins le Niveau Joueur 2 pour débloquer.", condition: { playerLevel: 2 } }
+];
 
         let playerXP = 0;
         let playerLevel = 1;
