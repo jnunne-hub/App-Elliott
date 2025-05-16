@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Frogger Adventure</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom, #87CEEB 0%, #228B22 60%, #A0522D 100%);
+            margin: 0;
+            padding: 0; 
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column; 
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; 
+            touch-action: manipulation; 
+        }
+
+        #game-canvas-container {
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            border: 3px solid #333;
+            background-color: #228B22; 
+        }
+
+        canvas {
+            display: block; 
+            background-color: transparent; 
+            font-family: "Press Start 2P", cursive;
+        }
+
+        .ui-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0,0,0,0.75); /* Un peu plus opaque */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+            border-radius: inherit; /* Hériter du radius du conteneur canvas si besoin */
+        }
+        .hidden {
+            display: none !important;
+        }
+
+        .game-button {
+            background: linear-gradient(135deg, #76c893, #52b69a);
+            border: none;
+            color: white;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            font-family: "Press Start 2P", cursive;
+            border-radius: 25px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+        .game-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(0,0,0,0.3);
+        }
+        .game-button:active {
+            transform: translateY(0px);
+            box-shadow: 0 2px 3px rgba(0,0,0,0.2);
+        }
+
+
+        #controls {
+            margin-top: 10px;
+            display: grid;
+            grid-template-columns: repeat(3, 60px); /* Taille fixe pour les boutons */
+            grid-template-rows: repeat(2, 60px);
+            gap: 8px;
+            width: auto; /* S'adapte au contenu */
+        }
+        .control-btn {
+            background-color: rgba(255,255,255,0.3);
+            border: 2px solid white;
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            border-radius: 12px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            user-select: none; 
+            -webkit-tap-highlight-color: transparent; 
+        }
+        .control-btn:active {
+            background-color: rgba(255,255,255,0.5);
+            transform: scale(0.95);
+        }
+        #up-btn    { grid-column: 2; grid-row: 1; }
+        #left-btn  { grid-column: 1; grid-row: 2; }
+        #down-btn  { grid-column: 2; grid-row: 2; }
+        #right-btn { grid-column: 3; grid-row: 2; }
+
+        #back-to-quiz-btn-frogger {
+            background-color: #2563eb; color: white; padding: 0.75rem 1.5rem; /* py-3 px-6 */
+            border-radius: 0.5rem; font-size: 1.125rem; margin-top: 15px; cursor: pointer;
+            font-family: "Press Start 2P", cursive;
+            transition: background-color 0.2s;
+        }
+        #back-to-quiz-btn-frogger:hover { background-color: #1d4ed8; }
+
+    </style>
+</head>
+<body>
+    <div id="game-canvas-container">
+        <canvas id="gameCanvas"></canvas>
+        <div id="start-screen" class="ui-overlay">
+            <h1 class="text-3xl font-bold mb-3" style="font-family: 'Press Start 2P', cursive;">Frogger Adventure</h1>
+            <p class="mb-2">Aidez la grenouille à traverser !</p>
+            <p class="text-sm mb-4">(Utilisez les flèches du clavier ou les boutons tactiles)</p>
+             <label for="difficulty-select-frogger" class="mb-1 text-lg">Difficulté :</label>
+            <select id="difficulty-select-frogger" class="text-black p-2 rounded mb-4 text-center" style="font-family: Arial, sans-serif;">
+                <option value="easy">Facile</option>
+                <option value="medium" selected>Moyen</option>
+                <option value="hard">Difficile</option>
+            </select>
+            <button id="start-button" class="game-button">Commencer</button>
+        </div>
+        <div id="game-over-screen" class="ui-overlay hidden">
+            <h2 id="game-over-text" class="text-3xl font-bold mb-3" style="font-family: 'Press Start 2P', cursive;">Partie Terminée !</h2>
+            <p class="text-xl mb-1">Score: <span id="final-score">0</span></p>
+            <p class="text-lg mb-4">Niveau atteint: <span id="final-level">1</span></p>
+            <button id="play-again-button" class="game-button">Rejouer</button>
+        </div>
+    </div>
+    <div id="controls" class="mt-4">
+        <div></div> <button class="control-btn" id="up-btn">↑</button> <div></div>
+        <button class="control-btn" id="left-btn">←</button>
+        <button class="control-btn" id="down-btn">↓</button>
+        <button class="control-btn" id="right-btn">→</button>
+    </div>
+    <div class="mt-2"> 
+        <button id="back-to-quiz-btn-frogger">Retour au Menu Quiz</button>
+    </div>
+
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const canvasContainer = document.getElementById('game-canvas-container');
+
+        const startScreen = document.getElementById('start-screen');
+        const gameOverScreen = document.getElementById('game-over-screen');
+        const startButton = document.getElementById('start-button');
+        const playAgainButton = document.getElementById('play-again-button');
+        const finalScoreDisplay = document.getElementById('final-score');
+        const finalLevelDisplay = document.getElementById('final-level');
+        const difficultySelect = document.getElementById('difficulty-select-frogger');
+
+        let TILE_SIZE; 
+        const NUM_COLS = 15; 
+        let NUM_ROWS; // Sera défini par la longueur de rowTypes
+
+        let player, obstacles, homes, score, lives, currentLevel, gameActive, gameLoopId;
+        let levelStartTime, gameDurationPerLevel; 
+        let homesFilledThisLevel = 0;
+        let deathMessage = ""; 
+        let deathMessageTimer = 0;
+
+
+        const baseDifficultySettings = { 
+            easy:   { speedFactor: 0.8, densityFactor: 0.8, timeFactor: 1.2 },
+            medium: { speedFactor: 1.0, densityFactor: 1.0, timeFactor: 1.0 },
+            hard:   { speedFactor: 1.3, densityFactor: 1.2, timeFactor: 0.8 }
+        };
+        let selectedDifficultyKey = 'medium';
+
+        let LEVEL_1_BASE_SPEED_FACTOR = 0.028; // Facteur à multiplier par TILE_SIZE
+        let LEVEL_1_SPEED_VARIANCE_FACTOR = 0.009; // Facteur à multiplier par TILE_SIZE
+        const LEVEL_1_OBSTACLE_DENSITY = 0.25; 
+        const LEVEL_1_GAME_DURATION = 90; 
+
+        const SPEED_INCREASE_PER_LEVEL = 1.08; 
+        const DENSITY_INCREASE_PER_LEVEL = 1.05; 
+        const TIME_DECREASE_FACTOR_PER_LEVEL = 0.95;
+
+        let currentLevelSpeed;
+        let currentLevelSpeedVariance;
+        let currentLevelObstacleDensity;
+        let currentLevelGameDuration;
+
+        const FROG_COLOR = '#34D399'; 
+        const ROAD_COLOR = '#4A5568'; 
+        const WATER_COLOR = '#60A5FA'; 
+        const SAFE_ZONE_COLOR = '#A3BFFA'; 
+        const HOME_COLOR = '#4ADE80'; 
+        const LOG_COLOR = '#A0522D'; 
+        const TURTLE_COLOR = '#22C55E'; 
+        const RAIL_COLOR = '#718096'; 
+        const TRAIN_COLOR = '#F56565'; 
+        const FOREST_COLOR = '#38A169'; 
+        const SNAKE_COLOR = '#F6E05E'; 
+        const FINAL_HOME_COLOR = '#FFD700';
+
+        const rowTypes = [ 
+            'final_home',     // 0
+            'forest',         // 1
+            'forest',         // 2
+            'rail',           // 3
+            'rail',           // 4
+            'safe_extended',  // 5
+            'home',           // 6 
+            'water',          // 7
+            'water',          // 8
+            'water',          // 9
+            'water',          // 10
+            'safe',           // 11 
+            'road',           // 12
+            'road',           // 13
+            'road',           // 14
+            'road',           // 15
+            'road',           // 16
+            'safe',           // 17 
+            'player'          // 18 
+        ];
+        NUM_ROWS = rowTypes.length;
+
+
+        function calculateLevelParameters() {
+            const difficultyMods = baseDifficultySettings[selectedDifficultyKey];
+            const level1BaseSpeed = TILE_SIZE * LEVEL_1_BASE_SPEED_FACTOR;
+            const level1SpeedVariance = TILE_SIZE * LEVEL_1_SPEED_VARIANCE_FACTOR;
+
+            currentLevelSpeed = (level1BaseSpeed * Math.pow(SPEED_INCREASE_PER_LEVEL, currentLevel - 1)) * difficultyMods.speedFactor;
+            currentLevelSpeedVariance = (level1SpeedVariance * Math.pow(SPEED_INCREASE_PER_LEVEL, currentLevel - 1)) * difficultyMods.speedFactor;
+            currentLevelObstacleDensity = Math.min(0.7, (LEVEL_1_OBSTACLE_DENSITY * Math.pow(DENSITY_INCREASE_PER_LEVEL, currentLevel - 1)) * difficultyMods.densityFactor);
+            currentLevelGameDuration = Math.max(40, Math.floor((LEVEL_1_GAME_DURATION * Math.pow(TIME_DECREASE_FACTOR_PER_LEVEL, currentLevel - 1)) * difficultyMods.timeFactor));
+        }
+
+        function resizeCanvas() {
+            const controlsHeight = document.getElementById('controls').offsetHeight;
+            const backButtonHeight = document.getElementById('back-to-quiz-btn-frogger').offsetHeight;
+            const availableScreenHeight = window.innerHeight - controlsHeight - backButtonHeight - 60; // 60px pour marges
+
+            const containerWidth = Math.min(window.innerWidth * 0.97, 750); 
+            const containerHeight = Math.min(availableScreenHeight, (NUM_ROWS/NUM_COLS) * containerWidth ); // Maintenir ratio si possible
+
+            TILE_SIZE = Math.floor(Math.min(containerWidth / NUM_COLS, containerHeight / NUM_ROWS));
+            
+            canvas.width = NUM_COLS * TILE_SIZE;
+            canvas.height = NUM_ROWS * TILE_SIZE;
+
+            canvasContainer.style.width = `${canvas.width}px`;
+            canvasContainer.style.height = `${canvas.height}px`;
+            
+            calculateLevelParameters(); 
+
+            if (player) { 
+                player.width = TILE_SIZE * 0.7;
+                player.height = TILE_SIZE * 0.7;
+                player.dx = TILE_SIZE;
+                player.dy = TILE_SIZE;
+                player.x = Math.max(0, Math.min(NUM_COLS - 1, player.x));
+                player.y = Math.max(0, Math.min(NUM_ROWS - 1, player.y));
+            }
+            
+            if (!gameActive) {
+                if (!player) player = initPlayer();
+                initHomes(); 
+                initObstacles(); 
+                draw(); 
+            } else {
+                // Pour un redimensionnement en cours de jeu, il est plus simple de forcer un redessin.
+                // Les positions des obstacles seront recalculées au prochain initObstacles() si le niveau change/recommence.
+                draw();
+            }
+        }
+
+        function initPlayer() {
+            return {
+                x: Math.floor(NUM_COLS / 2), 
+                y: NUM_ROWS - 1,             
+                width: TILE_SIZE * 0.7,
+                height: TILE_SIZE * 0.7,
+                dx: TILE_SIZE, 
+                dy: TILE_SIZE, 
+                onLog: null,
+                onTurtle: null,
+                isHome: false 
+            };
+        }
+        
+        function createObstacle(rowIndex) {
+            const type = rowTypes[rowIndex];
+            if (!type || ['safe', 'player', 'home', 'final_home', 'safe_extended'].includes(type)) return null;
+
+            let direction, width, color, speed, isSafe, obsType;
+
+            const baseSpeedVal = currentLevelSpeed;
+            const speedVarianceVal = currentLevelSpeedVariance;
+            const randomSpeedOffset = (Math.random() * speedVarianceVal) - (speedVarianceVal / 2);
+            let calculatedSpeed = (baseSpeedVal + randomSpeedOffset);
+
+            if (type === 'road') { 
+                direction = (rowIndex % 2 === 0 ? -1 : 1); 
+                calculatedSpeed *= direction;
+                width = (Math.random() < 0.4 ? 2 : 1.5) * TILE_SIZE; 
+                color = `hsl(${Math.floor(Math.random() * 30) + (Math.random() < 0.5 ? 30 : 210)}, 70%, 55%)`; 
+                speed = Math.sign(calculatedSpeed) * Math.max(Math.abs(calculatedSpeed), TILE_SIZE * 0.025); 
+                isSafe = false;
+                obsType = 'vehicle';
+            } else if (type === 'water') { 
+                direction = (rowIndex % 2 === 0 ? 1 : -1);
+                calculatedSpeed *= direction;
+                const waterObjectType = Math.random();
+                if (waterObjectType < 0.55) { 
+                    width = (Math.floor(Math.random() * 2) + 2.5) * TILE_SIZE; 
+                    color = LOG_COLOR; obsType = 'log';
+                } else { 
+                    width = (Math.floor(Math.random() * 1) + 2) * TILE_SIZE;
+                    color = TURTLE_COLOR; obsType = 'turtle';
+                }
+                speed = calculatedSpeed * 0.7; 
+                speed = Math.sign(speed) * Math.max(Math.abs(speed), TILE_SIZE * 0.018);
+                isSafe = true;
+            } else if (type === 'rail') {
+                direction = (Math.random() < 0.5 ? 1 : -1); 
+                calculatedSpeed *= direction;
+                width = (Math.floor(Math.random() * 2) + 3.5) * TILE_SIZE; 
+                color = TRAIN_COLOR;
+                speed = calculatedSpeed * 1.7; // Trains encore plus rapides
+                speed = Math.sign(speed) * Math.max(Math.abs(speed), TILE_SIZE * 0.060); 
+                isSafe = false;
+                obsType = 'train';
+            } else if (type === 'forest') {
+                direction = (rowIndex % 2 === 0 ? 1 : -1);
+                calculatedSpeed *= direction;
+                width = TILE_SIZE * 1.3; 
+                color = SNAKE_COLOR;
+                speed = calculatedSpeed * 0.85; 
+                speed = Math.sign(speed) * Math.max(Math.abs(speed), TILE_SIZE * 0.020);
+                isSafe = false; 
+                obsType = 'snake';
+            }
+            else { return null; }
+
+            const obsHeight = (obsType === 'train') ? TILE_SIZE * 0.9 : TILE_SIZE * 0.8; 
+            const y = rowIndex * TILE_SIZE + (TILE_SIZE - obsHeight) / 2; 
+            const x = speed > 0 ? -width - Math.random() * TILE_SIZE * 4 : canvas.width + Math.random() * TILE_SIZE * 4;
+
+            return { x, y, width, height: obsHeight, color, speed, isSafe, type: obsType };
+        }
+
+        function initObstacles() {
+            obstacles = [];
+            for (let i = 0; i < NUM_ROWS; i++) { 
+                if (rowTypes[i] === 'road' || rowTypes[i] === 'water' || rowTypes[i] === 'rail' || rowTypes[i] === 'forest') {
+                    const numObstaclesInRow = Math.floor(NUM_COLS * currentLevelObstacleDensity * (0.7 + Math.random() * 0.6));
+                    let currentXOffset = 0; 
+                    for (let j = 0; j < numObstaclesInRow; j++) {
+                        const newObstacle = createObstacle(i);
+                        if (newObstacle) {
+                            if (newObstacle.speed < 0) { 
+                                newObstacle.x = canvas.width + currentXOffset + (Math.random() * TILE_SIZE);
+                            } else { 
+                                newObstacle.x = -newObstacle.width - currentXOffset - (Math.random() * TILE_SIZE);
+                            }
+                            currentXOffset += newObstacle.width + TILE_SIZE * (1.8 + Math.random() * 2); 
+                            obstacles.push(newObstacle);
+                        }
+                    }
+                }
+            }
+        }
+
+        function initHomes() { 
+            homes = [];
+            const homeWidth = TILE_SIZE * 1.5;
+            const homeRowIndex = rowTypes.indexOf('home');
+            if (homeRowIndex === -1) return; 
+            const homeRowY = homeRowIndex * TILE_SIZE + TILE_SIZE * 0.1;
+            
+            const numActiveHomes = Math.max(1, Math.min(Math.floor(NUM_COLS / 2.5), 5)); 
+
+            const totalHomesWidth = numActiveHomes * homeWidth;
+            const totalSpacing = canvas.width - totalHomesWidth;
+            const spacing = totalSpacing / (numActiveHomes + 1);
+
+            for (let i = 0; i < numActiveHomes; i++) {
+                homes.push({
+                    x: spacing + i * (homeWidth + spacing),
+                    y: homeRowY,
+                    width: homeWidth,
+                    height: TILE_SIZE * 0.8,
+                    occupied: false
+                });
+            }
+            homesFilledThisLevel = 0; 
+        }
+        
+        function resetLevel() { 
+            player = initPlayer();
+            calculateLevelParameters(); 
+            initObstacles(); 
+            
+            if (currentLevel === 1 || (homes.length > 0 && homesFilledThisLevel === homes.length) ) { 
+                initHomes(); 
+            }
+            
+            player.isHome = false; 
+            levelStartTime = Date.now(); 
+            gameDurationPerLevel = currentLevelGameDuration; 
+        }
+
+        function startGameSession() {
+            score = 0;
+            lives = 3; 
+            currentLevel = 1;
+            selectedDifficultyKey = difficultySelect.value;
+            
+            resizeCanvas(); 
+
+            startScreen.classList.add('hidden');
+            gameOverScreen.classList.add('hidden');
+            gameActive = true;
+            
+            initHomes(); 
+            resetLevel(); 
+            updateUI(); 
+            if(gameLoopId) cancelAnimationFrame(gameLoopId);
+            gameLoopId = requestAnimationFrame(gameLoop); 
+        }
+
+        function movePlayer(dx, dy) {
+            if (!gameActive || player.isHome) return;
+
+            const targetTileX = player.x + dx;
+            const targetTileY = player.y + dy;
+
+            if (targetTileX >= 0 && targetTileX < NUM_COLS && targetTileY >= 0 && targetTileY < NUM_ROWS) {
+                player.x = targetTileX;
+                player.y = targetTileY;
+                player.onLog = null; 
+                player.onTurtle = null;
+            }
+            
+            const homeRowIdx = rowTypes.indexOf('home');
+            const finalHomeRowIdx = rowTypes.indexOf('final_home');
+
+            if (player.y === homeRowIdx) {
+                checkHomeCheckpoints();
+            } 
+            else if (player.y === finalHomeRowIdx) {
+                score += 200 * currentLevel; 
+                currentLevel++;
+                calculateLevelParameters();
+                gameDurationPerLevel = currentLevelGameDuration; 
+                levelStartTime = Date.now(); 
+                initHomes(); 
+                player = initPlayer(); 
+                initObstacles(); 
+            }
+        }
+        
+        function checkHomeCheckpoints() { 
+            let landedInHome = false;
+            const homeRowIndex = rowTypes.indexOf('home');
+
+            if (player.y === homeRowIndex) { 
+                for (let home of homes) {
+                    const playerPixelX = player.x * TILE_SIZE + (TILE_SIZE - player.width) / 2; 
+                    const playerPixelRight = playerPixelX + player.width / 2; // Utiliser le centre ou des points spécifiques
+                    const playerPixelLeft = playerPixelX - player.width / 2;
+
+                    if (!home.occupied && playerPixelRight > home.x && playerPixelLeft < home.x + home.width) {
+                        home.occupied = true;
+                        homesFilledThisLevel++;
+                        score += 50 * currentLevel;
+                        
+                        const safeExtendedIndex = rowTypes.indexOf('safe_extended');
+                        player.y = safeExtendedIndex !== -1 ? safeExtendedIndex : homeRowIndex -1; 
+                        player.x = Math.floor(NUM_COLS / 2);
+                        player.isHome = false; 
+                        landedInHome = true;
+                        break;
+                    }
+                }
+                 if (!landedInHome) { 
+                    playerDeath();
+                }
+            }
+            updateUI();
+        }
+
+        function updateObstaclesAndPlayer() {
+            let onSupport = false; 
+            
+            obstacles.forEach(obstacle => {
+                obstacle.x += obstacle.speed;
+
+                if (obstacle.speed > 0 && obstacle.x > canvas.width) {
+                    obstacle.x = -obstacle.width - Math.random() * TILE_SIZE * 2; 
+                } else if (obstacle.speed < 0 && obstacle.x + obstacle.width < 0) {
+                    obstacle.x = canvas.width + Math.random() * TILE_SIZE * 2;
+                }
+
+                const playerRect = {
+                    x: player.x * TILE_SIZE + (TILE_SIZE - player.width) / 2,
+                    y: player.y * TILE_SIZE + (TILE_SIZE - player.height) / 2,
+                    width: player.width,
+                    height: player.height
+                };
+                const obsRect = { x: obstacle.x, y: obstacle.y, width: obstacle.width, height: obstacle.height };
+
+                if (playerRect.y < obsRect.y + obsRect.height && playerRect.y + playerRect.height > obsRect.y) {
+                    if (rectsOverlap(playerRect, obsRect)) {
+                        if (obstacle.isSafe) {
+                            onSupport = true;
+                            player.x += obstacle.speed / TILE_SIZE; 
+                        } else {
+                            playerDeath();
+                            return; 
+                        }
+                    }
+                }
+            });
+            
+            const currentRowType = rowTypes[player.y];
+            if (currentRowType === 'water' && !onSupport) { 
+                playerDeath();
+            }
+
+            if (onSupport && (player.x * TILE_SIZE + player.width < -TILE_SIZE*0.5 || player.x * TILE_SIZE > canvas.width + TILE_SIZE*0.5 )) { 
+                playerDeath();
+            }
+        }
+
+        function playerDeath() {
+            lives--;
+            deathMessage = lives >= 0 ? "OUPS !" : "GAME OVER"; 
+            deathMessageTimer = 120; 
+
+            if (lives < 0) {
+                gameOver();
+            } else {
+                let respawnRowIndex = NUM_ROWS - 1; 
+                const homeCheckpointRow = rowTypes.indexOf('home');
+                const safeExtendedRow = rowTypes.indexOf('safe_extended');
+                const safeMidRow = rowTypes.indexOf('safe'); 
+
+                if (player.y <= homeCheckpointRow && homesFilledThisLevel > 0 && safeExtendedRow !== -1) {
+                    respawnRowIndex = safeExtendedRow;
+                } 
+                else if (player.y <= safeMidRow && safeMidRow !== -1 ) { 
+                     respawnRowIndex = safeMidRow;
+                }
+                else if (player.y > safeMidRow && rowTypes.lastIndexOf('safe', player.y) !== -1) { 
+                    respawnRowIndex = rowTypes.lastIndexOf('safe', player.y);
+                }
+
+                player.x = Math.floor(NUM_COLS / 2);
+                player.y = respawnRowIndex;
+                player.onLog = null;
+                player.onTurtle = null;
+                player.isHome = false; 
+            }
+            // updateUI() est appelé dans gameLoop via draw()
+        }
+
+        function gameOver() {
+            gameActive = false;
+            cancelAnimationFrame(gameLoopId); 
+            gameOverScreen.classList.remove('hidden');
+            finalScoreDisplay.textContent = score;
+            finalLevelDisplay.textContent = currentLevel;
+        }
+        
+        function updateUI() { /* Géré par draw() */ }
+
+        function rectsOverlap(rect1, rect2) {
+            return rect1.x < rect2.x + rect2.width &&
+                   rect1.x + rect1.width > rect2.x &&
+                   rect1.y < rect2.y + rect2.height &&
+                   rect1.y + rect1.height > rect2.y;
+        }
+
+        function draw() {
+            if (!canvas || !ctx) return;
+            ctx.clearRect(0,0,canvas.width, canvas.height); 
+
+            for (let i = 0; i < NUM_ROWS; i++) {
+                const yPos = i * TILE_SIZE;
+                let rowColor = SAFE_ZONE_COLOR; 
+                switch(rowTypes[i]) {
+                    case 'road': rowColor = ROAD_COLOR; 
+                        ctx.fillStyle = rowColor;
+                        ctx.fillRect(0, yPos, canvas.width, TILE_SIZE);
+                        ctx.strokeStyle = '#A0AEC0'; 
+                        ctx.lineWidth = Math.max(1, TILE_SIZE * 0.03); 
+                        ctx.setLineDash([TILE_SIZE * 0.15, TILE_SIZE * 0.15]); 
+                        ctx.beginPath();
+                        ctx.moveTo(0, yPos + TILE_SIZE / 2);
+                        ctx.lineTo(canvas.width, yPos + TILE_SIZE / 2);
+                        ctx.stroke();
+                        ctx.setLineDash([]); 
+                        break;
+                    case 'water': rowColor = WATER_COLOR; 
+                        ctx.fillStyle = rowColor;
+                        ctx.fillRect(0, yPos, canvas.width, TILE_SIZE);
+                        ctx.fillStyle = 'rgba(255,255,255,0.1)';
+                        for(let w=0; w < NUM_COLS * 2; w++) {
+                            ctx.beginPath();
+                            ctx.arc(w * TILE_SIZE/2 + (TILE_SIZE/4), yPos + TILE_SIZE/2 + Math.sin(w*0.5 + Date.now()*0.001)*TILE_SIZE*0.05, TILE_SIZE*0.1, 0, Math.PI);
+                            ctx.fill();
+                        }
+                        break;
+                    case 'home': rowColor = '#A8D5BA'; break; 
+                    case 'rail': rowColor = RAIL_COLOR; 
+                        ctx.fillStyle = rowColor;
+                        ctx.fillRect(0, yPos, canvas.width, TILE_SIZE);
+                        ctx.fillStyle = '#4A5568'; 
+                        for (let k = 0; k < canvas.width; k += TILE_SIZE * 0.4) { 
+                            ctx.fillRect(k, yPos + TILE_SIZE * 0.45, TILE_SIZE * 0.15, TILE_SIZE * 0.1);
+                        }
+                        ctx.fillStyle = '#A0AEC0'; 
+                        ctx.fillRect(0, yPos + TILE_SIZE * 0.15, canvas.width, TILE_SIZE * 0.08);
+                        ctx.fillRect(0, yPos + TILE_SIZE * 0.77, canvas.width, TILE_SIZE * 0.08);
+                        break;
+                    case 'forest': rowColor = FOREST_COLOR; break;
+                    case 'safe_extended': rowColor = '#C5E1A5'; break; 
+                    case 'final_home': rowColor = FINAL_HOME_COLOR; break; 
+                    default: rowColor = SAFE_ZONE_COLOR; 
+                }
+                if(rowTypes[i] !== 'road' && rowTypes[i] !== 'rail' && rowTypes[i] !== 'water') { 
+                    ctx.fillStyle = rowColor;
+                    ctx.fillRect(0, yPos, canvas.width, TILE_SIZE);
+                }
+            }
+            
+            if (homes) { 
+                homes.forEach(home => { 
+                    ctx.fillStyle = home.occupied ? '#38A169' : '#68D391'; 
+                    ctx.beginPath();
+                    ctx.ellipse(home.x + home.width / 2, home.y + home.height / 2, home.width / 2.2, home.height / 2.5, 0, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.strokeStyle = home.occupied ? '#2F855A' : '#276749';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                    if (home.occupied) {
+                        const frogHomeX = home.x + home.width / 2;
+                        const frogHomeY = home.y + home.height / 2;
+                        const frogHomeRadius = TILE_SIZE * 0.2;
+                        ctx.fillStyle = FROG_COLOR;
+                        ctx.beginPath();
+                        ctx.arc(frogHomeX, frogHomeY, frogHomeRadius, 0, Math.PI * 2);
+                        ctx.fill();
+                        ctx.fillStyle = 'white'; 
+                        ctx.beginPath();
+                        ctx.arc(frogHomeX - frogHomeRadius*0.3, frogHomeY - frogHomeRadius*0.2, frogHomeRadius*0.3, 0, Math.PI * 2);
+                        ctx.fill();
+                        ctx.beginPath();
+                        ctx.arc(frogHomeX + frogHomeRadius*0.3, frogHomeY - frogHomeRadius*0.2, frogHomeRadius*0.3, 0, Math.PI * 2);
+                        ctx.fill();
+                        ctx.fillStyle = 'black'; 
+                        ctx.beginPath();
+                        ctx.arc(frogHomeX - frogHomeRadius*0.3, frogHomeY - frogHomeRadius*0.2, frogHomeRadius*0.15, 0, Math.PI * 2);
+                        ctx.fill();
+                        ctx.beginPath();
+                        ctx.arc(frogHomeX + frogHomeRadius*0.3, frogHomeY - frogHomeRadius*0.2, frogHomeRadius*0.15, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                 });
+            }
+            if (rowTypes[0] === 'final_home') {
+                 ctx.fillStyle = '#FFC107'; 
+                 const finalHomeMargin = TILE_SIZE * 1; 
+                 const finalHomeRect = {
+                     x: finalHomeMargin, 
+                     y: TILE_SIZE * 0.1, 
+                     width: canvas.width - (2 * finalHomeMargin), 
+                     height: TILE_SIZE * 0.8
+                 };
+                 ctx.fillRect(finalHomeRect.x, finalHomeRect.y, finalHomeRect.width, finalHomeRect.height);
+                 ctx.strokeStyle = '#FFA000'; 
+                 ctx.lineWidth = 3;
+                 ctx.strokeRect(finalHomeRect.x, finalHomeRect.y, finalHomeRect.width, finalHomeRect.height);
+                 ctx.fillStyle = "black";
+                 ctx.font = `bold ${TILE_SIZE*0.3}px "Press Start 2P", Consolas, monospace`; 
+                 ctx.textAlign = "center";
+                 ctx.textBaseline = "middle";
+                 ctx.fillText("ARRIVÉE !", finalHomeRect.x + finalHomeRect.width / 2, finalHomeRect.y + finalHomeRect.height / 2);
+            }
+
+            if (obstacles) { 
+                obstacles.forEach(obstacle => { 
+                    ctx.fillStyle = obstacle.color;
+                    ctx.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
+                    if(obstacle.type === 'vehicle'){ 
+                        ctx.fillStyle = 'rgba(0,0,0,0.2)'; 
+                        ctx.fillRect(obstacle.x + TILE_SIZE*0.05, obstacle.y + obstacle.height - TILE_SIZE*0.1, obstacle.width - TILE_SIZE*0.1, TILE_SIZE*0.1);
+                        const lightSize = TILE_SIZE * 0.15;
+                        if (obstacle.speed > 0) { 
+                            ctx.fillStyle = '#FFFDE7'; 
+                            ctx.fillRect(obstacle.x + obstacle.width - lightSize*1.2, obstacle.y + obstacle.height * 0.2, lightSize, lightSize*0.8);
+                            ctx.fillRect(obstacle.x + obstacle.width - lightSize*1.2, obstacle.y + obstacle.height * 0.6, lightSize, lightSize*0.8);
+                        } else { 
+                            ctx.fillStyle = '#FFCDD2'; 
+                            ctx.fillRect(obstacle.x + lightSize*0.2, obstacle.y + obstacle.height * 0.2, lightSize, lightSize*0.8);
+                            ctx.fillRect(obstacle.x + lightSize*0.2, obstacle.y + obstacle.height * 0.6, lightSize, lightSize*0.8);
+                        }
+                    } else if (obstacle.type === 'log') {
+                        ctx.strokeStyle = '#5D4037'; 
+                        ctx.lineWidth = Math.max(1, TILE_SIZE * 0.05);
+                        ctx.strokeRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
+                        ctx.strokeStyle = 'rgba(0,0,0,0.15)';
+                         ctx.lineWidth = Math.max(1, TILE_SIZE * 0.03);
+                        for(let l=TILE_SIZE*0.15; l < obstacle.width; l += TILE_SIZE*0.3) {
+                            ctx.beginPath();
+                            ctx.moveTo(obstacle.x + l, obstacle.y);
+                            ctx.lineTo(obstacle.x + l, obstacle.y + obstacle.height);
+                            ctx.stroke();
+                        }
+                    } else if (obstacle.type === 'turtle') {
+                        const turtleSize = TILE_SIZE * 0.7;
+                        const numTurtlesInGroup = Math.floor(obstacle.width / (TILE_SIZE*0.8));
+                        for(let i=0; i<numTurtlesInGroup; i++) {
+                            const turtleX = obstacle.x + (i * TILE_SIZE*0.8) + turtleSize/2;
+                            const turtleY = obstacle.y + turtleSize/2;
+                            ctx.beginPath();
+                            ctx.arc(turtleX, turtleY, turtleSize/2.2, 0, Math.PI * 2);
+                            ctx.fillStyle = obstacle.color;
+                            ctx.fill();
+                            ctx.strokeStyle = '#166534'; 
+                            ctx.lineWidth = Math.max(1, TILE_SIZE * 0.04);
+                            ctx.stroke();
+                            // Oeil de tortue
+                            ctx.fillStyle = 'white';
+                            ctx.beginPath();
+                            ctx.arc(turtleX + (obstacle.speed > 0 ? -turtleSize*0.1 : turtleSize*0.1), turtleY - turtleSize*0.1, turtleSize*0.1, 0, Math.PI*2);
+                            ctx.fill();
+                            ctx.fillStyle = 'black';
+                            ctx.beginPath();
+                            ctx.arc(turtleX + (obstacle.speed > 0 ? -turtleSize*0.1 : turtleSize*0.1), turtleY - turtleSize*0.1, turtleSize*0.05, 0, Math.PI*2);
+                            ctx.fill();
+                        }
+                    } else if (obstacle.type === 'train') {
+                        ctx.fillStyle = '#4A5568'; 
+                        ctx.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height * 0.7);
+                        ctx.fillStyle = '#2D3748'; 
+                        ctx.fillRect(obstacle.x, obstacle.y + obstacle.height * 0.7, obstacle.width, obstacle.height * 0.3);
+                        ctx.fillStyle = '#CBD5E0'; 
+                        for(let w=0; w < obstacle.width - TILE_SIZE*0.4; w+=TILE_SIZE*0.5) {
+                           ctx.fillRect(obstacle.x + TILE_SIZE*0.2 + w, obstacle.y + obstacle.height*0.15, TILE_SIZE*0.3, TILE_SIZE*0.2);
+                        }
+                        ctx.fillStyle = '#FBBF24'; 
+                        if (obstacle.speed < 0) { 
+                           ctx.fillRect(obstacle.x + TILE_SIZE*0.05, obstacle.y + obstacle.height * 0.25, TILE_SIZE * 0.3, TILE_SIZE * 0.3);
+                        } else { 
+                           ctx.fillRect(obstacle.x + obstacle.width - TILE_SIZE * 0.35, obstacle.y + obstacle.height * 0.25, TILE_SIZE * 0.3, TILE_SIZE * 0.3);
+                        }
+                    } else if (obstacle.type === 'snake') {
+                        const segmentRadius = TILE_SIZE * 0.15;
+                        const numSegments = Math.floor(obstacle.width / (segmentRadius * 1.5));
+                        for (let i = 0; i < numSegments; i++) {
+                            const segX = obstacle.x + i * segmentRadius * 1.5 + segmentRadius;
+                            const segY = obstacle.y + obstacle.height / 2 + Math.sin(i * 0.7 + Date.now() * 0.003 * Math.sign(obstacle.speed)) * TILE_SIZE * 0.15;
+                            ctx.beginPath();
+                            ctx.arc(segX, segY, segmentRadius, 0, Math.PI * 2);
+                            ctx.fillStyle = obstacle.color;
+                            ctx.fill();
+                             // Oeil du serpent sur la tête
+                            if (i === (obstacle.speed > 0 ? numSegments -1 : 0) ) { 
+                                ctx.fillStyle = 'black';
+                                ctx.beginPath();
+                                ctx.arc(segX, segY - segmentRadius * 0.2, segmentRadius * 0.3, 0, Math.PI * 2);
+                                ctx.fill();
+                            }
+                        }
+                    }
+                });
+            }
+
+            if (player && (!player.isHome || player.y !== rowTypes.indexOf('home'))) { 
+                 const pX = player.x * TILE_SIZE + (TILE_SIZE - player.width) / 2;
+                 const pY = player.y * TILE_SIZE + (TILE_SIZE - player.height) / 2;
+                ctx.fillStyle = FROG_COLOR;
+                ctx.beginPath();
+                ctx.ellipse(pX + player.width / 2, pY + player.height / 2, player.width / 2.2, player.height / 2.2, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.strokeStyle = '#16A34A'; // Bordure plus foncée pour la grenouille
+                ctx.lineWidth = Math.max(1, TILE_SIZE * 0.04);
+                ctx.stroke();
+
+                const eyeRadius = player.width * 0.15;
+                const eyeOffsetX = player.width * 0.25;
+                const eyeOffsetY = player.height * 0.15;
+                ctx.fillStyle = 'white';
+                ctx.beginPath();
+                ctx.arc(pX + eyeOffsetX, pY + eyeOffsetY, eyeRadius, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(pX + player.width - eyeOffsetX, pY + eyeOffsetY, eyeRadius, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.fillStyle = 'black';
+                const pupilRadius = eyeRadius * 0.5;
+                ctx.beginPath();
+                ctx.arc(pX + eyeOffsetX, pY + eyeOffsetY, pupilRadius, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(pX + player.width - eyeOffsetX, pY + eyeOffsetY, pupilRadius, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            
+            const uiBarHeight = TILE_SIZE * 0.85; 
+            ctx.fillStyle = "rgba(0, 0, 0, 0.6)"; 
+            ctx.fillRect(0, 0, canvas.width, uiBarHeight);
+
+            ctx.fillStyle = 'white';
+            const fontSize = Math.max(10, TILE_SIZE * 0.38); 
+            ctx.font = `bold ${fontSize}px "Press Start 2P", Consolas, monospace`; 
+            ctx.textBaseline = "middle"; 
+
+            ctx.textAlign = 'left';
+            ctx.fillText(`SCORE:${score}`, TILE_SIZE * 0.3, uiBarHeight / 2);
+            
+            const elapsedTime = (Date.now() - levelStartTime) / 1000;
+            const remainingTime = Math.max(0, Math.ceil(gameDurationPerLevel - elapsedTime));
+            ctx.textAlign = 'center';
+            ctx.fillText(`TEMPS:${remainingTime}`, canvas.width / 2, uiBarHeight / 2);
+            
+            ctx.textAlign = 'right';
+            const heartIcon = "❤️"; 
+            let livesDisplayString = ""; //Commence avec une chaîne vide
+            for (let i = 0; i < Math.max(0, lives); i++) {
+                livesDisplayString += heartIcon + (i < Math.max(0, lives) - 1 ? " " : ""); // Ajoute un espace sauf pour le dernier cœur
+            }
+            const livesPrefix = "VIES: ";
+            // Si pas de vies, afficher "VIES: 0", sinon afficher les cœurs
+            const actualLivesText = lives > 0 ? livesDisplayString : "0";
+            const fullLivesText = livesPrefix + actualLivesText;
+
+
+            // Pour afficher les coeurs correctement, nous devons ajuster leur taille de police et leur position
+            if (lives > 0) {
+                let heartDisplayX = canvas.width - TILE_SIZE * 0.3;
+                ctx.font = `bold ${fontSize * 1.1}px "Press Start 2P", Consolas, monospace`; // Taille pour les cœurs
+                for (let i = 0; i < lives; i++) {
+                    ctx.fillText(heartIcon, heartDisplayX, uiBarHeight / 2);
+                    heartDisplayX -= (fontSize * 1.1 + TILE_SIZE * 0.1); // Espacement entre les cœurs
+                }
+                ctx.font = `bold ${fontSize}px "Press Start 2P", Consolas, monospace`; // Revenir à la taille normale pour "VIES:"
+                ctx.fillText(livesPrefix, heartDisplayX, uiBarHeight / 2);
+
+            } else {
+                 ctx.font = `bold ${fontSize}px "Press Start 2P", Consolas, monospace`; 
+                 ctx.fillText(`${livesPrefix}0`, canvas.width - TILE_SIZE * 0.3, uiBarHeight / 2);
+            }
+
+
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.9)'; 
+            ctx.font = `bold ${Math.max(10, TILE_SIZE*0.4)}px "Press Start 2P", Consolas, monospace`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = "alphabetic"; 
+            ctx.fillText(`NIV. ${currentLevel}`, canvas.width / 2, canvas.height - TILE_SIZE*0.25);
+
+            if (deathMessageTimer > 0) {
+                ctx.fillStyle = "rgba(255, 50, 50, 0.9)"; // Rouge plus vif
+                ctx.font = `bold ${TILE_SIZE*0.7}px "Press Start 2P", Consolas, monospace`;
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+                // Petit fond pour le message pour le faire ressortir
+                const textMetrics = ctx.measureText(deathMessage);
+                const textWidth = textMetrics.width;
+                const textHeight = TILE_SIZE; // Hauteur approximative basée sur la police
+                ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
+                ctx.fillRect(canvas.width/2 - textWidth/2 - TILE_SIZE*0.2, canvas.height/2 - textHeight/2 - TILE_SIZE*0.1, textWidth + TILE_SIZE*0.4, textHeight + TILE_SIZE*0.2);
+                ctx.fillStyle = "#FF6347"; // Couleur Tomate pour le texte
+                ctx.fillText(deathMessage, canvas.width / 2, canvas.height / 2);
+            }
+        }
+
+        function gameLoop() {
+            if (!gameActive) return;
+
+            if (deathMessageTimer > 0) {
+                deathMessageTimer--;
+            } else { // Ne mettre à jour la logique du jeu que si aucun message de mort n'est affiché
+                updateObstaclesAndPlayer();
+                
+                const currentTime = Date.now();
+                const elapsedTimeForLevel = (currentTime - levelStartTime) / 1000;
+
+                if (elapsedTimeForLevel >= gameDurationPerLevel) { 
+                     playerDeath(); 
+                     if(gameActive) { 
+                        levelStartTime = Date.now(); 
+                     }
+                }
+            }
+
+            draw();
+            gameLoopId = requestAnimationFrame(gameLoop);
+        }
+        
+        function handleKeyDown(e) {
+            if (!gameActive || (player && player.isHome && player.y === rowTypes.indexOf('home')) || deathMessageTimer > 0) return; 
+            if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' '].includes(e.key)) {
+                e.preventDefault();
+            }
+            switch(e.key) {
+                case 'ArrowUp': movePlayer(0, -1); break;
+                case 'ArrowDown': movePlayer(0, 1); break;
+                case 'ArrowLeft': movePlayer(-1, 0); break;
+                case 'ArrowRight': movePlayer(1, 0); break;
+            }
+        }
+
+        document.addEventListener('keydown', handleKeyDown);
+        document.getElementById('up-btn').addEventListener('click', () => {if(deathMessageTimer === 0) movePlayer(0, -1)});
+        document.getElementById('down-btn').addEventListener('click', () => {if(deathMessageTimer === 0) movePlayer(0, 1)});
+        document.getElementById('left-btn').addEventListener('click', () => {if(deathMessageTimer === 0) movePlayer(-1, 0)});
+        document.getElementById('right-btn').addEventListener('click', () => {if(deathMessageTimer === 0) movePlayer(1, 0)});
+
+        startButton.addEventListener('click', startGameSession);
+        playAgainButton.addEventListener('click', () => {
+            gameOverScreen.classList.add('hidden');
+            startScreen.classList.remove('hidden');
+        });
+
+        if (document.getElementById('back-to-quiz-btn-frogger')) {
+            document.getElementById('back-to-quiz-btn-frogger').addEventListener('click', () => {
+                gameActive = false; 
+                if (gameLoopId) cancelAnimationFrame(gameLoopId);
+                if (window.parent && window.parent !== window) {
+                    window.parent.postMessage('closeGameIframe', '*');
+                } else {
+                    console.warn("Frogger: Not in an iframe or cannot communicate with parent.");
+                }
+            });
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        
+        resizeCanvas(); 
+        player = initPlayer(); 
+        draw(); 
+
+    </script>
+</body>
+</html>
