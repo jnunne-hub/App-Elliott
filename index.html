@@ -6,10 +6,12 @@
     <title>Quiz Aventure ULTIMATE - Salle d'Arcade</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+
     <link rel="icon" href="quiz-icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="quiz-icon.svg">
-    <meta name="theme-color" content="#4c1d95">
-    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="quiz-icon.svg"> 
+    <meta name="theme-color" content="#4c1d95"> 
+    <link rel="manifest" href="manifest.json"> 
+
     <style>
         body {
             font-family: 'Fredoka', sans-serif;
@@ -254,12 +256,10 @@
                     <div class="text-sm text-indigo-200 whitespace-nowrap pr-2">
                         Question <span id="question-number" class="font-bold text-lg">1</span>/<span id="total-questions-display">15</span>
                     </div>
-                    
                     <div class="flex-1 text-center min-w-0 px-2"> 
                         <div id="current-subject" class="font-bold text-yellow-300 text-lg truncate"></div> 
                         <div id="current-level" class="text-xs text-indigo-200"></div>
                     </div>
-                    
                     <div class="flex items-center space-x-2 sm:space-x-3 whitespace-nowrap pl-2"> 
                         <div class="text-sm text-indigo-200">Score: <span id="score" class="font-bold text-lg">0</span></div> 
                         <span class="text-orange-400 font-bold" id="combo-display"></span> 
@@ -270,9 +270,7 @@
             <div class="p-8">
                 <div class="mb-8 min-h-[100px] flex flex-col justify-center"><h3 id="question-text" class="text-xl md:text-2xl font-bold mb-2 text-center"></h3><p id="question-detail" class="text-indigo-200 text-center"></p></div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="answers-container">
-                    {/* Les réponses seront injectées ici */}
                 </div>
-
                 <div class="mt-8 text-center">
                     <button onclick="confirmQuitQuiz()" title="Retour à l'accueil" class="py-2 px-5 bg-red-600 hover:bg-red-500 text-white rounded-lg shadow-md inline-flex items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -357,16 +355,15 @@
         let currentStreak = 0;
         let activeScreen = 'home-screen';
 
-const ARCADE_GAMES = [
-    // ... vos jeux existants ...
-    { id: 'morpion', name: 'Morpion', file: 'morpion.html', unlocked: false, unlockMessage: "Termine un quiz d'Orthographe (Niv.1) avec 50% de réussite pour débloquer.", condition: { subject: 'orthographe', level: 1, minCorrectPercentage: 50 } },
-    { id: 'snake', name: 'Snake', file: 'snake.html', unlocked: false, unlockMessage: "Termine un quiz de Maths (Niv.1) avec 50% de réussite pour débloquer.", condition: { subject: 'mathematiques', level: 1, minCorrectPercentage: 50 } },
-    { id: 'tetris', name: 'Tetris', file: 'tetris.html', unlocked: false, unlockMessage: "Termine un quiz de Multiplication (Niv.1) avec 70% de réussite pour débloquer.", condition: { subject: 'multiplication', level: 1, minCorrectPercentage: 70 } },
-    { id: 'spaceinvader', name: 'Space Invaders', file: 'spaceinvader.html', unlocked: false, unlockMessage: "Termine un quiz d'Histoire (Niv.2) avec 60% de réussite pour débloquer.", condition: { subject: 'histoire', level: 2, minCorrectPercentage: 60 } },
-    { id: 'streetfighter', name: 'Street Fighter', file: 'streetfighters.html', unlocked: false, unlockMessage: "Termine un quiz de Multiplication (Niv.2) avec 70% de réussite pour débloquer.", condition: { subject: 'multiplication', level: 2, minCorrectPercentage: 70 } },
-    { id: 'pong', name: 'Pong', file: 'pong.html', unlocked: false, unlockMessage: "Termine un quiz de Grammaire (Niv.1) avec 50% de réussite pour débloquer.", condition: { subject: 'grammaire', level: 1, minCorrectPercentage: 50 } },
-    { id: 'whacamole', name: 'Tape-Taupe', file: 'whac-a-mole.html', unlocked: false, unlockMessage: "Atteins le Niveau Joueur 2 pour débloquer.", condition: { playerLevel: 2 } }
-];
+        const ARCADE_GAMES = [
+            { id: 'morpion', name: 'Morpion', file: 'morpion.html', unlocked: false, unlockMessage: "Termine un quiz d'Orthographe (Niv.1) avec 50% de réussite pour débloquer.", condition: { subject: 'orthographe', level: 1, minCorrectPercentage: 50 } },
+            { id: 'snake', name: 'Snake', file: 'snake.html', unlocked: false, unlockMessage: "Termine un quiz de Maths (Niv.1) avec 50% de réussite pour débloquer.", condition: { subject: 'mathematiques', level: 1, minCorrectPercentage: 50 } },
+            { id: 'tetris', name: 'Tetris', file: 'tetris.html', unlocked: false, unlockMessage: "Termine un quiz de Multiplication (Niv.1) avec 70% de réussite pour débloquer.", condition: { subject: 'multiplication', level: 1, minCorrectPercentage: 70 } },
+            { id: 'spaceinvader', name: 'Space Invaders', file: 'spaceinvader.html', unlocked: false, unlockMessage: "Termine un quiz d'Histoire (Niv.2) avec 60% de réussite pour débloquer.", condition: { subject: 'histoire', level: 2, minCorrectPercentage: 60 } },
+            { id: 'streetfighter', name: 'Street Fighter', file: 'streetfighters.html', unlocked: false, unlockMessage: "Termine un quiz de Multiplication (Niv.2) avec 70% de réussite pour débloquer.", condition: { subject: 'multiplication', level: 2, minCorrectPercentage: 70 } },
+            { id: 'pong', name: 'Pong', file: 'pong.html', unlocked: false, unlockMessage: "Termine un quiz de Grammaire (Niv.1) avec 50% de réussite pour débloquer.", condition: { subject: 'grammaire', level: 1, minCorrectPercentage: 50 } },
+            { id: 'frogger', name: 'Frogger', file: 'frogger.html', unlocked: false, unlockMessage: "Termine un quiz de Grammaire (Niv.2) avec 80% de réussite pour débloquer.", condition: { subject: 'grammaire', level: 2, minCorrectPercentage: 80 } }
+        ];
 
         let playerXP = 0;
         let playerLevel = 1;
@@ -576,9 +573,15 @@ const ARCADE_GAMES = [
             ARCADE_GAMES.forEach(g => {
                 if (!g.unlocked) {
                     let met = false; const c = g.condition;
-                    if (c.playerLevel && c.subject && c.level !== undefined && c.minCorrectPercentage !== undefined) met = (playerLevel >= c.playerLevel) && (currentSubject === c.subject) && (currentLevel >= c.level) && (perc >= c.minCorrectPercentage);
-                    else if (c.playerLevel) met = (playerLevel >= c.playerLevel);
-                    else if (c.subject && c.level !== undefined && c.minCorrectPercentage !== undefined) met = (currentSubject === c.subject) && (currentLevel >= c.level) && (perc >= c.minCorrectPercentage);
+                    if (c.playerLevel && c.subject && c.level !== undefined && c.minCorrectPercentage !== undefined) {
+                        met = (playerLevel >= c.playerLevel) && (currentSubject === c.subject) && (currentLevel === c.level) && (perc >= c.minCorrectPercentage);
+                    } else if (c.playerLevel) {
+                        met = (playerLevel >= c.playerLevel);
+                    } else if (c.subject && c.level !== undefined && c.minCorrectPercentage !== undefined) {
+                        met = (currentSubject === c.subject) && (currentLevel === c.level) && (perc >= c.minCorrectPercentage);
+                    } else if (c.level !== undefined && c.minCorrectPercentage !== undefined && !c.subject) {
+                        met = (currentLevel === c.level) && (perc >= c.minCorrectPercentage);
+                    }
                     if (met) { g.unlocked = true; gamesUnlockedThisSess.push(g); playSound('unlock'); }
                 }
             });
