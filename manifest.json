@@ -13,7 +13,7 @@
       "type": "image/svg+xml",
       "purpose": "any maskable"
     },
-    { // Vous pouvez ajouter des versions PNG pour une meilleure compatibilité si besoin
+    {
       "src": "path/to/icon-192x192.png",
       "sizes": "192x192",
       "type": "image/png"
