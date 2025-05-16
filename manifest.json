@@ -2,26 +2,29 @@
   "name": "Quiz Aventure ULTIMATE",
   "short_name": "QuizApp",
   "description": "Une aventure éducative avec des quiz et des jeux d'arcade.",
-  "start_url": "index.html",
+  "start_url": "/App-Elliott/index.html", // Important: chemin complet depuis la racine du domaine GitHub Pages
   "display": "standalone",
   "background_color": "#4c1d95",
   "theme_color": "#4c1d95",
+  "scope": "/App-Elliott/", // Important: le scope de la PWA
   "icons": [
     {
-      "src": "quiz-icon.svg",
+      "src": "quiz-icon.svg", 
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"
     },
     {
-      "src": "path/to/icon-192x192.png",
+      "src": "icons/icon-192x192.png", // Assurez-vous que ce chemin est correct par rapport à la racine du dépôt
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
-      "src": "path/to/icon-512x512.png",
+      "src": "icons/icon-512x512.png", // Assurez-vous que ce chemin est correct par rapport à la racine du dépôt
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     }
   ]
 }
